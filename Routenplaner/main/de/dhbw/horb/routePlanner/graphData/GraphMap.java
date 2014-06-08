@@ -7,6 +7,7 @@ public class GraphMap {
 	private Map<Integer, Node> nodes;
 	
 	private GraphMap(){
+		//TODO Map oder Liste?
 //		Map<Integer, Node> pem = new HashMap<Integer, Node>();
 //	    pem.put( new Integer( ATTRIBUTE ),              "ATTRIBUTE     " );
 //	    pem.put( new Integer( CDATA ),                  "CDATA         " );
