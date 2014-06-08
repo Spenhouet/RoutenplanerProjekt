@@ -1,0 +1,7 @@
+XML Parsen mit SAX:
+  -schnell
+  -belegt wenig Arbeitsspeicher
+  
+Parsen on demand:
+  - weniger Arbeitsspeicher belegen
+  - keine Aufbauzeit am Anfang
