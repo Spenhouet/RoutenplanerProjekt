@@ -1,7 +1,5 @@
-XML Parsen mit SAX:
+XML Parsen mit STAX:
   -schnell
   -belegt wenig Arbeitsspeicher
-  
-Parsen on demand:
-  - weniger Arbeitsspeicher belegen
-  - keine Aufbauzeit am Anfang
+  -parsen on demand
+  -kein großer Aufbau am Anfang
