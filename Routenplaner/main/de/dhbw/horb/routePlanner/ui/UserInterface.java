@@ -15,7 +15,7 @@ public class UserInterface {
 		
 		GraphMap gMap = new GraphMap();
 		
-		
+		 
 		
 		try {
 			GraphDataParser parser = new GraphDataParser();
