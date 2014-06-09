@@ -2,12 +2,10 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.StartElement;
 
 import de.dhbw.horb.routePlanner.graphData.GraphMap;
 import de.dhbw.horb.routePlanner.graphData.Node;
