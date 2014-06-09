@@ -4,15 +4,15 @@ public class Edge {
 
 	private String source;
 	private String target;
-	private Integer number;
-	private Integer length;
+	private String identifier;
+	private Double length;
 	
 	
-	public Edge(String source, String target, Integer number, Integer length){
+	public Edge(String source, String target, String identifier, Double length){
 		
 		setSource(source);
 		setTarget(target);
-		setNumber(number);
+		setIdentifier(identifier);
 		setLength(length);
 	}
 	
@@ -33,19 +33,19 @@ public class Edge {
 		this.target = target;
 	}
 	
-	public Integer getNumber() {
-		return number;
+	public String getIdentifier() {
+		return identifier;
 	}
 	
-	private void setNumber(Integer number) {
-		this.number = number;
+	private void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 	
-	public Integer getLength() {
+	public Double getLength() {
 		return length;
 	}
 	
-	private void setLength(Integer length) {
+	private void setLength(Double length) {
 		this.length = length;
 	}
 	

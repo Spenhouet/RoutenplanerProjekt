@@ -11,8 +11,8 @@ public class EdgeTest {
 
 	private String source = "Tübingen";
 	private String target = "Horb";
-	private int number = 28;
-	private int weight = 6;
+	private String identifier = "A 28";
+	private Double length = 6.0;
 	
 	private Edge edgeClassUnderTest;
 	
@@ -20,13 +20,13 @@ public class EdgeTest {
 	@Test
 	public void constructor() {
 		
-		edgeClassUnderTest = new Edge(source, target, number, weight);
+		edgeClassUnderTest = new Edge(source, target, identifier, length);
 		
 		
 		if(source != edgeClassUnderTest.getSource()) fail("Source doesn't match after constructor.");
 		if(target != edgeClassUnderTest.getTarget()) fail("Target doesn't match after constructor.");
-		if(number != edgeClassUnderTest.getNumber()) fail("Number doesn't match after constructor.");
-		if(weight != edgeClassUnderTest.getWeight()) fail("Weight doesn't match after constructor.");
+		if(identifier != edgeClassUnderTest.getIdentifier()) fail("Identifier doesn't match after constructor.");
+		if(length != edgeClassUnderTest.getLength()) fail("Weight doesn't match after constructor.");
 	
 	}
 
