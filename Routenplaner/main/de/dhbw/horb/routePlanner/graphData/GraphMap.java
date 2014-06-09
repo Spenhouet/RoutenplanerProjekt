@@ -6,6 +6,7 @@ import java.util.Map;
 public class GraphMap {
 
 	private Map<String, Node> nodes;
+	//TODO Abschaffen
 	
 	public GraphMap(){
 		//TODO Map oder Liste?

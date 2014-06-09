@@ -13,6 +13,7 @@ import de.dhbw.horb.routePlanner.graphData.Node;
 public class GraphDataParser extends GraphDataConstants {
 	
 	private XMLStreamReader streamReader;
+	//TODO Thread Save machen
 	
 	
 	public GraphDataParser() throws FileNotFoundException, XMLStreamException{
