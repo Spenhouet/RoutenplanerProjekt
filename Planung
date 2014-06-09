@@ -1,4 +1,4 @@
-XML Parsen mit STAX:
+XML Parsen mit STAX cursor API:
   -schnell
   -belegt wenig Arbeitsspeicher
   -parsen on demand
