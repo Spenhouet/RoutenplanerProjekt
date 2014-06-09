@@ -5,7 +5,7 @@ public class Edge {
 	private String source;
 	private String target;
 	private int number;
-	private int weight;
+	private int length;
 	
 	
 	public Edge(String source, String target, int number, int weight){
@@ -42,11 +42,11 @@ public class Edge {
 	}
 	
 	public int getWeight() {
-		return weight;
+		return length;
 	}
 	
-	public void setWeight(int weight) {
-		this.weight = weight;
+	public void setWeight(int length) {
+		this.length = length;
 	}
 	
 	

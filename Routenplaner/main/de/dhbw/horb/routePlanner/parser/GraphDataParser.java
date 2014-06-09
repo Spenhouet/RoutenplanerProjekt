@@ -7,8 +7,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import de.dhbw.horb.routePlanner.graphData.GraphMap;
 import de.dhbw.horb.routePlanner.graphData.Node;
+import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
 public class GraphDataParser extends GraphDataConstants {
 	
@@ -25,11 +25,11 @@ public class GraphDataParser extends GraphDataConstants {
 //	TODO alle Kanten und bestimmte Kanten (von Knoten aus)?
 	
 	
-	public void everyNode(GraphMap gMap) throws XMLStreamException {
+	public void everyNode(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
 			if(nextStartElement()){
 
-				gMap.addNode(getNode());//TODO
+				gui.addNode(getNode());
 			}
 		}
 	}
