@@ -9,11 +9,11 @@ public class Edge {
 	
 	
 	public Edge(String source, String target, int number, int weight){
+		
 		setSource(source);
 		setTarget(target);
 		setNumber(number);
 		setWeight(weight);
-		
 	}
 	
 	
