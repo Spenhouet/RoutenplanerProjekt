@@ -17,7 +17,7 @@ public class GraphDataConstants {
 	public final static String CONST_EDGE_TARGET = "target";
 	public final static String CONST_EDGE_DATA = "data";
 	public final static String CONST_EDGE_KEY = "key";
-	public final static String CONST_EDGE_NUMBER = "A";
+	public final static String CONST_EDGE_IDENTIFIER = "A";
 	public final static String CONST_EDGE_LENGTH = "gewicht";
 		
 	public GraphDataConstants() {};

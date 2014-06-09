@@ -1,7 +1,5 @@
 package de.dhbw.horb.routePlanner.parser;
 
-import java.io.IOException;
-
 import javax.xml.stream.XMLStreamException;
 
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
@@ -10,14 +8,30 @@ public class ParserController {
 	
 	
 	public void fillGUI(GraphicalUserInterface gui){
-		try {
+		new Thread(new fillGUI(gui)).start();
+	}
 			
-//			TODO: Threads für je Knoten und Edge erzeugen
-			new GraphDataParser().everyNodeToGui(gui);
-			new GraphDataParser().everyEdgeToGui(gui);
-			
-		} catch (XMLStreamException | IOException e) {
-			e.printStackTrace();
+	public class fillGUI implements Runnable{
+
+		private GraphicalUserInterface gui;
+		
+		private fillGUI(GraphicalUserInterface gui){
+			this.gui = gui;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				GraphDataParser.getGraphDataParser().everyNodeToGui(gui);
+				GraphDataParser.getGraphDataParser().everyEdgeToGui(gui);
+				
+			} catch (XMLStreamException e) {
+				e.printStackTrace();
+			}
 		}
 	}
+	
+	
+	
+	
 }
