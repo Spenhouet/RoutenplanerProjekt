@@ -3,3 +3,20 @@ XML Parsen mit STAX cursor API:
   -belegt wenig Arbeitsspeicher
   -parsen on demand
   -kein großer Aufbau am Anfang
+
+Projekt Multithreaded (alle Klassen müssen Thread sicher sein!):
+  1. Controller
+  2. GUI
+  3. Dijkstra
+  4. jede Route
+  
+GUI:
+  -Arbeitsspeicher leer halten!
+  -Knoten und Kanten nacheinander hinzufügen
+  -Zoomem?
+
+Eingabe:
+  -Erkennen von Knoten (Stadt) Eingabe
+  -Ähnliche Ergebnisse vorschlagen
+  -live Vorschläge?
+  
