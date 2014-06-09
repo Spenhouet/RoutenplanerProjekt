@@ -13,7 +13,7 @@ public class Edge {
 		setSource(source);
 		setTarget(target);
 		setNumber(number);
-		setWeight(weight);
+		setLength(weight);
 	}
 	
 	
@@ -21,7 +21,7 @@ public class Edge {
 		return source;
 	}
 	
-	public void setSource(String source) {
+	private void setSource(String source) {
 		this.source = source;
 	}
 	
@@ -29,7 +29,7 @@ public class Edge {
 		return target;
 	}
 	
-	public void setTarget(String target) {
+	private void setTarget(String target) {
 		this.target = target;
 	}
 	
@@ -37,15 +37,15 @@ public class Edge {
 		return number;
 	}
 	
-	public void setNumber(int number) {
+	private void setNumber(int number) {
 		this.number = number;
 	}
 	
-	public int getWeight() {
+	public int getLength() {
 		return length;
 	}
 	
-	public void setWeight(int length) {
+	private void setLength(int length) {
 		this.length = length;
 	}
 	
