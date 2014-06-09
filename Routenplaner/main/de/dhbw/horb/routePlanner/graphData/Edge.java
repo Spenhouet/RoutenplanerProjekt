@@ -4,16 +4,16 @@ public class Edge {
 
 	private String source;
 	private String target;
-	private int number;
-	private int length;
+	private Integer number;
+	private Integer length;
 	
 	
-	public Edge(String source, String target, int number, int weight){
+	public Edge(String source, String target, Integer number, Integer length){
 		
 		setSource(source);
 		setTarget(target);
 		setNumber(number);
-		setLength(weight);
+		setLength(length);
 	}
 	
 	
@@ -33,19 +33,19 @@ public class Edge {
 		this.target = target;
 	}
 	
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 	
-	private void setNumber(int number) {
+	private void setNumber(Integer number) {
 		this.number = number;
 	}
 	
-	public int getLength() {
+	public Integer getLength() {
 		return length;
 	}
 	
-	private void setLength(int length) {
+	private void setLength(Integer length) {
 		this.length = length;
 	}
 	
