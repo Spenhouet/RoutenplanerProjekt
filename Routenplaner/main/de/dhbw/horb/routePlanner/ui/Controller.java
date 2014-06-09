@@ -1,31 +1,18 @@
 package de.dhbw.horb.routePlanner.ui;
 
-import java.io.IOException;
-
-import javax.xml.stream.XMLStreamException;
-
-import de.dhbw.horb.routePlanner.parser.GraphDataParser;
+import de.dhbw.horb.routePlanner.parser.ParserController;
 
 
 public class Controller {
 
 	public static void main(String[] args) {
-		try {
-			
-			GraphicalUserInterface gui = new GraphicalUserInterface();
-			  
+		GraphicalUserInterface gui = new GraphicalUserInterface();
 		
+		new ParserController().fillGUI(gui);
+			
+			
+			
 		
-			GraphDataParser parser = new GraphDataParser();
-			parser.everyNode(gui);
-			
-			
-			
-			
-			
-		} catch (XMLStreamException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

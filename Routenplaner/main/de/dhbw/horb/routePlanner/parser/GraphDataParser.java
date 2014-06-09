@@ -7,6 +7,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
@@ -19,20 +20,31 @@ public class GraphDataParser extends GraphDataConstants {
 	public GraphDataParser() throws FileNotFoundException, XMLStreamException{
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		streamReader = factory.createXMLStreamReader(new FileReader(CONST_XML_GRAPH_FILE)); 
-
 	}
 	
 //	TODO alle Kanten und bestimmte Kanten (von Knoten aus)?
 	
 	
-	public void everyNode(GraphicalUserInterface gui) throws XMLStreamException {
+	
+	
+	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
 			if(nextStartElement()){
-
-				gui.addNode(getNode());
+				Node nextNode = getNode();
+				if(nextNode != null) gui.addNode(nextNode);
 			}
 		}
 	}
+	
+	public void everyEdgeToGui(GraphicalUserInterface gui) throws XMLStreamException {
+		while(streamReader.hasNext()){
+			if(nextStartElement()){
+				Edge nextEdge = getEdge();
+				if(nextEdge != null) gui.addEdge(nextEdge);
+			}
+		}
+	}
+	
 	
 //	TODO bestimmter Knoten suchen
 	
@@ -71,6 +83,46 @@ public class GraphDataParser extends GraphDataConstants {
 		}
 
 		if(id != null && lat != null && lon != null) return (new Node(id, lat, lon));
+		
+		return null;
+	}
+	
+	private Edge getEdge() throws NumberFormatException, XMLStreamException {
+		String source = null;
+		String target = null;
+		Integer number = null;
+		Integer length = null;
+		
+		if(streamReader.getLocalName() != CONST_EDGE) return null;
+		
+		for (int x = 0; x < streamReader.getAttributeCount(); x++) {
+			if(streamReader.getAttributeLocalName(x).trim().equals(CONST_EDGE_SOURCE)) source = streamReader.getAttributeValue(x);
+			else if(streamReader.getAttributeLocalName(x).trim().equals(CONST_EDGE_TARGET)) target = streamReader.getAttributeValue(x);
+		}	
+				
+		if(nextStartElement() && streamReader.getLocalName().trim().equals(CONST_EDGE_DATA)){
+			
+			for (int x = 0; x < streamReader.getAttributeCount(); x++) {
+				if(streamReader.getAttributeLocalName(x).trim().equals(CONST_EDGE_KEY) && streamReader.getAttributeValue(x).trim().equals(CONST_EDGE_NUMBER)) {
+					int event = streamReader.next();
+					if(event == XMLStreamReader.CHARACTERS)	number = Integer.valueOf(streamReader.getText());
+					break;
+				}
+			}	
+		}
+		
+		if(nextStartElement() && streamReader.getLocalName().trim().equals(CONST_EDGE_DATA)){
+			
+			for (int x = 0; x < streamReader.getAttributeCount(); x++) {
+				if(streamReader.getAttributeLocalName(x).trim().equals(CONST_EDGE_KEY) && streamReader.getAttributeValue(x).trim().equals(CONST_EDGE_LENGTH)) {
+					int event = streamReader.next();
+					if(event == XMLStreamReader.CHARACTERS)	length = Integer.valueOf(streamReader.getText());
+					break;
+				}
+			}	
+		}
+
+		if(source != null && target != null && number != null && length != null) return (new Edge(source, target, number, length));
 		
 		return null;
 	}
