@@ -11,11 +11,19 @@ import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
-
+/**
+ * Eine Klasse die mit hilfe der StAX cursor API die XML Datei parsed.
+ * @author Sebastian
+ */
 public class GraphDataParser extends GraphDataConstants {
 	
 //	TODO bestimmten Knoten und Kante suchen
 	
+	
+	/**
+	 * Gibt ein Objekt der eigenen Klasse zurück. Dies ist die einzige Möglichkeit um auf den Parser zuzugreifen.
+	 * @return Einen <code>GraphDataParser</code> wenn die XML-Datei gefunden wurde.
+	 */
 	public static GraphDataParser getGraphDataParser(){
 		try {
 			return new GraphDataParser();

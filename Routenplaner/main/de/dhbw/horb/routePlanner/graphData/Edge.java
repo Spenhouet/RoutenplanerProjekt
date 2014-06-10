@@ -1,5 +1,9 @@
 package de.dhbw.horb.routePlanner.graphData;
 
+/**
+ * Klasse die eine Kante beschreibt.
+ * @author Sebastian
+ */
 public class Edge {
 
 	private String source;
@@ -7,7 +11,13 @@ public class Edge {
 	private String identifier;
 	private Double length;
 	
-	
+	/**
+	 * Konstruktor der Kanten Klasse.
+	 * @param source Der Anfang einer Kante.
+	 * @param target Das Ende einer Kante.
+	 * @param identifier Eine Straﬂenbezeichnung.
+	 * @param length Die L‰nge der Kante.
+	 */
 	public Edge(String source, String target, String identifier, Double length){
 		
 		setSource(source);
