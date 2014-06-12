@@ -35,6 +35,11 @@ public class GraphDataParser extends GraphDataConstants {
 	
 	private XMLStreamReader streamReader;
 	
+	/**
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws XMLStreamException
+	 */
 	private GraphDataParser() throws FileNotFoundException, XMLStreamException{
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		streamReader = factory.createXMLStreamReader(new FileReader(CONST_XML_GRAPH_FILE)); 
