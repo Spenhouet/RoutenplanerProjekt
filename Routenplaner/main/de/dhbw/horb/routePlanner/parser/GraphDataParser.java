@@ -48,6 +48,7 @@ public class GraphDataParser extends GraphDataConstants {
 	
 	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
+			streamReader.next();
 //			if(nextStartElement()){
 //				Node nextNode = getNode();
 //				if(nextNode != null) gui.addNode(nextNode);
@@ -57,6 +58,7 @@ public class GraphDataParser extends GraphDataConstants {
 			
 	public void everyEdgeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
+			streamReader.next();
 //			if(nextStartElement()){
 //				Edge nextEdge = getEdge();
 //				if(nextEdge != null) gui.addEdge(nextEdge);

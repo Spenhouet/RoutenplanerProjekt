@@ -23,7 +23,7 @@ public class ParserController extends GraphDataConstants {
 		public void run() {
 			try {
 				GraphDataParser.getGraphDataParser(CONST_XML_NODE_MOTORWAY).everyNodeToGui(gui);
-				GraphDataParser.getGraphDataParser(CONST_XML_WAY_MOTORWAY).everyEdgeToGui(gui);
+//				GraphDataParser.getGraphDataParser(CONST_XML_WAY_MOTORWAY).everyEdgeToGui(gui);
 				
 			} catch (XMLStreamException e) {
 				e.printStackTrace();
