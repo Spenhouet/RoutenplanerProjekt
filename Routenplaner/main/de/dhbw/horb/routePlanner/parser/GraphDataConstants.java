@@ -2,7 +2,8 @@ package de.dhbw.horb.routePlanner.parser;
 
 public class GraphDataConstants {
 
-	public final static String CONST_XML_GRAPH_FILE = "file/graphData.xml";
+	public final static String CONST_XML_NODE_MOTORWAY = "xmlFile/node_motorway.xml";
+	public final static String CONST_XML_WAY_MOTORWAY = "xmlFile/way_motorway.xml";
 	
 	public final static String CONST_NODE = "node";
 	public final static String CONST_NODE_ID = "id";
