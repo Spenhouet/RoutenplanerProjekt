@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>xmlFile/node_motorway.xml</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Google%20Drive/RoutenplanerProjekt/XML/node_motorway.xml</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
