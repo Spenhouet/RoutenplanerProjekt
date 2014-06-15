@@ -24,9 +24,9 @@ public class GraphDataParser extends GraphDataConstants {
 	 * Gibt ein Objekt der eigenen Klasse zurück. Dies ist die einzige Möglichkeit um auf den Parser zuzugreifen.
 	 * @return Einen <code>GraphDataParser</code> wenn die XML-Datei gefunden wurde.
 	 */
-	public static GraphDataParser getGraphDataParser(){
+	public static GraphDataParser getGraphDataParser(String xmlFile){
 		try {
-			return new GraphDataParser();
+			return new GraphDataParser(xmlFile);
 		} catch (XMLStreamException | FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -40,27 +40,27 @@ public class GraphDataParser extends GraphDataConstants {
 	 * @throws FileNotFoundException
 	 * @throws XMLStreamException
 	 */
-	private GraphDataParser() throws FileNotFoundException, XMLStreamException{
+	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException{
 		XMLInputFactory factory = XMLInputFactory.newInstance();
-		streamReader = factory.createXMLStreamReader(new FileReader(CONST_XML_GRAPH_FILE)); 
+		streamReader = factory.createXMLStreamReader(new FileReader(xmlFile)); 
 	}
 	
 	
 	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
-			if(nextStartElement()){
-				Node nextNode = getNode();
-				if(nextNode != null) gui.addNode(nextNode);
-			}
+//			if(nextStartElement()){
+//				Node nextNode = getNode();
+//				if(nextNode != null) gui.addNode(nextNode);
+//			}
 		}
 	}
 			
 	public void everyEdgeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
-			if(nextStartElement()){
-				Edge nextEdge = getEdge();
-				if(nextEdge != null) gui.addEdge(nextEdge);
-			}
+//			if(nextStartElement()){
+//				Edge nextEdge = getEdge();
+//				if(nextEdge != null) gui.addEdge(nextEdge);
+//			}
 		}
 	}
 		

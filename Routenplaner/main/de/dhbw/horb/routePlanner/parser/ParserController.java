@@ -4,7 +4,7 @@ import javax.xml.stream.XMLStreamException;
 
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
-public class ParserController {
+public class ParserController extends GraphDataConstants {
 	
 	
 	public void fillGUI(GraphicalUserInterface gui){
@@ -22,8 +22,8 @@ public class ParserController {
 		@Override
 		public void run() {
 			try {
-				GraphDataParser.getGraphDataParser().everyNodeToGui(gui);
-				GraphDataParser.getGraphDataParser().everyEdgeToGui(gui);
+				GraphDataParser.getGraphDataParser(CONST_XML_NODE_MOTORWAY).everyNodeToGui(gui);
+				GraphDataParser.getGraphDataParser(CONST_XML_WAY_MOTORWAY).everyEdgeToGui(gui);
 				
 			} catch (XMLStreamException e) {
 				e.printStackTrace();
