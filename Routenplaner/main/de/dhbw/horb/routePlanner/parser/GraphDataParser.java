@@ -7,15 +7,15 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
+import de.dhbw.horb.routePlanner.graphData.Way;
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
 /**
  * Eine Klasse die mit hilfe der StAX cursor API die XML Datei parsed.
  * @author Sebastian
  */
-public class GraphDataParser extends GraphDataConstants {
+public class GraphDataParser implements GraphDataConstants {
 	
 //	TODO bestimmten Knoten und Kante suchen
 	
@@ -35,11 +35,7 @@ public class GraphDataParser extends GraphDataConstants {
 	
 	private XMLStreamReader streamReader;
 	
-	/**
-	 * 
-	 * @throws FileNotFoundException
-	 * @throws XMLStreamException
-	 */
+
 	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException{
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		streamReader = factory.createXMLStreamReader(new FileReader(xmlFile)); 
@@ -48,46 +44,66 @@ public class GraphDataParser extends GraphDataConstants {
 	
 	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
-			streamReader.next();
-//			if(nextStartElement()){
-//				Node nextNode = getNode();
-//				if(nextNode != null) gui.addNode(nextNode);
-//			}
+			if(nextStartElement()){
+				Node nextNode = getNode(null);
+				if(nextNode != null) gui.addNode(nextNode);
+			}
 		}
 	}
 			
-	public void everyEdgeToGui(GraphicalUserInterface gui) throws XMLStreamException {
+	public void everyWayToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while(streamReader.hasNext()){
 			streamReader.next();
-//			if(nextStartElement()){
-//				Edge nextEdge = getEdge();
-//				if(nextEdge != null) gui.addEdge(nextEdge);
-//			}
+			if(nextStartElement()){
+				Way nextWay = getWay(null);
+				if(nextWay != null) gui.addWay(nextWay);
+			}
 		}
 	}
 		
-	private Node getNode() throws XMLStreamException{
-		if(streamReader.getLocalName() != CONST_NODE) return null;
-						
-		String id =  getAttributeValue(CONST_NODE_ID);
-		Double lat = Double.valueOf(getNextCharacter(CONST_NODE_DATA, CONST_NODE_KEY, CONST_NODE_LATITUDE));
-		Double lon = Double.valueOf(getNextCharacter(CONST_NODE_DATA, CONST_NODE_KEY, CONST_NODE_LONGITUDE));
-
+	private Node getNode(Long id) throws XMLStreamException{
+		
+		Double lat = null;
+		Double lon = null;
+		
+		if(id == null){
+			if(streamReader.getLocalName() != CONST_NODE) return null;
+			id =  Long.valueOf(getAttributeValue(CONST_NODE_ID));
+			lat = Double.valueOf(getAttributeValue(CONST_NODE_LATITUDE));
+			lon = Double.valueOf(getAttributeValue(CONST_NODE_LONGITUDE));
+		} else {
+			while(streamReader.hasNext()){
+				if(streamReader.getLocalName() == CONST_NODE && id == Long.valueOf(getAttributeValue(CONST_NODE_ID))){
+					lat = Double.valueOf(getAttributeValue(CONST_NODE_LATITUDE));
+					lon = Double.valueOf(getAttributeValue(CONST_NODE_LONGITUDE));
+					break;
+				}
+			}
+		}
+		streamReader.close();
 		if(id != null && lat != null && lon != null) return (new Node(id, lat, lon));
 		
 		return null;
 	}
 	
-	private Edge getEdge() throws NumberFormatException, XMLStreamException {		
-		if(streamReader.getLocalName() != CONST_EDGE) return null;
-								
-		String source = getAttributeValue(CONST_EDGE_SOURCE);
-		String target = getAttributeValue(CONST_EDGE_TARGET);
-		String identifier = getNextCharacter(CONST_EDGE_DATA, CONST_EDGE_KEY, CONST_EDGE_IDENTIFIER);
-		Double length = Double.valueOf(getNextCharacter(CONST_EDGE_DATA, CONST_EDGE_KEY, CONST_EDGE_LENGTH));
+	private Way getWay(Long id) throws NumberFormatException, XMLStreamException {		
+		if(id == null){
+			if(streamReader.getLocalName() != CONST_WAY) return null;
+			id =  Long.valueOf(getAttributeValue(CONST_WAY_ID));
+			
+		} else {
+			
+			
+		}
 		
-		if(source != null && target != null && identifier != null && length != null) return (new Edge(source, target, identifier, length));
-		
+//		
+//		while(nextStartElement() && streamReader.)
+//		
+//		nextStartElement();
+//		getNextCharacter(CONST_WAY_NODE, CONST_WAY_REF
+//
+//		if(id != null) return (new Way(id));
+		streamReader.close();
 		return null;
 	}
 	
