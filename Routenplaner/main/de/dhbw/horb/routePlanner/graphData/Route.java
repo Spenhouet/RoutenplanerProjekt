@@ -50,10 +50,11 @@ public class Route {
 	 * Eine Kante wird zur Strecke hinzugefügt.
 	 * @param length Eine neue Kante verlängert die Strecke.
 	 */
-	public void addEdge(Edge edge){
+	public void addEdge(Way edge){
 		if(edgeAddAble){
 			nodeAndEdge.add(edge);
-			length += edge.getLength();
+//			length += edge.getLength();
+			//TODO
 		} else {
 //			TODO: Exception wenn versucht wird eine Kante nach einer Kante anzuhängen?	
 		}
