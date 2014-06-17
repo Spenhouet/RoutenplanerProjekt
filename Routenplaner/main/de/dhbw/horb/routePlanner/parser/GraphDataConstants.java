@@ -4,19 +4,19 @@ public interface GraphDataConstants {
 
 	public final static String CONST_XML_NODE_HIGHWAY = "xmlFile/node_highway.xml";
 	public final static String CONST_XML_WAY_HIGHWAY = "xmlFile/way_highway.xml";
-	
+
 	public final static String CONST_NODE = "node";
 	public final static String CONST_NODE_ID = "id";
 	public final static String CONST_NODE_LATITUDE = "lat";
 	public final static String CONST_NODE_LONGITUDE = "lon";
-	
+
 	public final static String CONST_WAY = "way";
 	public final static String CONST_WAY_ID = "id";
 	public final static String CONST_WAY_NODE = "nd";
 	public final static String CONST_WAY_REF = "ref";
-	public final static String CONST_WAY_TAG= "tag";
-	public final static String CONST_WAY_HIGHWAY= "highway";
-	public final static String CONST_WAY_MOTORWAY_JUNCTION= "motorway_junction";
-	public final static String CONST_WAY_EXIT_TO= "exit_to";
-	
+	public final static String CONST_WAY_TAG = "tag";
+	public final static String CONST_WAY_HIGHWAY = "highway";
+	public final static String CONST_WAY_MOTORWAY_JUNCTION = "motorway_junction";
+	public final static String CONST_WAY_EXIT_TO = "exit_to";
+
 }

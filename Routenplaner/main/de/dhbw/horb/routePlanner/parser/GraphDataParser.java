@@ -1,11 +1,12 @@
 package de.dhbw.horb.routePlanner.parser;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+
+import com.sun.org.apache.xerces.internal.impl.PropertyManager;
 
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.Way;
@@ -38,18 +39,15 @@ public class GraphDataParser {
 
 	private GraphDataStreamReader graphSR;
 
-	private GraphDataParser(String xmlFile) throws FileNotFoundException,
-			XMLStreamException {
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		graphSR = (GraphDataStreamReader) factory
-				.createXMLStreamReader(new FileReader(xmlFile));
+	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
+		FileInputStream inStream = new FileInputStream(new File(xmlFile));
+		graphSR = new GraphDataStreamReader(inStream, new PropertyManager(1));
 	}
 
-	public void everyNodeToGui(GraphicalUserInterface gui)
-			throws XMLStreamException {
+	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while (graphSR.hasNext()) {
-			if (nextStartElement()) {
+			if (graphSR.nextStartElement() && graphSR.isNode()) {
 				Node nextNode = getNode(null);
 				if (nextNode != null)
 					gui.addNode(nextNode);
@@ -57,41 +55,35 @@ public class GraphDataParser {
 		}
 	}
 
-	public void everyWayToGui(GraphicalUserInterface gui)
-			throws XMLStreamException {
+	public void everyWayToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while (graphSR.hasNext()) {
 			graphSR.next();
-			if (nextStartElement()) {
-				Way nextWay = getWay(null);
+			if (graphSR.isStartElement()) {
+				// Way nextWay = getWay(null);
 				// if (nextWay != null)
 				// gui.addWay(nextWay);
+				graphSR.nextStartElement();
 			}
 		}
 	}
 
-	private Node getNode(Long id) throws XMLStreamException {
+	public Node getNode(Long id) throws XMLStreamException {
 
 		Double lat = null;
 		Double lon = null;
 
 		if (id == null) {
-			if (graphSR.getLocalName() != GraphDataConstants.CONST_NODE)
+			if (graphSR.isNode() && graphSR.getLocalName() != GraphDataConstants.CONST_NODE)
 				return null;
-			id = Long
-					.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_ID));
-			lat = Double
-					.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-			lon = Double
-					.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID));
+			lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
+			lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 		} else {
 			while (graphSR.hasNext()) {
 				if (graphSR.getLocalName() == GraphDataConstants.CONST_NODE
-						&& id == Long
-								.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_ID))) {
-					lat = Double
-							.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-					lon = Double
-							.valueOf(getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+						&& id == Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID))) {
+					lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
+					lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 					break;
 				}
 			}
@@ -103,17 +95,16 @@ public class GraphDataParser {
 		return null;
 	}
 
-	private Way getWay(Long id) throws NumberFormatException,
-			XMLStreamException {
-		if (id == null) {
-			if (graphSR.getLocalName() != GraphDataConstants.CONST_WAY)
-				return null;
-			id = Long
-					.valueOf(getAttributeValue(GraphDataConstants.CONST_WAY_ID));
-
-		} else {
-
-		}
+	private Way getWay(Long id) throws NumberFormatException, XMLStreamException {
+		// if (id == null) {
+		// if (graphSR.getLocalName() != GraphDataConstants.CONST_WAY)
+		// return null;
+		// id =
+		// Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
+		//
+		// } else {
+		//
+		// }
 
 		//
 		// while(nextStartElement() && streamReader.)
@@ -126,33 +117,4 @@ public class GraphDataParser {
 		return null;
 	}
 
-	private String getAttributeValue(String AttributeLocalName) {
-		for (int x = 0; x < graphSR.getAttributeCount(); x++)
-			if (graphSR.getAttributeLocalName(x).trim()
-					.equals(AttributeLocalName))
-				return graphSR.getAttributeValue(x);
-
-		return null;
-	}
-
-	private String getNextCharacter(String localName,
-			String attributeLocalName, String attributeValue)
-			throws XMLStreamException {
-		if (nextStartElement()
-				&& graphSR.getLocalName().trim().equals(localName)
-				&& getAttributeValue(attributeLocalName).trim().equals(
-						attributeValue)
-				&& graphSR.next() == XMLStreamReader.CHARACTERS)
-			return graphSR.getText();
-
-		return null;
-	}
-
-	private boolean nextStartElement() throws XMLStreamException {
-		if (graphSR.hasNext()
-				&& (graphSR.next() == XMLStreamReader.START_ELEMENT || nextStartElement()))
-			return true;
-
-		return false;
-	}
 }
