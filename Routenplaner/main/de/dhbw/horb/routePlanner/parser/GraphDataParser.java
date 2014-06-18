@@ -1,12 +1,10 @@
 package de.dhbw.horb.routePlanner.parser;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-
-import com.sun.org.apache.xerces.internal.impl.PropertyManager;
 
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.Way;
@@ -41,8 +39,12 @@ public class GraphDataParser {
 
 	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
-		FileInputStream inStream = new FileInputStream(new File(xmlFile));
-		graphSR = new GraphDataStreamReader(inStream, new PropertyManager(1));
+		// FileInputStream inStream = new FileInputStream(new File(xmlFile));
+		// graphSR = new GraphDataStreamReader(inStream, new
+		// PropertyManager(1));
+
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileReader(xmlFile)));
 	}
 
 	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {

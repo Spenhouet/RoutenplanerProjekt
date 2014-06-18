@@ -1,16 +1,13 @@
 package de.dhbw.horb.routePlanner.parser;
 
-import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.util.StreamReaderDelegate;
 
-import com.sun.org.apache.xerces.internal.impl.PropertyManager;
-import com.sun.org.apache.xerces.internal.impl.XMLStreamReaderImpl;
+public class GraphDataStreamReader extends StreamReaderDelegate {
 
-public class GraphDataStreamReader extends XMLStreamReaderImpl {
-
-	public GraphDataStreamReader(InputStream arg0, PropertyManager arg1) throws XMLStreamException {
-		super(arg0, arg1);
+	public GraphDataStreamReader(XMLStreamReader streamReader) throws XMLStreamException {
+		super(streamReader);
 	}
 
 	public boolean isNode() {
