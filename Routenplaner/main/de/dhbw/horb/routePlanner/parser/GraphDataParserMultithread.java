@@ -25,7 +25,7 @@ public class GraphDataParserMultithread {
 		@Override
 		public void run() {
 			try {
-				GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).everyNodeToGui(gui);
+//				GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).everyNodeToGui(gui);
 				GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_WAY_HIGHWAY).everyWayToGui(gui);
 
 			} catch (XMLStreamException e) {

@@ -17,8 +17,6 @@ import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
  */
 public class GraphDataParser {
 
-	// TODO bestimmten Knoten und Kante suchen
-
 	/**
 	 * Gibt ein Objekt der eigenen Klasse zurück. Dies ist die einzige
 	 * Möglichkeit um auf den Parser zuzugreifen.
@@ -39,10 +37,6 @@ public class GraphDataParser {
 
 	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
-		// FileInputStream inStream = new FileInputStream(new File(xmlFile));
-		// graphSR = new GraphDataStreamReader(inStream, new
-		// PropertyManager(1));
-
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileReader(xmlFile)));
 	}
@@ -59,12 +53,10 @@ public class GraphDataParser {
 
 	public void everyWayToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while (graphSR.hasNext()) {
-			graphSR.next();
-			if (graphSR.isStartElement()) {
-				// Way nextWay = getWay(null);
-				// if (nextWay != null)
-				// gui.addWay(nextWay);
-				graphSR.nextStartElement();
+			if (graphSR.nextStartElement() && graphSR.isWay()) {
+				Way nextWay = getWay(null);
+				while (nextWay != null && nextWay.hasEdge())
+					gui.addEdge(nextWay.removeFirstEdge());
 			}
 		}
 	}
@@ -75,7 +67,7 @@ public class GraphDataParser {
 		Double lon = null;
 
 		if (id == null) {
-			if (graphSR.isNode() && graphSR.getLocalName() != GraphDataConstants.CONST_NODE)
+			if (!graphSR.isNode())
 				return null;
 			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID));
 			lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
@@ -98,25 +90,26 @@ public class GraphDataParser {
 	}
 
 	private Way getWay(Long id) throws NumberFormatException, XMLStreamException {
-		// if (id == null) {
-		// if (graphSR.getLocalName() != GraphDataConstants.CONST_WAY)
-		// return null;
-		// id =
-		// Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
-		//
-		// } else {
-		//
-		// }
+		Way newWay = null;
 
-		//
-		// while(nextStartElement() && streamReader.)
-		//
-		// nextStartElement();
-		// getNextCharacter(CONST_WAY_NODE, CONST_WAY_REF
-		//
-		// if(id != null) return (new Way(id));
+		if (id == null) {
+			if (!graphSR.isWay())
+				return null;
+
+			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
+			if (id == null)
+				return null;
+			newWay = new Way(id);
+			while (graphSR.nextStartElement() && graphSR.isNode()) {
+				newWay.addNodeID(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
+			}
+
+		} else {
+//		TODO get way from id
+		}
+
 		graphSR.close();
-		return null;
+		return (newWay);
 	}
 
 }
