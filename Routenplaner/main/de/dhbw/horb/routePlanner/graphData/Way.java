@@ -35,6 +35,17 @@ public class Way {
 			return null;
 		return new Edge(nodeIDs.get(0), nodeIDs.get(1));
 	}
+	
+	public Boolean hasEdge(){
+		if(nodeIDs.size() >= 2) return true;
+		return false;
+	}
+	
+	public Edge removeFirstEdge(){
+		Edge firstEdge = getFirstEdge();
+		removeFirstNode();
+		return firstEdge;
+	}
 
 	public Long removeFirstNode() {
 		if (nodeIDs.size() <= 0)
