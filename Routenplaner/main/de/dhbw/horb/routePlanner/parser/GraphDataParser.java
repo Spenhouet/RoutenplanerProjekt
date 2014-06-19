@@ -41,15 +41,15 @@ public class GraphDataParser {
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileReader(xmlFile)));
 	}
 
-	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
-		while (graphSR.hasNext()) {
-			if (graphSR.nextStartElement() && graphSR.isNode()) {
-				Node nextNode = getNode(null);
-				if (nextNode != null)
-					gui.addNode(nextNode);
-			}
-		}
-	}
+//	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
+//		while (graphSR.hasNext()) {
+//			if (graphSR.nextStartElement() && graphSR.isNode()) {
+//				Node nextNode = getNode(null);
+//				if (nextNode != null)
+//					gui.addNode(nextNode);
+//			}
+//		}
+//	}
 
 	public void everyWayToGui(GraphicalUserInterface gui) throws XMLStreamException {
 		while (graphSR.hasNext()) {
@@ -73,9 +73,8 @@ public class GraphDataParser {
 			lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
 			lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 		} else {
-			while (graphSR.hasNext()) {
-				if (graphSR.getLocalName() == GraphDataConstants.CONST_NODE
-						&& id == Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID))) {
+			while (graphSR.nextStartElement()) {
+				if (graphSR.isNode() && id.equals(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
 					lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
 					lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 					break;
@@ -105,7 +104,7 @@ public class GraphDataParser {
 			}
 
 		} else {
-//		TODO get way from id
+			// TODO get way from id
 		}
 
 		graphSR.close();
