@@ -20,5 +20,4 @@ public class MockUp {
 			gui.addEdge(newEdge);
 		}
 	}
-
 }
