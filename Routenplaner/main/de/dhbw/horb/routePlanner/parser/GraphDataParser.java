@@ -2,6 +2,10 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -41,22 +45,23 @@ public class GraphDataParser {
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileReader(xmlFile)));
 	}
 
-//	public void everyNodeToGui(GraphicalUserInterface gui) throws XMLStreamException {
-//		while (graphSR.hasNext()) {
-//			if (graphSR.nextStartElement() && graphSR.isNode()) {
-//				Node nextNode = getNode(null);
-//				if (nextNode != null)
-//					gui.addNode(nextNode);
-//			}
-//		}
-//	}
-
-	public void everyWayToGui(GraphicalUserInterface gui) throws XMLStreamException {
+	public void everyWayToGui(final GraphicalUserInterface gui) throws XMLStreamException {
+		
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		while (graphSR.hasNext()) {
 			if (graphSR.nextStartElement() && graphSR.isWay()) {
-				Way nextWay = getWay(null);
-				while (nextWay != null && nextWay.hasEdge())
-					gui.addEdge(nextWay.removeFirstEdge());
+				
+				final Way nextWay = getWay(null);
+
+				executor.submit(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						while (nextWay != null && nextWay.hasEdge())
+							gui.addEdge(nextWay.removeFirstEdge());
+					}
+				});				
 			}
 		}
 	}
@@ -74,7 +79,8 @@ public class GraphDataParser {
 			lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 		} else {
 			while (graphSR.nextStartElement()) {
-				if (graphSR.isNode() && id.equals(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
+				if (graphSR.isNode()
+						&& id.equals(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
 					lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
 					lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 					break;
