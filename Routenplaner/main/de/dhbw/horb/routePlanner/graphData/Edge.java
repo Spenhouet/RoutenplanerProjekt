@@ -48,10 +48,10 @@ public class Edge {
 				}
 			}
 		});
-		
+
 		startNodeThread.start();
 		endNodeThread.start();
-		
+
 		try {
 			startNodeThread.join();
 			endNodeThread.join();
