@@ -2,8 +2,6 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.Way;
+import de.dhbw.horb.routePlanner.ui.Controller;
 import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
 /**
@@ -46,22 +45,21 @@ public class GraphDataParser {
 	}
 
 	public void everyWayToGui(final GraphicalUserInterface gui) throws XMLStreamException {
-		
-		ExecutorService executor = Executors.newFixedThreadPool(3);
+
 		while (graphSR.hasNext()) {
 			if (graphSR.nextStartElement() && graphSR.isWay()) {
-				
+
 				final Way nextWay = getWay(null);
 
-				executor.submit(new Runnable() {
-					
+				Controller.executor.getExecutor().submit(new Runnable() {
+
 					@Override
 					public void run() {
-						
+
 						while (nextWay != null && nextWay.hasEdge())
 							gui.addEdge(nextWay.removeFirstEdge());
 					}
-				});				
+				});
 			}
 		}
 	}
@@ -106,7 +104,7 @@ public class GraphDataParser {
 				return null;
 			newWay = new Way(id);
 			while (graphSR.nextStartElement() && graphSR.isNode()) {
-				newWay.addNodeID(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
+				newWay.addNode(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
 			}
 
 		} else {

@@ -15,10 +15,10 @@ public class GraphicalUserInterface {
 		edgeCount++;
 		Node start = newEdge.getStartNode();
 		Node end = newEdge.getEndNode();
-		System.out.println(edgeCount + ". Start Node ID: " + newEdge.getStartNodeID() + 
+		System.out.println(edgeCount + ". Start Node ID: " + start.getID() + 
 						" mit Breitengrad: " + start.getLatitude() + 
 						 " mit Längengrad: " + start.getLongitude() + 
-							" End Node ID: " + newEdge.getEndNodeID() + 
+							" End Node ID: " + end.getID() + 
 						" mit Breitengrad: " + end.getLatitude() +
 						 " mit Längengrad: " + end.getLongitude());
 	}
