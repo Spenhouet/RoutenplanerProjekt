@@ -1,8 +1,5 @@
 package de.dhbw.horb.routePlanner.test.graphData;
 
-import org.junit.Test;
-
-import de.dhbw.horb.routePlanner.graphData.Way;
 
 
 public class EdgeTest {
