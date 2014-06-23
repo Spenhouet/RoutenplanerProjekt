@@ -15,6 +15,7 @@ public class GraphicalUserInterface {
 		edgeCount = 0L;
 		
 //		new GraphDataParserMultithread().fillGUI(this);
+	
 	}
 
 	public void addEdge(Edge newEdge) {
@@ -32,7 +33,7 @@ public class GraphicalUserInterface {
 	
 	public void getStringName(){
 		List<String> names;
-		String name = "müצה";
+		String name = "";
 		
 		names = GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).containsName(name);
 		
