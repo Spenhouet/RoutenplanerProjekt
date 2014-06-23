@@ -9,6 +9,8 @@ public interface GraphDataConstants {
 	public final static String CONST_NODE_ID = "id";
 	public final static String CONST_NODE_LATITUDE = "lat";
 	public final static String CONST_NODE_LONGITUDE = "lon";
+	
+	public final static String CONST_NODE_TAG_NAME = "name";
 
 	public final static String CONST_WAY = "way";
 	public final static String CONST_WAY_ID = "id";

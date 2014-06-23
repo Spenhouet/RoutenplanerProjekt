@@ -6,13 +6,15 @@ import javax.xml.stream.util.StreamReaderDelegate;
 
 public class GraphDataStreamReader extends StreamReaderDelegate {
 
-	public GraphDataStreamReader(XMLStreamReader streamReader) throws XMLStreamException {
+	public GraphDataStreamReader(XMLStreamReader streamReader)
+			throws XMLStreamException {
 		super(streamReader);
 	}
-
+	
 	public boolean isNode() {
 		if (getLocalName().trim().equals(GraphDataConstants.CONST_NODE)
-				|| getLocalName().trim().equals(GraphDataConstants.CONST_WAY_NODE))
+				|| getLocalName().trim().equals(
+						GraphDataConstants.CONST_WAY_NODE))
 			return true;
 		return false;
 	}
@@ -42,7 +44,7 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 		for (int x = 0; x < getAttributeCount(); x++)
 			if (getAttributeLocalName(x).trim().equals(AttributeLocalName))
 				return getAttributeValue(x);
-
+		
 		return null;
 	}
 
