@@ -7,7 +7,7 @@ public class GraphDataThreadExecutor {
 
 	
 	private ExecutorService executor;
-	private final int maxThreads = 5; 
+	private final int maxThreads = 4; 
 	
 	public GraphDataThreadExecutor(){
 		executor = Executors.newFixedThreadPool(maxThreads);
