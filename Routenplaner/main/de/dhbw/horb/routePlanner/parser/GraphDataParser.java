@@ -1,7 +1,7 @@
 package de.dhbw.horb.routePlanner.parser;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class GraphDataParser {
 
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		graphSR = new GraphDataStreamReader(
-				factory.createXMLStreamReader(new FileReader(xmlFile)));
+				factory.createXMLStreamReader(new FileInputStream(xmlFile)));
 	}
 
 	public void everyWayToGui(final GraphicalUserInterface gui)
