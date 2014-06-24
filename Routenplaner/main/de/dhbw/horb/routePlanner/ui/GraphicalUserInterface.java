@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +31,42 @@ public class GraphicalUserInterface extends JFrame {
 
 	public GraphicalUserInterface() {
 
-		initUI();
+		this.addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent e){
+                        System.exit(0);
+                }
+            });
+
+
+		comp.setPreferredSize(new Dimension(500, 500));
+		getContentPane().add(comp, BorderLayout.CENTER);
+		JPanel buttonsPanel = new JPanel();
+		JButton newLineButton = new JButton("New Line");
+		JButton clearButton = new JButton("Clear");
+		buttonsPanel.add(newLineButton);
+		buttonsPanel.add(clearButton);
+		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+		newLineButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int x1 = (int) (Math.random() * 500);
+				int x2 = (int) (Math.random() * 500);
+				int y1 = (int) (Math.random() * 500);
+				int y2 = (int) (Math.random() * 500);
+				Color randomColor = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
+				comp.addLine(x1, y1, x2, y2, randomColor);
+			}
+		});
+		clearButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				comp.clearLines();
+			}
+		});
+		pack();
+		setVisible(true);
 
 		setTime();
 		edgeCount = 0L;
@@ -59,18 +96,28 @@ public class GraphicalUserInterface extends JFrame {
 
 		int factor = 1000;
 		int cut = 10;
-
-		int x1 = (int) (Math.round((start.getLatitude() * cut) % 1 * factor));
-		int y1 = (int) (Math.round((start.getLongitude() * cut) % 1 * factor));
-		int x2 = (int) (Math.round((end.getLatitude() * cut) % 1 * factor));
-		int y2 = (int) (Math.round((end.getLongitude() * cut) % 1 * factor));
+		int latDeg = 360;
+		int lonDeg = 180;
+		int zoom = 0;
+		
+		GoogleMapsProjection2 gmp = new GoogleMapsProjection2();
+		
+		PointF startP = gmp.fromLatLngToPoint(start.getLatitude(), start.getLongitude(), zoom);
+		PointF endP = gmp.fromLatLngToPoint(end.getLatitude(), end.getLongitude(), zoom);
+		
+		int x1 = (int) startP.x;//((start.getLatitude() * getHeight()) / (latDeg));
+		int y1 = (int) startP.y;//((start.getLongitude() * getWidth()) / (lonDeg));
+		int x2 = (int) endP.x;//((end.getLatitude() * getHeight()) / (latDeg));
+		int y2 = (int) endP.y;//((end.getLongitude() * getWidth()) / (lonDeg));
 
 		comp.addLine(x1, y1, x2, y2, Color.black);
-		//FIXME Kordinaten noch falsch
-		
-//		System.out.println(edgeCount + ". Start Node ID: " + start.getID() + " mit Breitengrad: " + start.getLatitude()
-//				+ " mit Längengrad: " + start.getLongitude() + " End Node ID: " + end.getID() + " mit Breitengrad: "
-//				+ end.getLatitude() + " mit Längengrad: " + end.getLongitude());
+		// FIXME Kordinaten noch falsch
+
+		// System.out.println(edgeCount + ". Start Node ID: " + start.getID() +
+		// " mit Breitengrad: " + start.getLatitude()
+		// + " mit Längengrad: " + start.getLongitude() + " End Node ID: " +
+		// end.getID() + " mit Breitengrad: "
+		// + end.getLatitude() + " mit Längengrad: " + end.getLongitude());
 	}
 
 	public void autofillComboBox() {
@@ -110,47 +157,5 @@ public class GraphicalUserInterface extends JFrame {
 				+ dur);
 
 		setTime();
-	}
-
-	private void initUI() {
-
-		// setTitle("Route Planner");
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//
-		// add(mapD);
-		//
-		// setSize(500, 500);
-		// setLocationRelativeTo(null);
-
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		comp.setPreferredSize(new Dimension(500, 500));
-		getContentPane().add(comp, BorderLayout.CENTER);
-		JPanel buttonsPanel = new JPanel();
-		JButton newLineButton = new JButton("New Line");
-		JButton clearButton = new JButton("Clear");
-		buttonsPanel.add(newLineButton);
-		buttonsPanel.add(clearButton);
-		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-		newLineButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int x1 = (int) (Math.random() * 500);
-				int x2 = (int) (Math.random() * 500);
-				int y1 = (int) (Math.random() * 500);
-				int y2 = (int) (Math.random() * 500);
-				Color randomColor = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
-				comp.addLine(x1, y1, x2, y2, randomColor);
-			}
-		});
-		clearButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				comp.clearLines();
-			}
-		});
-		pack();
-		setVisible(true);
 	}
 }
