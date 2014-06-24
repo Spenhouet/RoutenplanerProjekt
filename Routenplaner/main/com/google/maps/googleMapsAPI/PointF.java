@@ -1,4 +1,4 @@
-package de.dhbw.horb.routePlanner.ui;
+package com.google.maps.googleMapsAPI;
 
 public final class PointF 
 {

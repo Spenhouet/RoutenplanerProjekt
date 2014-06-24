@@ -14,6 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.google.maps.googleMapsAPI.GoogleMapsProjection2;
+import com.google.maps.googleMapsAPI.PointF;
+
 import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.parser.GraphDataConstants;
@@ -31,12 +34,11 @@ public class GraphicalUserInterface extends JFrame {
 
 	public GraphicalUserInterface() {
 
-		this.addWindowListener(new WindowAdapter(){
-                public void windowClosing(WindowEvent e){
-                        System.exit(0);
-                }
-            });
-
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 
 		comp.setPreferredSize(new Dimension(500, 500));
 		getContentPane().add(comp, BorderLayout.CENTER);
@@ -94,21 +96,17 @@ public class GraphicalUserInterface extends JFrame {
 		Node start = newEdge.getStartNode();
 		Node end = newEdge.getEndNode();
 
-		int factor = 1000;
-		int cut = 10;
-		int latDeg = 360;
-		int lonDeg = 180;
-		int zoom = 0;
-		
+		int zoom = 2;
+
 		GoogleMapsProjection2 gmp = new GoogleMapsProjection2();
-		
+
 		PointF startP = gmp.fromLatLngToPoint(start.getLatitude(), start.getLongitude(), zoom);
 		PointF endP = gmp.fromLatLngToPoint(end.getLatitude(), end.getLongitude(), zoom);
-		
-		int x1 = (int) startP.x;//((start.getLatitude() * getHeight()) / (latDeg));
-		int y1 = (int) startP.y;//((start.getLongitude() * getWidth()) / (lonDeg));
-		int x2 = (int) endP.x;//((end.getLatitude() * getHeight()) / (latDeg));
-		int y2 = (int) endP.y;//((end.getLongitude() * getWidth()) / (lonDeg));
+
+		int x1 = (int) startP.x;
+		int y1 = (int) startP.y;
+		int x2 = (int) endP.x;
+		int y2 = (int) endP.y;
 
 		comp.addLine(x1, y1, x2, y2, Color.black);
 		// FIXME Kordinaten noch falsch

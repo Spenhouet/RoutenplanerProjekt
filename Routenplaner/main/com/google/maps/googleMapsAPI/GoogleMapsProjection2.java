@@ -1,4 +1,5 @@
-package de.dhbw.horb.routePlanner.ui;
+package com.google.maps.googleMapsAPI;
+
 
 public final class GoogleMapsProjection2 
 {
@@ -14,7 +15,7 @@ public final class GoogleMapsProjection2
         this._pixelsPerLonRadian = TILE_SIZE / (2 * Math.PI);
     }
 
-    double bound(double val, double valMin, double valMax)
+    public double bound(double val, double valMin, double valMax)
     {
         double res;
         res = Math.max(val, valMin);
@@ -22,17 +23,17 @@ public final class GoogleMapsProjection2
         return res;
     }
 
-    double degreesToRadians(double deg) 
+    public double degreesToRadians(double deg) 
     {
         return deg * (Math.PI / 180);
     }
 
-    double radiansToDegrees(double rad) 
+    public double radiansToDegrees(double rad) 
     {
         return rad / (Math.PI / 180);
     }
 
-    PointF fromLatLngToPoint(double lat, double lng, int zoom)
+    public PointF fromLatLngToPoint(double lat, double lng, int zoom)
     {
         PointF point = new PointF(0, 0);
 
@@ -49,7 +50,7 @@ public final class GoogleMapsProjection2
         return point;
      }
 
-    PointF fromPointToLatLng(PointF point, int zoom)
+    public PointF fromPointToLatLng(PointF point, int zoom)
     {
         int numTiles = 1 << zoom;
         point.x = point.x / numTiles;
@@ -61,14 +62,5 @@ public final class GoogleMapsProjection2
         return new PointF(lat, lng);
     }
 
-    public static void main(String []args) 
-    {
-        GoogleMapsProjection2 gmap2 = new GoogleMapsProjection2();
-
-        PointF point1 = gmap2.fromLatLngToPoint(41.850033, -87.6500523, 15);
-        System.out.println(point1.x+"   "+point1.y);
-        PointF point2 = gmap2.fromPointToLatLng(point1,15);
-        System.out.println(point2.x+"   "+point2.y);
-    }
 }
 
