@@ -3,8 +3,6 @@ package de.dhbw.horb.routePlanner.graphData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -41,13 +39,13 @@ public class Way {
 	}
 
 	public Node getNode(int index) {
-		if (nodes.size()-1 < index)
+		if (nodes.size() - 1 < index)
 			return null;
 		return nodes.get(index);
 	}
 
 	public Edge getFirstEdge() {
-		while(nodes.get(0) == null || nodes.get(1) == null){
+		while (nodes.get(0) == null || nodes.get(1) == null) {
 		}
 
 		if (nodes.size() < 2)
