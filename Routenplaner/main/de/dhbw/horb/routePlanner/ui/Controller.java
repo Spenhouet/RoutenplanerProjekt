@@ -9,7 +9,7 @@ public class Controller {
 	public static void main(String[] args) {
 
 		final GraphicalUserInterface gui = new GraphicalUserInterface();
-		
+		gui.setVisible(true);
 
 	}
 
