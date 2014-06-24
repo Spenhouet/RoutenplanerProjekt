@@ -5,17 +5,15 @@ import java.util.concurrent.Executors;
 
 public class GraphDataThreadExecutor {
 
-	
 	private ExecutorService executor;
-	private final int maxThreads = 4; 
-	
-	public GraphDataThreadExecutor(){
+	private final int maxThreads = 4;
+
+	public GraphDataThreadExecutor() {
 		executor = Executors.newFixedThreadPool(maxThreads);
 	}
-	
-	
-	public ExecutorService getExecutor(){
+
+	public ExecutorService getExecutor() {
 		return this.executor;
 	}
-	
+
 }

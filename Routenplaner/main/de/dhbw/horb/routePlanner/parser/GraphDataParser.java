@@ -38,16 +38,13 @@ public class GraphDataParser {
 
 	private GraphDataStreamReader graphSR;
 
-	private GraphDataParser(String xmlFile) throws FileNotFoundException,
-			XMLStreamException {
+	private GraphDataParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
 		XMLInputFactory factory = XMLInputFactory.newInstance();
-		graphSR = new GraphDataStreamReader(
-				factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
 	}
 
-	public void everyWayToGui(final GraphicalUserInterface gui)
-			throws XMLStreamException {
+	public void everyWayToGui(final GraphicalUserInterface gui) throws XMLStreamException {
 
 		while (graphSR.hasNext()) {
 			if (graphSR.nextStartElement() && graphSR.isWay()) {
@@ -75,9 +72,7 @@ public class GraphDataParser {
 		try {
 			while (graphSR.nextStartElement()) {
 				String k = graphSR.getAttributeValue("k");
-				if (graphSR.isTag()
-						&& k.trim().equals(
-								GraphDataConstants.CONST_NODE_TAG_NAME)) {
+				if (graphSR.isTag() && k.trim().equals(GraphDataConstants.CONST_NODE_TAG_NAME)) {
 					String v = graphSR.getAttributeValue("v");
 					if (!names.contains(v) && v.toLowerCase().contains(name.toLowerCase()))
 						names.add(v);
@@ -99,24 +94,15 @@ public class GraphDataParser {
 		if (id == null) {
 			if (!graphSR.isNode())
 				return null;
-			id = Long.valueOf(graphSR
-					.getAttributeValue(GraphDataConstants.CONST_NODE_ID));
-			lat = Double.valueOf(graphSR
-					.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-			lon = Double
-					.valueOf(graphSR
-							.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID));
+			lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
+			lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 		} else {
 			while (graphSR.nextStartElement()) {
 				if (graphSR.isNode()
-						&& id.equals(Long.valueOf(graphSR
-								.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
-					lat = Double
-							.valueOf(graphSR
-									.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-					lon = Double
-							.valueOf(graphSR
-									.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+						&& id.equals(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
+					lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
+					lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
 					break;
 				}
 			}
@@ -128,22 +114,19 @@ public class GraphDataParser {
 		return null;
 	}
 
-	private Way getWay(Long id) throws NumberFormatException,
-			XMLStreamException {
+	private Way getWay(Long id) throws NumberFormatException, XMLStreamException {
 		Way newWay = null;
 
 		if (id == null) {
 			if (!graphSR.isWay())
 				return null;
 
-			id = Long.valueOf(graphSR
-					.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
+			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
 			if (id == null)
 				return null;
 			newWay = new Way(id);
 			while (graphSR.nextStartElement() && graphSR.isNode()) {
-				newWay.addNode(Long.valueOf(graphSR
-						.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
+				newWay.addNode(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
 			}
 
 		} else {

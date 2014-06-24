@@ -1,15 +1,11 @@
 package de.dhbw.horb.routePlanner.ui;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import de.dhbw.horb.routePlanner.graphData.Edge;
-import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.parser.GraphDataConstants;
 import de.dhbw.horb.routePlanner.parser.GraphDataParser;
-import de.dhbw.horb.routePlanner.parser.GraphDataParserMultithread;
 
 public class GraphicalUserInterface {
 
@@ -18,14 +14,14 @@ public class GraphicalUserInterface {
 	private Long duration;
 
 	public GraphicalUserInterface() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		// DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		setTime();
 		edgeCount = 0L;
 
 		// TODO Robin & Julius
 
-		new GraphDataParserMultithread().fillGUI(this);
-		// this.autofillComboBox();
+		// new GraphDataParserMultithread().fillGUI(this);
+		this.autofillComboBox();
 
 		// System.out.println(dateFormat.format(date));
 
@@ -54,7 +50,7 @@ public class GraphicalUserInterface {
 		// TODO Robin & Julius
 
 		List<String> names;
-		String input = "";
+		String input = "mün";
 
 		names = GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).containsName(input);
 
@@ -83,8 +79,9 @@ public class GraphicalUserInterface {
 		int seconds = (int) (dur / 1000);
 		dur -= (seconds * 1000);
 
-		System.out.println(/*edgeCount +". Dauer - */"H: " + h + " Min: " + min + " Sec: " + seconds + " Mills.: " + dur);
-		
+		System.out.println(/* edgeCount +". Dauer - */"H: " + h + " Min: " + min + " Sec: " + seconds + " Mills.: "
+				+ dur);
+
 		setTime();
 	}
 }
