@@ -6,10 +6,14 @@ import java.util.concurrent.Executors;
 public class GraphDataThreadExecutor {
 
 	private ExecutorService executor;
-	private final int maxThreads = 4;
 
-	public GraphDataThreadExecutor() {
-		executor = Executors.newFixedThreadPool(maxThreads);
+	public GraphDataThreadExecutor(int threads) {
+		
+		if(threads == 1){
+			executor = Executors.newSingleThreadExecutor();
+		} else if (threads > 1){
+			executor = Executors.newFixedThreadPool(threads);
+		}
 	}
 
 	public ExecutorService getExecutor() {

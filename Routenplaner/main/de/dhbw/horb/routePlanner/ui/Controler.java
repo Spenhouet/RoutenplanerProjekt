@@ -2,9 +2,9 @@ package de.dhbw.horb.routePlanner.ui;
 
 import de.dhbw.horb.routePlanner.parser.GraphDataThreadExecutor;
 
-public class Controller {
+public class Controler {
 
-	public final static GraphDataThreadExecutor executor = new GraphDataThreadExecutor();
+	public final static GraphDataThreadExecutor executor = new GraphDataThreadExecutor(2);
 
 	public static void main(String[] args) {
 

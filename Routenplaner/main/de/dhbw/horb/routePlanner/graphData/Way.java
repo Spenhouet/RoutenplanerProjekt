@@ -8,7 +8,6 @@ import javax.xml.stream.XMLStreamException;
 
 import de.dhbw.horb.routePlanner.parser.GraphDataConstants;
 import de.dhbw.horb.routePlanner.parser.GraphDataParser;
-import de.dhbw.horb.routePlanner.ui.Controller;
 
 /**
  * Klasse die eine Kante beschreibt.
@@ -28,13 +27,14 @@ public class Way {
 		setId(id);
 	}
 
-	public void addNode(Long id) {
-		addNodeMT(id);
+	public void addNode(Long id) throws XMLStreamException {
+		addNode(GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).getNode(id));
 	}
 
 	public void addNode(Node node) {
-		if (node == null || node.getLatitude() == null || node.getLongitude() == null)
-			return;
+		// if (node == null || node.getLatitude() == null || node.getLongitude()
+		// == null)
+		// return;
 		nodes.add(node);
 	}
 
@@ -77,20 +77,5 @@ public class Way {
 
 	private void setId(Long id) {
 		this.id = id;
-	}
-
-	private void addNodeMT(final Long id) {
-
-		Controller.executor.getExecutor().submit(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					addNode(GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).getNode(id));
-				} catch (XMLStreamException e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
