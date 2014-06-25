@@ -10,6 +10,7 @@ public class Controller {
 
 		final GraphicalUserInterface gui = new GraphicalUserInterface();
 		gui.setVisible(true);
+		
 
 	}
 

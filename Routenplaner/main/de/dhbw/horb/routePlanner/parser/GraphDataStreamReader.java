@@ -14,7 +14,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 	public boolean isNode() {
 		if (getLocalName().trim().equals(GraphDataConstants.CONST_NODE)
 				|| getLocalName().trim().equals(
-						GraphDataConstants.CONST_WAY_NODE))
+						GraphDataConstants.CONST_WAY_NODE)|| getLocalName().trim().equals(
+								GraphDataConstants.CONST_EDGE_NODE))
 			return true;
 		return false;
 	}
@@ -27,6 +28,12 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 
 	public boolean isTag() {
 		if (getLocalName().trim().equals(GraphDataConstants.CONST_WAY_TAG))
+			return true;
+		return false;
+	}
+	
+	public boolean isEdge() {
+		if (getLocalName().trim().equals(GraphDataConstants.CONST_EDGE))
 			return true;
 		return false;
 	}
