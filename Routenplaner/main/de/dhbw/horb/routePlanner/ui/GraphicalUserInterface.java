@@ -1,7 +1,6 @@
 package de.dhbw.horb.routePlanner.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,16 +8,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.google.maps.googleMapsAPI.GoogleMapsProjection2;
-import com.google.maps.googleMapsAPI.PointF;
-
 import de.dhbw.horb.routePlanner.graphData.Edge;
-import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.parser.GraphDataConstants;
 import de.dhbw.horb.routePlanner.parser.GraphDataParser;
 import de.dhbw.horb.routePlanner.parser.GraphDataParserMultithread;
@@ -29,10 +26,14 @@ public class GraphicalUserInterface extends JFrame {
 	private Long edgeCount;
 	private Date date;
 	private Long duration;
+	private GraphicalUserInterface gui;
+
+	private ExecutorService executor;
 
 	final MapPanel map = new MapPanel();
 
 	public GraphicalUserInterface() {
+		executor = Executors.newSingleThreadExecutor();
 
 		initWindow();
 		initControls();
@@ -42,9 +43,12 @@ public class GraphicalUserInterface extends JFrame {
 
 		setTime();
 		edgeCount = 0L;
+		this.gui = this;
+		
 
 		// TODO Robin & Julius
 		// this.autofillComboBox();
+		
 
 	}
 
@@ -59,21 +63,18 @@ public class GraphicalUserInterface extends JFrame {
 
 	private void initControls() {
 		JPanel buttonsPanel = new JPanel();
-		JButton newLineButton = new JButton("New Line");
+		JButton writeEdgeXML = new JButton("Write Edge XML");
+		JButton printMap = new JButton("Print Map");
 		JButton clearButton = new JButton("Clear");
-		buttonsPanel.add(newLineButton);
+		buttonsPanel.add(writeEdgeXML);
 		buttonsPanel.add(clearButton);
+		buttonsPanel.add(printMap);
 		getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-		newLineButton.addActionListener(new ActionListener() {
+		writeEdgeXML.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int x1 = (int) (Math.random() * 500);
-				int x2 = (int) (Math.random() * 500);
-				int y1 = (int) (Math.random() * 500);
-				int y2 = (int) (Math.random() * 500);
-				Color randomColor = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
-				map.addLine(x1, y1, x2, y2, randomColor);
+				new GraphDataParserMultithread().writeEdgeXML();
 			}
 		});
 		clearButton.addActionListener(new ActionListener() {
@@ -83,16 +84,21 @@ public class GraphicalUserInterface extends JFrame {
 				map.clearLines();
 			}
 		});
+		printMap.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_EDGE).everyWayToGui(gui);
+			}
+		});
 	}
 
 	private void initMap() {
 		map.setPreferredSize(new Dimension(500, 500));
 		getContentPane().add(map, BorderLayout.CENTER);
-
-		new GraphDataParserMultithread().fillGUI(this);
 	}
 
-	public void addEdge(Edge newEdge) {
+	public void addEdge(final Edge newEdge) {
 		// TODO Robin & Julius
 
 		edgeCount++;
@@ -102,15 +108,20 @@ public class GraphicalUserInterface extends JFrame {
 			printTimeDuration();
 		}
 
-		
-
 		// System.out.println(edgeCount + ". Start Node ID: " + start.getID() +
 		// " mit Breitengrad: " + start.getLatitude()
 		// + " mit Längengrad: " + start.getLongitude() + " End Node ID: " +
 		// end.getID() + " mit Breitengrad: "
 		// + end.getLatitude() + " mit Längengrad: " + end.getLongitude());
-		
-		map.addEdge(newEdge);
+
+		executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				map.addEdge(newEdge, 5);
+			}
+		});
+
 	}
 
 	public void autofillComboBox() {
@@ -119,7 +130,8 @@ public class GraphicalUserInterface extends JFrame {
 		List<String> names;
 		String input = "mün";
 
-		names = GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).containsName(input);
+		names = GraphDataParser.getGraphDataParser(
+				GraphDataConstants.CONST_XML_NODE_HIGHWAY).containsName(input);
 
 		for (String string : names) {
 			System.out.println(string);
@@ -146,8 +158,8 @@ public class GraphicalUserInterface extends JFrame {
 		int seconds = (int) (dur / 1000);
 		dur -= (seconds * 1000);
 
-		System.out.println(/* edgeCount +". Dauer - */"H: " + h + " Min: " + min + " Sec: " + seconds + " Mills.: "
-				+ dur);
+		System.out.println(/* edgeCount +". Dauer - */"H: " + h + " Min: "
+				+ min + " Sec: " + seconds + " Mills.: " + dur);
 
 		setTime();
 	}

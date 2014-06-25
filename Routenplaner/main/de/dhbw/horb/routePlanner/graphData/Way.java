@@ -33,13 +33,13 @@ public class Way {
 	}
 
 	public void addNode(Node node) {
-		if (node == null)
+		if (node == null || node.getLatitude() == null || node.getLongitude() == null)
 			return;
 		nodes.add(node);
 	}
 
 	public Node getNode(int index) {
-		if (nodes.size() - 1 < index)
+		if (nodes.size() - 1 < index || id == null)
 			return null;
 		return nodes.get(index);
 	}
