@@ -30,18 +30,34 @@ public class GraphicalUserInterface extends JFrame {
 	private Date date;
 	private Long duration;
 
-	final MapPanel comp = new MapPanel();
+	final MapPanel map = new MapPanel();
 
 	public GraphicalUserInterface() {
 
+		initWindow();
+		initControls();
+		initMap();
+
+		pack();
+
+		setTime();
+		edgeCount = 0L;
+
+		// TODO Robin & Julius
+		// this.autofillComboBox();
+
+	}
+
+	private void initWindow() {
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
 
-		comp.setPreferredSize(new Dimension(500, 500));
-		getContentPane().add(comp, BorderLayout.CENTER);
+	}
+
+	private void initControls() {
 		JPanel buttonsPanel = new JPanel();
 		JButton newLineButton = new JButton("New Line");
 		JButton clearButton = new JButton("Clear");
@@ -57,30 +73,23 @@ public class GraphicalUserInterface extends JFrame {
 				int y1 = (int) (Math.random() * 500);
 				int y2 = (int) (Math.random() * 500);
 				Color randomColor = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
-				comp.addLine(x1, y1, x2, y2, randomColor);
+				map.addLine(x1, y1, x2, y2, randomColor);
 			}
 		});
 		clearButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				comp.clearLines();
+				map.clearLines();
 			}
 		});
-		pack();
-		setVisible(true);
+	}
 
-		setTime();
-		edgeCount = 0L;
-
-		// TODO Robin & Julius
+	private void initMap() {
+		map.setPreferredSize(new Dimension(500, 500));
+		getContentPane().add(map, BorderLayout.CENTER);
 
 		new GraphDataParserMultithread().fillGUI(this);
-		// this.autofillComboBox();
-
-		// System.out.println(dateFormat.format(date));
-		comp.addLine(4, 10, 60, 70, Color.black);
-
 	}
 
 	public void addEdge(Edge newEdge) {
@@ -93,29 +102,15 @@ public class GraphicalUserInterface extends JFrame {
 			printTimeDuration();
 		}
 
-		Node start = newEdge.getStartNode();
-		Node end = newEdge.getEndNode();
-
-		int zoom = 2;
-
-		GoogleMapsProjection2 gmp = new GoogleMapsProjection2();
-
-		PointF startP = gmp.fromLatLngToPoint(start.getLatitude(), start.getLongitude(), zoom);
-		PointF endP = gmp.fromLatLngToPoint(end.getLatitude(), end.getLongitude(), zoom);
-
-		int x1 = (int) startP.x;
-		int y1 = (int) startP.y;
-		int x2 = (int) endP.x;
-		int y2 = (int) endP.y;
-
-		comp.addLine(x1, y1, x2, y2, Color.black);
-		// FIXME Kordinaten noch falsch
+		
 
 		// System.out.println(edgeCount + ". Start Node ID: " + start.getID() +
 		// " mit Breitengrad: " + start.getLatitude()
 		// + " mit Längengrad: " + start.getLongitude() + " End Node ID: " +
 		// end.getID() + " mit Breitengrad: "
 		// + end.getLatitude() + " mit Längengrad: " + end.getLongitude());
+		
+		map.addEdge(newEdge);
 	}
 
 	public void autofillComboBox() {
