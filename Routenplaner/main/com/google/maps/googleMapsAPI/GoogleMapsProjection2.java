@@ -61,6 +61,23 @@ public final class GoogleMapsProjection2
         double lat = radiansToDegrees(2 * Math.atan(Math.exp(latRadians)) - Math.PI / 2);
         return new PointF(lat, lng);
     }
+    
+    public double fromLatLonToDistanceInKM(PointF start, PointF end){
+    
+    	int R = 6371; // km
+    	double phi1 = degreesToRadians(start.x);
+    	double phi2 = degreesToRadians(end.x);
+    	double deltaPhi = degreesToRadians(end.x-start.x);
+    	double deltaLambda = degreesToRadians(end.y-start.y);
+
+    	double a = Math.sin(deltaPhi/2) * Math.sin(deltaPhi/2) +
+    	        Math.cos(phi1) * Math.cos(phi2) *
+    	        Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+    	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    	return R * c;
+
+    }
 
 }
 
