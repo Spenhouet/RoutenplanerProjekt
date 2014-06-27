@@ -11,6 +11,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.Way;
@@ -60,18 +61,18 @@ public class GraphDataParser {
 //						if (graphSR.nextStartElement() && graphSR.isEdge()) {
 //							if (graphSR.nextStartElement() && graphSR.isNode()) {
 //								start = new Node(Long.valueOf(graphSR
-//										.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)), Double.valueOf(graphSR
-//										.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
+//										.getAttributeValue(GraphDataConstants.EDGE_ID)), Double.valueOf(graphSR
+//										.getAttributeValue(GraphDataConstants.EDGE_LATITUDE)),
 //										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
+//												.getAttributeValue(GraphDataConstants.EDGE_LONGITUDE)));
 //							}
 //							if (graphSR.nextStartElement() && graphSR.isNode()) {
 //								end = new Node(
-//										Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)),
+//										Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.EDGE_ID)),
 //										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
+//												.getAttributeValue(GraphDataConstants.EDGE_LATITUDE)),
 //										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
+//												.getAttributeValue(GraphDataConstants.EDGE_LONGITUDE)));
 //							}
 //							gui.addEdge(new Edge(start, end));
 //						}
@@ -90,7 +91,7 @@ public class GraphDataParser {
 
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
-		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(GraphDataConstants.CONST_XML_EDGE),
+		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(Constants.XML_EDGE),
 				"UTF-8");
 
 		writer.writeStartDocument("UTF-8", "1.0");
@@ -105,21 +106,21 @@ public class GraphDataParser {
 					Edge firstEdge = nextWay.removeFirstEdge();
 					if (firstEdge == null || firstEdge.getStartNode() == null || firstEdge.getEndNode() == null)
 						continue;
-					writer.writeStartElement(GraphDataConstants.CONST_EDGE);
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_ID, String.valueOf(idCount));
-					writer.writeEmptyElement(GraphDataConstants.CONST_EDGE_NODE);
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_ID,
+					writer.writeStartElement(Constants.EDGE);
+					writer.writeAttribute(Constants.EDGE_ID, String.valueOf(idCount));
+					writer.writeEmptyElement(Constants.EDGE_NODE);
+					writer.writeAttribute(Constants.EDGE_ID,
 							String.valueOf(firstEdge.getStartNode().getID()));
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_LATITUDE,
+					writer.writeAttribute(Constants.EDGE_LATITUDE,
 							String.valueOf(firstEdge.getStartNode().getLatitude()));
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_LONGITUDE,
+					writer.writeAttribute(Constants.EDGE_LONGITUDE,
 							String.valueOf(firstEdge.getStartNode().getLongitude()));
-					writer.writeEmptyElement(GraphDataConstants.CONST_EDGE_NODE);
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_ID,
+					writer.writeEmptyElement(Constants.EDGE_NODE);
+					writer.writeAttribute(Constants.EDGE_ID,
 							String.valueOf(firstEdge.getEndNode().getID()));
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_LATITUDE,
+					writer.writeAttribute(Constants.EDGE_LATITUDE,
 							String.valueOf(firstEdge.getEndNode().getLatitude()));
-					writer.writeAttribute(GraphDataConstants.CONST_EDGE_LONGITUDE,
+					writer.writeAttribute(Constants.EDGE_LONGITUDE,
 							String.valueOf(firstEdge.getEndNode().getLongitude()));
 					writer.writeEndElement();
 				}
@@ -138,7 +139,7 @@ public class GraphDataParser {
 		try {
 			while (graphSR.nextStartElement()) {
 				String k = graphSR.getAttributeValue("k");
-				if (graphSR.isTag() && k.trim().equals(GraphDataConstants.CONST_NODE_TAG_NAME)) {
+				if (graphSR.isTag() && k.trim().equals(Constants.NODE_TAG_NAME)) {
 					String v = graphSR.getAttributeValue("v");
 					if (!names.contains(v) && v.toLowerCase().contains(name.toLowerCase()))
 						names.add(v);
@@ -160,15 +161,15 @@ public class GraphDataParser {
 		if (id == null) {
 			if (!graphSR.isNode())
 				return null;
-			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID));
-			lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-			lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+			id = Long.valueOf(graphSR.getAttributeValue(Constants.NODE_ID));
+			lat = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LATITUDE));
+			lon = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LONGITUDE));
 		} else {
 			while (graphSR.nextStartElement()) {
 				if (graphSR.isNode()
-						&& id.equals(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_ID)))) {
-					lat = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LATITUDE));
-					lon = Double.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_NODE_LONGITUDE));
+						&& id.equals(Long.valueOf(graphSR.getAttributeValue(Constants.NODE_ID)))) {
+					lat = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LATITUDE));
+					lon = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LONGITUDE));
 					break;
 				}
 			}
@@ -187,12 +188,12 @@ public class GraphDataParser {
 			if (!graphSR.isWay())
 				return null;
 
-			id = Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_ID));
+			id = Long.valueOf(graphSR.getAttributeValue(Constants.WAY_ID));
 			if (id == null)
 				return null;
 			newWay = new Way(id);
 			while (graphSR.nextStartElement() && graphSR.isNode()) {
-				newWay.addNode(Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_WAY_REF)));
+				newWay.addNode(Long.valueOf(graphSR.getAttributeValue(Constants.WAY_REF)));
 			}
 
 		} else {
