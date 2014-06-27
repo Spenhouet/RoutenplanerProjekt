@@ -26,6 +26,8 @@ public class RoutePlannerMainApp extends Application {
         initRootLayout();
 
         showMainWindow();
+        
+        primaryStage.setFullScreen(true);
 	}
 	
 	/**
