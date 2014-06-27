@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Menu;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -29,7 +30,8 @@ public class RoutePlannerMainController {
 
     @FXML
     private ComboBox<?> tartgetComboBox;
-
+    @FXML
+    private Menu xButton;
     @FXML
     private Button calculateRouteButton;
 
@@ -58,6 +60,12 @@ public class RoutePlannerMainController {
 
     @FXML
     void closeButtonClicked(ActionEvent event) {
+    	routePlannerMainApp.primaryStage.close();
+    }
+    
+    @FXML
+    void xButtonClicked(ActionEvent event) {
+    	
     	routePlannerMainApp.primaryStage.close();
     }
     
