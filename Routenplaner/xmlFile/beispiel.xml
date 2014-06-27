@@ -1,0 +1,19 @@
+<route id="" totalDistance="">
+	<node type="start" id=""/>
+	<node type="end" id=""/>
+	<ways>
+		<way id="" distance="" maxspeed="" ref="A.."/>
+		<way id="" distance="" maxspeed="" ref="A.."/>
+		.
+		.
+		.
+	</ways>
+</route>
+
+<node id="" name="">
+	<way id=""/>
+	<way id=""/>
+	.
+	.
+	.	
+</node>
