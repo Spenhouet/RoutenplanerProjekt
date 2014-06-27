@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.horb.routePlanner.ui.view.RoutePlannerMainController">
+   <children>
+      <SplitPane dividerPositions="0.7" layoutX="408.0" layoutY="181.0" prefHeight="700.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <WebView fx:id="testWebView" layoutX="235.0" layoutY="227.0" prefHeight="698.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="testButton" layoutX="14.0" layoutY="658.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+                  <VBox layoutX="38.0" layoutY="52.0">
+                     <children>
+                        <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" prefHeight="25.0" prefWidth="400.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
+                        <ComboBox fx:id="tartgetComboBox" editable="true" layoutX="73.0" layoutY="181.0" prefWidth="400.0" promptText="Ziel">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <Button fx:id="calculateRouteButton" layoutX="95.0" layoutY="228.0" mnemonicParsing="false" onAction="#calculateRouteButtonClicked" text="Route berechnen">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <HBox layoutX="182.0" layoutY="658.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                     <children>
+                        <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="closeButton" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
