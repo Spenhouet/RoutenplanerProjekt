@@ -19,7 +19,6 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" onAction="#xButtonClicked" text="X" fx:id="xButton" />
         </menus>
       </MenuBar>
    </top>
