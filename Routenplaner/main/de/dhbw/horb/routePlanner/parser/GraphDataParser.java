@@ -14,7 +14,6 @@ import javax.xml.stream.XMLStreamWriter;
 import de.dhbw.horb.routePlanner.graphData.Edge;
 import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.Way;
-import de.dhbw.horb.routePlanner.ui.GraphicalUserInterface;
 
 /**
  * Eine Klasse die mit hilfe der StAX cursor API die XML Datei parsed.
@@ -47,43 +46,43 @@ public class GraphDataParser {
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
 	}
 
-	public void everyWayToGui(final GraphicalUserInterface gui) {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				Node start = null;
-				Node end = null;
-
-				try {
-					while (graphSR.hasNext()) {
-
-						if (graphSR.nextStartElement() && graphSR.isEdge()) {
-							if (graphSR.nextStartElement() && graphSR.isNode()) {
-								start = new Node(Long.valueOf(graphSR
-										.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)), Double.valueOf(graphSR
-										.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
-										Double.valueOf(graphSR
-												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
-							}
-							if (graphSR.nextStartElement() && graphSR.isNode()) {
-								end = new Node(
-										Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)),
-										Double.valueOf(graphSR
-												.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
-										Double.valueOf(graphSR
-												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
-							}
-							gui.addEdge(new Edge(start, end));
-						}
-					}
-				} catch (XMLStreamException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-
-	}
+//	public void everyWayToGui(final GraphicalUserInterface gui) {
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				Node start = null;
+//				Node end = null;
+//
+//				try {
+//					while (graphSR.hasNext()) {
+//
+//						if (graphSR.nextStartElement() && graphSR.isEdge()) {
+//							if (graphSR.nextStartElement() && graphSR.isNode()) {
+//								start = new Node(Long.valueOf(graphSR
+//										.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)), Double.valueOf(graphSR
+//										.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
+//										Double.valueOf(graphSR
+//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
+//							}
+//							if (graphSR.nextStartElement() && graphSR.isNode()) {
+//								end = new Node(
+//										Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.CONST_EDGE_ID)),
+//										Double.valueOf(graphSR
+//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LATITUDE)),
+//										Double.valueOf(graphSR
+//												.getAttributeValue(GraphDataConstants.CONST_EDGE_LONGITUDE)));
+//							}
+//							gui.addEdge(new Edge(start, end));
+//						}
+//					}
+//				} catch (XMLStreamException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}).start();
+//
+//	}
 
 	public void writeEdgeXML() throws XMLStreamException, FileNotFoundException {
 
