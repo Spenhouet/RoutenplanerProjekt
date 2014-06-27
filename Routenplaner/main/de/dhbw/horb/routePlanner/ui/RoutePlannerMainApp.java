@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import de.dhbw.horb.routePlanner.Constants;
 
 public class RoutePlannerMainApp extends Application {
 
@@ -34,7 +35,7 @@ public class RoutePlannerMainApp extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(RoutePlannerMainApp.class.getResource("RoutePlannerRoot.fxml"));
+            loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_ROOT));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -54,7 +55,7 @@ public class RoutePlannerMainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(RoutePlannerMainApp.class.getResource("RoutePlannerMain.fxml"));
+            loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_MAIN));
             AnchorPane MainWindow = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.

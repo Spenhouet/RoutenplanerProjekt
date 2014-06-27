@@ -4,6 +4,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
+import de.dhbw.horb.routePlanner.Constants;
+
 public class GraphDataStreamReader extends StreamReaderDelegate {
 
 	public GraphDataStreamReader(XMLStreamReader streamReader)
@@ -12,28 +14,28 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 	}
 	
 	public boolean isNode() {
-		if (getLocalName().trim().equals(GraphDataConstants.CONST_NODE)
+		if (getLocalName().trim().equals(Constants.NODE)
 				|| getLocalName().trim().equals(
-						GraphDataConstants.CONST_WAY_NODE)|| getLocalName().trim().equals(
-								GraphDataConstants.CONST_EDGE_NODE))
+						Constants.WAY_NODE)|| getLocalName().trim().equals(
+								Constants.EDGE_NODE))
 			return true;
 		return false;
 	}
 
 	public boolean isWay() {
-		if (getLocalName().trim().equals(GraphDataConstants.CONST_WAY))
+		if (getLocalName().trim().equals(Constants.WAY))
 			return true;
 		return false;
 	}
 
 	public boolean isTag() {
-		if (getLocalName().trim().equals(GraphDataConstants.CONST_WAY_TAG))
+		if (getLocalName().trim().equals(Constants.WAY_TAG))
 			return true;
 		return false;
 	}
 	
 	public boolean isEdge() {
-		if (getLocalName().trim().equals(GraphDataConstants.CONST_EDGE))
+		if (getLocalName().trim().equals(Constants.EDGE))
 			return true;
 		return false;
 	}

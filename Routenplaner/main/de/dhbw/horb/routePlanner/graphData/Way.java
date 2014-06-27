@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 
 import javax.xml.stream.XMLStreamException;
 
-import de.dhbw.horb.routePlanner.parser.GraphDataConstants;
+import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.parser.GraphDataParser;
 
 /**
@@ -28,7 +28,7 @@ public class Way {
 	}
 
 	public void addNode(Long id) throws XMLStreamException {
-		addNode(GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).getNode(id));
+		addNode(GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).getNode(id));
 	}
 
 	public void addNode(Node node) {
