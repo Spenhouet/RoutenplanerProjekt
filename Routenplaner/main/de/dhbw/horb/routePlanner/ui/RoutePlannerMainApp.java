@@ -34,7 +34,7 @@ public class RoutePlannerMainApp extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(RoutePlannerMainApp.class.getResource("view/RoutePlannerRoot.fxml"));
+            loader.setLocation(RoutePlannerMainApp.class.getResource("RoutePlannerRoot.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -54,7 +54,7 @@ public class RoutePlannerMainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(RoutePlannerMainApp.class.getResource("view/RoutePlannerMain.fxml"));
+            loader.setLocation(RoutePlannerMainApp.class.getResource("RoutePlannerMain.fxml"));
             AnchorPane MainWindow = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
