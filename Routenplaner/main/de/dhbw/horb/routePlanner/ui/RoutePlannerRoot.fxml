@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.horb.routePlanner.ui.RoutePlannerMainController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -19,6 +19,7 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" onAction="#xButtonClicked" text="X" fx:id="xButton" />
         </menus>
       </MenuBar>
    </top>
