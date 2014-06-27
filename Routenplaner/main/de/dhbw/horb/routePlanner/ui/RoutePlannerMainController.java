@@ -77,7 +77,7 @@ public class RoutePlannerMainController {
 		List<String> names;
 		String input = "mün";
 
-		names = GraphDataParser.getGraphDataParser(GraphDataConstants.CONST_XML_NODE_HIGHWAY).containsName(input);
+		names = GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).containsName(input);
 
 		for (String string : names) {
 			System.out.println(string);
