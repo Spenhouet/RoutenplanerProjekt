@@ -1,5 +1,7 @@
 package com.google.maps.googleMapsAPI;
 
+import de.dhbw.horb.routePlanner.graphData.Node;
+
 
 public final class GoogleMapsProjection2 
 {
@@ -62,13 +64,15 @@ public final class GoogleMapsProjection2
         return new PointF(lat, lng);
     }
     
-    public double fromLatLonToDistanceInKM(PointF start, PointF end){
+    public double fromLatLonToDistanceInKM(Node start, Node end){
     
+    	if(start == null || end == null) return 0.0;
+    	
     	int R = 6371; // km
-    	double phi1 = degreesToRadians(start.x);
-    	double phi2 = degreesToRadians(end.x);
-    	double deltaPhi = degreesToRadians(end.x-start.x);
-    	double deltaLambda = degreesToRadians(end.y-start.y);
+    	double phi1 = degreesToRadians(start.getLatitude());
+    	double phi2 = degreesToRadians(end.getLatitude());
+    	double deltaPhi = degreesToRadians(end.getLatitude()-start.getLatitude());
+    	double deltaLambda = degreesToRadians(end.getLongitude()-start.getLongitude());
 
     	double a = Math.sin(deltaPhi/2) * Math.sin(deltaPhi/2) +
     	        Math.cos(phi1) * Math.cos(phi2) *

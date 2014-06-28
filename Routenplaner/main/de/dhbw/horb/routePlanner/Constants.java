@@ -7,7 +7,8 @@ public interface Constants {
 	
 	public final static String XML_NODE_HIGHWAY = "xmlFile/node_highway.xml";
 	public final static String XML_WAY_HIGHWAY = "xmlFile/way_highway.xml";
-	public final static String XML_EDGE = "xmlFile/edge.xml";
+	public final static String XML_GRAPHDATA = "xmlFile/graphData.xml";
+	public final static String XML_GRAPHDATA_NEW = "xmlFile/graphDataNew.xml";
 
 	public final static String NODE = "node";
 	public final static String NODE_ID = "id";
@@ -21,8 +22,11 @@ public interface Constants {
 	public final static String WAY_NODE = "nd";
 	public final static String WAY_REF = "ref";
 	public final static String WAY_TAG = "tag";
+	public final static String WAY_DISTANCE = "distance";
+	public final static String WAY_MAXSPEED = "maxspeed";
 	public final static String WAY_HIGHWAY = "highway";
 	public final static String WAY_MOTORWAY_JUNCTION = "motorway_junction";
+	public final static String WAY_MOTORWAY_LINK = "motorway_link";
 	public final static String WAY_EXIT_TO = "exit_to";
 	
 	public final static String EDGE = "edge";
