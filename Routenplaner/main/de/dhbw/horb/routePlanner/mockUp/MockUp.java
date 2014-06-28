@@ -1,9 +1,6 @@
 package de.dhbw.horb.routePlanner.mockUp;
 
 
-import com.google.maps.googleMapsAPI.GoogleMapsProjection2;
-import com.google.maps.googleMapsAPI.PointF;
-
 import de.dhbw.horb.routePlanner.parser.GraphDataDom;
 
 public class MockUp {
