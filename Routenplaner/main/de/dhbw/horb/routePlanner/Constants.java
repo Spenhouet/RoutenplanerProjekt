@@ -10,8 +10,6 @@ public interface Constants {
 	public final static String LINK_LINKEND = ");>;);out;";
 	public final static String LINK_LINKTARGET = "&target=ol_fixed";
 	
-	public final static String XML_NODE_HIGHWAY = "xmlFile/node_highway.xml";
-	public final static String XML_WAY_HIGHWAY = "xmlFile/way_highway.xml";
 	public final static String XML_GRAPHDATA = "xmlFile/graphData.xml";
 	public final static String XML_GRAPHDATA_NEW = "xmlFile/graphDataNew.xml";
 

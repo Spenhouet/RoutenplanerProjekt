@@ -23,12 +23,10 @@ public class GraphDataDom {
 
 	Document xmlDoc;
 	Element root;
-	List<Element> listNodes;
+//	List<Element> listNodes;
 	List<Element> listWay;
 	GoogleMapsProjection2 gmp;
 	XMLOutputter outp;
-
-	Document xmlNodeDoc;
 
 	public GraphDataDom() {
 
@@ -41,7 +39,7 @@ public class GraphDataDom {
 		try {
 			xmlDoc = builder.build(new File(Constants.XML_GRAPHDATA));
 			root = xmlDoc.getRootElement();
-			listNodes = root.getChildren("node");
+//			listNodes = root.getChildren("node");
 			listWay = root.getChildren("way");
 
 		} catch (JDOMException | IOException e) {
@@ -49,13 +47,13 @@ public class GraphDataDom {
 		}
 	}
 
-	public void addKM() {
+	public void updateWays() {
 
 		try {
-
 			for (int i = 0; i < listWay.size(); i++) {
 				if ((i % 1000) == 0)
-					outp.output(xmlDoc, new FileOutputStream(new File(Constants.XML_GRAPHDATA)));
+					outp.output(xmlDoc, new FileOutputStream(new File(
+							Constants.XML_GRAPHDATA)));
 
 				Element elWay = (Element) (listWay.get(i));
 				if (null == elWay)
@@ -66,25 +64,7 @@ public class GraphDataDom {
 						&& elWay.getAttributeValue(Constants.WAY_REF) != null)
 					continue;
 
-				Double km = 0.0;
-
-				List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
-				for (int x = 0; x < (listNode.size() - 1); x++) {
-					Element elNode = (Element) (listNode.get(x));
-					if (elNode == null)
-						continue;
-
-					Long id1 = Long.valueOf(elNode.getAttributeValue(Constants.WAY_REF));
-
-					elNode = (Element) (listNode.get(x + 1));
-					if (elNode == null)
-						continue;
-
-					Long id2 = Long.valueOf(elNode.getAttributeValue(Constants.WAY_REF));
-
-					km += gmp.fromLatLonToDistanceInKM(getNode(id1), getNode(id2));
-
-				}
+				Double km = getDistanceFromWay(elWay);
 
 				String maxspeed = "";
 				String ref = "";
@@ -96,14 +76,16 @@ public class GraphDataDom {
 					if (elTag == null)
 						continue;
 
-					if (getAttributeValueForK(elTag, Constants.WAY_HIGHWAY).trim().equals(Constants.WAY_MOTORWAY_LINK)) {
+					if (getAttributeValueForK(elTag, Constants.WAY_HIGHWAY)
+							.trim().equals(Constants.WAY_MOTORWAY_LINK)) {
 						listWay.remove(i);
 						nextWay = true;
 						break;
 					}
 
 					if (maxspeed == null || maxspeed == "")
-						maxspeed = getAttributeValueForK(elTag, Constants.WAY_MAXSPEED);
+						maxspeed = getAttributeValueForK(elTag,
+								Constants.WAY_MAXSPEED);
 					if (ref == null || ref == "")
 						ref = getAttributeValueForK(elTag, Constants.WAY_REF);
 				}
@@ -122,35 +104,66 @@ public class GraphDataDom {
 
 			}
 
-			outp.output(xmlDoc, new FileOutputStream(new File(Constants.XML_GRAPHDATA)));
+			outp.output(xmlDoc, new FileOutputStream(new File(
+					Constants.XML_GRAPHDATA)));
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	private Double getDistanceFromWay(Element way) {
+
+		Double km = 0.0;
+
+		List<Element> listNode = way.getChildren(Constants.WAY_NODE);
+		for (int x = 0; x < (listNode.size() - 1); x++) {
+			Element elNode = (Element) (listNode.get(x));
+			if (elNode == null)
+				continue;
+
+			Long id1 = Long
+					.valueOf(elNode.getAttributeValue(Constants.WAY_REF));
+
+			elNode = (Element) (listNode.get(x + 1));
+			if (elNode == null)
+				continue;
+
+			Long id2 = Long
+					.valueOf(elNode.getAttributeValue(Constants.WAY_REF));
+
+			km += gmp.fromLatLonToDistanceInKM(getNode(id1), getNode(id2));
+		}
+
+		return km;
+	}
+
 	public Node getNode(Long id) {
 
-//		for (int x = 0; x < listNodes.size(); x++) {
-//			Element elNode = (Element) (listNodes.get(x));
-//			if (elNode == null)
-//				continue;
-//
-//			if (Long.valueOf(elNode.getAttributeValue(Constants.NODE_ID)).equals(id)) {
-//				Node back = new Node(id, Double.valueOf(elNode.getAttributeValue(Constants.NODE_LATITUDE)),
-//						Double.valueOf(elNode.getAttributeValue(Constants.NODE_LONGITUDE)));
-//				listNodes.remove(x);
-//				return back;
-//			}
-//
-//		}
-		
+		// for (int x = 0; x < listNodes.size(); x++) {
+		// Element elNode = (Element) (listNodes.get(x));
+		// if (elNode == null)
+		// continue;
+		//
+		// if
+		// (Long.valueOf(elNode.getAttributeValue(Constants.NODE_ID)).equals(id))
+		// {
+		// Node back = new Node(id,
+		// Double.valueOf(elNode.getAttributeValue(Constants.NODE_LATITUDE)),
+		// Double.valueOf(elNode.getAttributeValue(Constants.NODE_LONGITUDE)));
+		// listNodes.remove(x);
+		// return back;
+		// }
+		//
+		// }
+
 		try {
-			return GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).getNode(id);
+			return GraphDataParser.getGraphDataParser(
+					Constants.XML_GRAPHDATA).getNode(id);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

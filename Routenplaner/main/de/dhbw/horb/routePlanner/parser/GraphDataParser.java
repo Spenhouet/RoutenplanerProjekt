@@ -167,6 +167,8 @@ public class GraphDataParser {
 					lat = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LATITUDE));
 					lon = Double.valueOf(graphSR.getAttributeValue(Constants.NODE_LONGITUDE));
 					break;
+				} else if (graphSR.isWay()){
+					break;
 				}
 			}
 		}
@@ -177,7 +179,7 @@ public class GraphDataParser {
 		return null;
 	}
 
-	private Way getWay(Long id) throws NumberFormatException, XMLStreamException {
+	public Way getWay(Long id) throws NumberFormatException, XMLStreamException {
 		Way newWay = null;
 
 		if (id == null) {
