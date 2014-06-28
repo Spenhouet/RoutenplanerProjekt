@@ -22,8 +22,8 @@
                   <Button fx:id="testButton" layoutX="14.0" layoutY="658.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
                   <VBox layoutX="38.0" layoutY="52.0">
                      <children>
-                        <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" prefHeight="25.0" prefWidth="400.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
-                        <ComboBox fx:id="tartgetComboBox" editable="true" layoutX="73.0" layoutY="181.0" prefWidth="400.0" promptText="Ziel">
+                        <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
+                        <ComboBox fx:id="targetComboBox" editable="true" layoutX="73.0" layoutY="181.0" promptText="Ziel">
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
