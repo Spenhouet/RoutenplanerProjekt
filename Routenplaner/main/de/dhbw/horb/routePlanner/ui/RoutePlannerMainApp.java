@@ -21,7 +21,7 @@ public class RoutePlannerMainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Draw Line");
+        this.primaryStage.setTitle("Routenplaner");
 
         initRootLayout();
 
@@ -46,6 +46,10 @@ public class RoutePlannerMainApp extends Application {
             primaryStage.setTitle("Routenplaner");
             primaryStage.setScene(scene);
             primaryStage.show();
+            
+            RoutePlannerRootController controller = loader.getController();
+            controller.setRoutePlannerMainApp(this);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

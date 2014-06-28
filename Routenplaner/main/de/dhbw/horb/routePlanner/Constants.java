@@ -4,6 +4,11 @@ public interface Constants {
 
 	public final static String FXML_ROOT = "RoutePlannerRoot.fxml";
 	public final static String FXML_MAIN = "RoutePlannerMain.fxml";
+
+	public final static String LINK_LINKSTART = "http://overpass-api.de/api/convert?data=";
+	public final static String LINL_COMPLETELINK = "((";
+	public final static String LINK_LINKEND = ");>;);out;";
+	public final static String LINK_LINKTARGET = "&target=ol_fixed";
 	
 	public final static String XML_NODE_HIGHWAY = "xmlFile/node_highway.xml";
 	public final static String XML_WAY_HIGHWAY = "xmlFile/way_highway.xml";
