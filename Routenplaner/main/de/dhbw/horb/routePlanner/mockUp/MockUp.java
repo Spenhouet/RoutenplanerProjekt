@@ -26,7 +26,7 @@ public class MockUp {
 		
 		GraphDataDom dom = new GraphDataDom();
 		
-		dom.addKM();
+		dom.updateWays();
 
 	}
 
