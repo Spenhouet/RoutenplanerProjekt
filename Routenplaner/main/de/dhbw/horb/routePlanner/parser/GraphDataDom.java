@@ -131,19 +131,19 @@ public class GraphDataDom {
 
 	public Node getNode(Long id) {
 
-		for (int x = 0; x < listNodes.size(); x++) {
-			Element elNode = (Element) (listNodes.get(x));
-			if (elNode == null)
-				continue;
-
-			if (Long.valueOf(elNode.getAttributeValue(Constants.NODE_ID)).equals(id)) {
-				Node back = new Node(id, Double.valueOf(elNode.getAttributeValue(Constants.NODE_LATITUDE)),
-						Double.valueOf(elNode.getAttributeValue(Constants.NODE_LONGITUDE)));
-				listNodes.remove(x);
-				return back;
-			}
-
-		}
+//		for (int x = 0; x < listNodes.size(); x++) {
+//			Element elNode = (Element) (listNodes.get(x));
+//			if (elNode == null)
+//				continue;
+//
+//			if (Long.valueOf(elNode.getAttributeValue(Constants.NODE_ID)).equals(id)) {
+//				Node back = new Node(id, Double.valueOf(elNode.getAttributeValue(Constants.NODE_LATITUDE)),
+//						Double.valueOf(elNode.getAttributeValue(Constants.NODE_LONGITUDE)));
+//				listNodes.remove(x);
+//				return back;
+//			}
+//
+//		}
 		
 		try {
 			return GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).getNode(id);
