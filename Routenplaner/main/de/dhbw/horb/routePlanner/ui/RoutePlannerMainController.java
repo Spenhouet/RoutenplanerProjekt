@@ -88,7 +88,7 @@ public class RoutePlannerMainController {
 		String linkEnd = Constants.LINK_LINKEND;
 		String completeLink = Constants.LINL_COMPLETELINK;
 		
-		//Testweise:
+		//TODO Testweise:
 		ArrayList<String> ways = new ArrayList<>();
 		ways.add("238669065");
 		ways.add("26577114");
@@ -106,24 +106,10 @@ public class RoutePlannerMainController {
 		
 		completeLink += linkEnd;
 		
-		//Andere Möglichkeit?!
+		//TODO Andere Möglichkeit?!
 		String result = linkStart + URLEncoder.encode(completeLink) + Constants.LINK_LINKTARGET;
 		
 		return result;
 		
 	}
-	
-	/*
-	 * public void autofillComboBox() { // TODO Robin & Julius
-	 * 
-	 * List<String> names; String input = "mün";
-	 * 
-	 * names =
-	 * GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).containsName
-	 * (input);
-	 * 
-	 * for (String string : names) { System.out.println(string); }
-	 * 
-	 * }
-	 */
 }

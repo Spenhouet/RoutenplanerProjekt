@@ -42,95 +42,35 @@ public class GraphDataParser {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
 	}
-
-//	public void everyWayToGui(final GraphicalUserInterface gui) {
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				Node start = null;
-//				Node end = null;
-//
-//				try {
-//					while (graphSR.hasNext()) {
-//
-//						if (graphSR.nextStartElement() && graphSR.isEdge()) {
-//							if (graphSR.nextStartElement() && graphSR.isNode()) {
-//								start = new Node(Long.valueOf(graphSR
-//										.getAttributeValue(GraphDataConstants.EDGE_ID)), Double.valueOf(graphSR
-//										.getAttributeValue(GraphDataConstants.EDGE_LATITUDE)),
-//										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.EDGE_LONGITUDE)));
-//							}
-//							if (graphSR.nextStartElement() && graphSR.isNode()) {
-//								end = new Node(
-//										Long.valueOf(graphSR.getAttributeValue(GraphDataConstants.EDGE_ID)),
-//										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.EDGE_LATITUDE)),
-//										Double.valueOf(graphSR
-//												.getAttributeValue(GraphDataConstants.EDGE_LONGITUDE)));
-//							}
-//							gui.addEdge(new Edge(start, end));
-//						}
-//					}
-//				} catch (XMLStreamException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}).start();
-//
-//	}
-
-//	public void writeEdgeXML() throws XMLStreamException, FileNotFoundException {
-//
-//		long idCount = 0L;
-//
-//		XMLOutputFactory factory = XMLOutputFactory.newInstance();
-//
-//		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(Constants.XML_EDGE),
-//				"UTF-8");
-//
-//		writer.writeStartDocument("UTF-8", "1.0");
-//
-//		while (graphSR.hasNext()) {
-//			if (graphSR.nextStartElement() && graphSR.isWay()) {
-//
-//				Way nextWay = getWay(null);
-//
-//				while ((nextWay != null) && (nextWay.hasEdge())) {
-//					idCount++;
-//					Edge firstEdge = nextWay.removeFirstEdge();
-//					if (firstEdge == null || firstEdge.getStartNode() == null || firstEdge.getEndNode() == null)
-//						continue;
-//					writer.writeStartElement(Constants.EDGE);
-//					writer.writeAttribute(Constants.EDGE_ID, String.valueOf(idCount));
-//					writer.writeEmptyElement(Constants.EDGE_NODE);
-//					writer.writeAttribute(Constants.EDGE_ID,
-//							String.valueOf(firstEdge.getStartNode().getID()));
-//					writer.writeAttribute(Constants.EDGE_LATITUDE,
-//							String.valueOf(firstEdge.getStartNode().getLatitude()));
-//					writer.writeAttribute(Constants.EDGE_LONGITUDE,
-//							String.valueOf(firstEdge.getStartNode().getLongitude()));
-//					writer.writeEmptyElement(Constants.EDGE_NODE);
-//					writer.writeAttribute(Constants.EDGE_ID,
-//							String.valueOf(firstEdge.getEndNode().getID()));
-//					writer.writeAttribute(Constants.EDGE_LATITUDE,
-//							String.valueOf(firstEdge.getEndNode().getLatitude()));
-//					writer.writeAttribute(Constants.EDGE_LONGITUDE,
-//							String.valueOf(firstEdge.getEndNode().getLongitude()));
-//					writer.writeEndElement();
-//				}
-//			}
-//		}
-//		writer.writeEndDocument();
-//		writer.flush();
-//		writer.close();
-//	}
+	
+	
+	public void test() {
+		try {
+			while(graphSR.hasNext()){
+				
+				if(graphSR.next() == graphSR.END_ELEMENT){
+					
+					String end = this.graphSR.getLocalName();
+					
+					
+					
+					
+				}
+				
+				
+				
+			}
+		} catch (XMLStreamException e) {
+			// TODO Automatisch generierter Erfassungsblock
+			e.printStackTrace();
+		}
+		
+	}
+	
 
 	public List<String> containsName(String name) {
 
 		List<String> names = new ArrayList<String>();
-		// Long id = null;
 
 		try {
 			while (graphSR.nextStartElement()) {
