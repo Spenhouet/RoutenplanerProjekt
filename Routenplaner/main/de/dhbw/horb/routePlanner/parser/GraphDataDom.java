@@ -23,7 +23,7 @@ public class GraphDataDom {
 
 	Document xmlDoc;
 	Element root;
-//	List<Element> listNodes;
+	// List<Element> listNodes;
 	List<Element> listWay;
 	GoogleMapsProjection2 gmp;
 	XMLOutputter outp;
@@ -39,7 +39,7 @@ public class GraphDataDom {
 		try {
 			xmlDoc = builder.build(new File(Constants.XML_GRAPHDATA));
 			root = xmlDoc.getRootElement();
-//			listNodes = root.getChildren("node");
+			// listNodes = root.getChildren("node");
 			listWay = root.getChildren("way");
 
 		} catch (JDOMException | IOException e) {
@@ -56,52 +56,41 @@ public class GraphDataDom {
 							Constants.XML_GRAPHDATA)));
 
 				Element elWay = (Element) (listWay.get(i));
+
 				if (null == elWay)
 					continue;
 
-				if (elWay.getAttributeValue(Constants.WAY_DISTANCE) != null
-						&& elWay.getAttributeValue(Constants.WAY_MAXSPEED) != null
-						&& elWay.getAttributeValue(Constants.WAY_REF) != null)
+				String distance = elWay
+						.getAttributeValue(Constants.WAY_DISTANCE);
+				String maxspeed = elWay
+						.getAttributeValue(Constants.WAY_MAXSPEED);
+				String ref = elWay.getAttributeValue(Constants.WAY_REF);
+				Boolean isLink = false;
+
+				if (distance != null && maxspeed != null && ref != null)
 					continue;
-
-				Double km = getDistanceFromWay(elWay);
-
-				String maxspeed = "";
-				String ref = "";
-				Boolean nextWay = false;
 
 				List<Element> listTag = elWay.getChildren(Constants.WAY_TAG);
-				while (!listTag.isEmpty()) {
-					Element elTag = (Element) (listTag.remove(0));
-					if (elTag == null)
-						continue;
 
-					if (getAttributeValueForK(elTag, Constants.WAY_HIGHWAY)
-							.trim().equals(Constants.WAY_MOTORWAY_LINK)) {
-						listWay.remove(i);
-						nextWay = true;
-						break;
-					}
+				isLink = isLink(listTag);
 
-					if (maxspeed == null || maxspeed == "")
-						maxspeed = getAttributeValueForK(elTag,
-								Constants.WAY_MAXSPEED);
-					if (ref == null || ref == "")
-						ref = getAttributeValueForK(elTag, Constants.WAY_REF);
+				if (!isLink && distance == null)
+					elWay.setAttribute(Constants.WAY_DISTANCE,
+							getDistanceFromWay(elWay).toString());
+
+				if (!isLink && maxspeed == null)
+					elWay.setAttribute(Constants.WAY_MAXSPEED,
+							getMaxSpeed(listTag));
+
+				if (!isLink && ref == null)
+					elWay.setAttribute(Constants.WAY_REF, getRef(listTag));
+
+				if (isLink) {
+					deleteWay(listWay, i);
+					i--;
+				} else {
+					deleteAllTags(listTag);
 				}
-
-				if (nextWay)
-					continue;
-
-				if (elWay.getAttributeValue(Constants.WAY_DISTANCE) == null)
-					elWay.setAttribute(Constants.WAY_DISTANCE, km.toString());
-
-				if (elWay.getAttributeValue(Constants.WAY_MAXSPEED) == null)
-					elWay.setAttribute(Constants.WAY_MAXSPEED, maxspeed);
-
-				if (elWay.getAttributeValue(Constants.WAY_REF) == null)
-					elWay.setAttribute(Constants.WAY_REF, ref);
-
 			}
 
 			outp.output(xmlDoc, new FileOutputStream(new File(
@@ -110,6 +99,61 @@ public class GraphDataDom {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	private void deleteAllTags(List<Element> tags) {
+		while (!tags.isEmpty()) {
+			tags.remove(0);
+		}
+	}
+
+	private void deleteWay(List<Element> ways, int index) {
+		ways.remove(index);
+	}
+
+	private Boolean isLink(List<Element> tags) {
+
+		for (int i = 0; i < tags.size(); i++) {
+			Element elTag = (Element) (tags.get(i));
+			if (elTag == null)
+				continue;
+
+			if (getAttributeValueForK(elTag, Constants.WAY_HIGHWAY).equals(
+					Constants.WAY_MOTORWAY_LINK))
+				return true;
+		}
+		return false;
+	}
+
+	private String getRef(List<Element> tags) {
+
+		for (int i = 0; i < tags.size(); i++) {
+			Element elTag = (Element) (tags.get(i));
+			if (elTag == null)
+				continue;
+
+			String maxspeed = getAttributeValueForK(elTag,
+					Constants.WAY_MAXSPEED);
+
+			if (maxspeed != null)
+				return maxspeed;
+		}
+		return "";
+	}
+
+	private String getMaxSpeed(List<Element> tags) {
+
+		for (int i = 0; i < tags.size(); i++) {
+			Element elTag = (Element) (tags.get(i));
+			if (elTag == null)
+				continue;
+
+			String ref = getAttributeValueForK(elTag, Constants.WAY_REF);
+
+			if (ref != null)
+				return ref;
+		}
+		return "";
 	}
 
 	private Double getDistanceFromWay(Element way) {
@@ -158,8 +202,8 @@ public class GraphDataDom {
 		// }
 
 		try {
-			return GraphDataParser.getGraphDataParser(
-					Constants.XML_GRAPHDATA).getNode(id);
+			return GraphDataParser.getGraphDataParser(Constants.XML_GRAPHDATA)
+					.getNode(id);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
