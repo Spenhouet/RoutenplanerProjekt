@@ -1,32 +1,21 @@
 package de.dhbw.horb.routePlanner.mockUp;
 
 
+import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.parser.GraphDataDom;
+import de.dhbw.horb.routePlanner.parser.GraphDataParser;
 
 public class MockUp {
 
 	public static void main(String[] args) {
 
-//		GoogleMapsProjection2 gmp = new GoogleMapsProjection2();
-//
-//		PointF start = new PointF(49.4782247, 6.3640853);
-//		PointF end = new PointF(49.4783273, 6.3640864);
-//
-//		System.out.println(gmp.fromLatLonToDistanceInKM(start, end));
-
-//		List<String> names;
-//		String input = "";
-//
-//		names = GraphDataParser.getGraphDataParser(
-//				Constants.XML_NODE_HIGHWAY).containsName(input);
-//
-//		for (String string : names) {
-//			System.out.println(string);
-//		}
 		
-		GraphDataDom dom = new GraphDataDom();
+//		GraphDataDom dom = new GraphDataDom();
+//		
+//		dom.updateWays();
 		
-		dom.updateWays();
+		
+		GraphDataParser.getGraphDataParser(Constants.XML_GRAPHDATA).test();
 
 	}
 

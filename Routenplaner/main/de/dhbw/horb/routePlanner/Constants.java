@@ -11,7 +11,8 @@ public interface Constants {
 	public final static String LINK_LINKTARGET = "&target=ol_fixed";
 	
 	public final static String XML_GRAPHDATA = "xmlFile/graphData.xml";
-	public final static String XML_GRAPHDATA_NEW = "xmlFile/graphDataNew.xml";
+	public final static String XML_NODES = "xmlFile/nodes.xml";
+	public final static String XML_ROUTES = "xmlFile/routes.xml";
 
 	public final static String NODE = "node";
 	public final static String NODE_ID = "id";
