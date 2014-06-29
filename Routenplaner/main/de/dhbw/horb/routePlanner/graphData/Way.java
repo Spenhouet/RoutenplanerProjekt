@@ -20,21 +20,16 @@ public class Way {
 	private List<Node> nodes;
 	ExecutorService executor;
 
-	// private List<String, Object> characteristics;
-
 	public Way(Long id) {
 		nodes = new ArrayList<Node>();
 		setId(id);
 	}
 
 	public void addNode(Long id) throws XMLStreamException {
-		addNode(GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).getNode(id));
+		addNode(GraphDataParser.getGraphDataParser(Constants.XML_GRAPHDATA).getNode(id));
 	}
 
 	public void addNode(Node node) {
-		// if (node == null || node.getLatitude() == null || node.getLongitude()
-		// == null)
-		// return;
 		nodes.add(node);
 	}
 

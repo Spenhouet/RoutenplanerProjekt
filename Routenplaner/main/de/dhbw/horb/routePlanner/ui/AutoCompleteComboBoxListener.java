@@ -69,7 +69,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         List<String> names; 
    	    String input = AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase();
    	    
-   	    names = GraphDataParser.getGraphDataParser(Constants.XML_NODE_HIGHWAY).containsName(input);
+   	    names = GraphDataParser.getGraphDataParser(Constants.XML_GRAPHDATA).containsName(input);
    	    Collections.sort(names);
    	    for (String name : names) {
    	    	list.add((T) name);
