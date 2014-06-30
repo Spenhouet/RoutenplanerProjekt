@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.xml.internal.ws.util.StringUtils;
+import de.dhbw.horb.routePlanner.Constants;
 
-public class NodeList {
+public class NodeMap {
 
 	private Map<String, List<String>> nodes;
 
-	public NodeList() {
+	public NodeMap() {
 		nodes = new HashMap<String, List<String>>();
 	}
 
@@ -28,17 +28,23 @@ public class NodeList {
 	public Boolean hasNode() {
 		return !nodes.isEmpty();
 	}
-	
-	public Map<String, String> removeNode(){
-		
+
+	public Map<String, String> removeNode() {
+
 		Map<String, String> node = new HashMap<String, String>();
 		String key = nodes.keySet().iterator().next();
-		
-//		String strin		
-		
-		
-		
+
+		node.put(Constants.NEW_NODE_NAME, key);
+		node.put(Constants.NEW_NODE_ID, removeIDsAsCommaString(key));
+
 		return node;
 	}
 
+	private String removeIDsAsCommaString(String key) {
+		String value = "";
+		for (String i : nodes.remove(key)) {
+			value += value.isEmpty() ? i : "," + i;
+		}
+		return value;
+	}
 }

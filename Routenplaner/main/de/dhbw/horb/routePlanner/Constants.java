@@ -36,6 +36,7 @@ public interface Constants {
 	public final static String NEW_NODE_S = "nodes";
 	public final static String NEW_NODE = "node";
 	public final static String NEW_NODE_IDS = "ids";
+	public final static String NEW_NODE_ID = "id";
 	public final static String NEW_NODE_NAME = "name";
 	
 
