@@ -19,7 +19,7 @@ import com.google.maps.googleMapsAPI.GoogleMapsProjection2;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.graphData.Node;
 
-public class GraphDataDom {
+public class JDomGraphDataCreator {
 
 	Document xmlDoc;
 	Element root;
@@ -28,7 +28,7 @@ public class GraphDataDom {
 	GoogleMapsProjection2 gmp;
 	XMLOutputter outp;
 
-	public GraphDataDom() {
+	public JDomGraphDataCreator() {
 
 		gmp = new GoogleMapsProjection2();
 		SAXBuilder builder = new SAXBuilder();

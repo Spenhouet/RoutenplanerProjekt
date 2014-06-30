@@ -52,7 +52,7 @@ public class GraphDataParser {
 					
 					String end = this.graphSR.getLocalName();
 					
-					
+					//TODO wieder löschen
 					
 					
 				}
