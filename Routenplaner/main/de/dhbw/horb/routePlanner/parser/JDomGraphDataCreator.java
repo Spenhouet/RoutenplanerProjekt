@@ -2,11 +2,16 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.management.openmbean.CompositeType;
 import javax.xml.stream.XMLStreamException;
 
+import org.jdom2.Attribute;
+import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -15,15 +20,18 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import com.google.maps.googleMapsAPI.GoogleMapsProjection2;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.graphData.Node;
 
 public class JDomGraphDataCreator {
 
-	Document xmlDoc;
-	Element root;
-	// List<Element> listNodes;
+	Document xmlDocGraphData;
+	Document xmlDocNodes;
+	Document xmlDocRoutes;
+	Element rootGraphData;
+	List<Element> listNodes;
 	List<Element> listWay;
 	GoogleMapsProjection2 gmp;
 	XMLOutputter outp;
@@ -37,13 +45,82 @@ public class JDomGraphDataCreator {
 		outp.setFormat(Format.getPrettyFormat());
 
 		try {
-			xmlDoc = builder.build(new File(Constants.XML_GRAPHDATA));
-			root = xmlDoc.getRootElement();
-			// listNodes = root.getChildren("node");
-			listWay = root.getChildren("way");
+			xmlDocGraphData = builder.build(new File(Constants.XML_GRAPHDATA));
 
+			// xmlDocRoutes = builder.build(new File(Constants.XML_ROUTES));
+			rootGraphData = xmlDocGraphData.getRootElement();
+			listNodes = rootGraphData.getChildren(Constants.NODE);
+			// listWay = rootGraphData.getChildren("way");
+
+			File f = new File(Constants.XML_NODES);
+			if (f.exists() && !f.isDirectory()) {
+				xmlDocNodes = builder.build(f);
+			} else {
+				Element nodes = new Element(Constants.NEW_NODE_S);
+				xmlDocNodes = new Document(nodes);
+			}
+			//
 		} catch (JDOMException | IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void createNodeXML() {
+		
+		Element rootNewNodes = xmlDocNodes.getRootElement();
+		
+		for (int i = 0; i < listNodes.size(); i++) {
+
+			Element node = (Element) listNodes.get(i);
+			if (node == null)
+				continue;
+			List<Element> listTag = node.getChildren(Constants.WAY_TAG);
+			for(int x = 0; x< listTag.size(); x++){
+				Element tag = (Element) listTag.get(x);
+				String name = getAttributeValueForK(tag, Constants.NODE_TAG_NAME);
+				if (name != null) {
+//					Element newNode = new Element(Constants.NODE);
+//					newNode.setAttribute(new Attribute(Constants.NODE_TAG_NAME, name));
+//					Boolean exist = false;
+//					List<Element> newNodes = rootNewNodes.getChildren(Constants.NEW_NODE);
+//					Element nd = null;
+//					for(int y= 0; y<newNodes.size(); y++){
+//						nd = (Element)newNodes.get(y);
+//						if(nd.getAttributeValue(Constants.NEW_NODE_NAME).equals(name)){
+//							exist = true;
+//							break;
+//						}
+//					}
+					String nodeID = node.getAttributeValue(Constants.NODE_ID);
+					
+					
+					
+					
+//					if(exist && nd != null){
+//						System.out.println("test");
+//						String id = node.getAttributeValue(Constants.NEW_NODE_IDS);
+//						List<String> ids = Arrays.asList(id.split("\\s*,\\s*"));
+//						ids.add(nodeID);
+//						
+////						StringUtils.join(ids.toArray(), ',');
+//						
+//					} else {
+//						newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, nodeID));
+//						rootNewNodes.addContent(newNode);
+//					}
+
+					
+					break;
+				}
+				
+				
+			}
+			
+			try {
+				outp.output(xmlDocNodes, new FileWriter(Constants.XML_NODES));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -52,7 +129,7 @@ public class JDomGraphDataCreator {
 		try {
 			for (int i = 0; i < listWay.size(); i++) {
 				if ((i % 1000) == 0)
-					outp.output(xmlDoc, new FileOutputStream(new File(
+					outp.output(xmlDocGraphData, new FileOutputStream(new File(
 							Constants.XML_GRAPHDATA)));
 
 				Element elWay = (Element) (listWay.get(i));
@@ -93,7 +170,7 @@ public class JDomGraphDataCreator {
 				}
 			}
 
-			outp.output(xmlDoc, new FileOutputStream(new File(
+			outp.output(xmlDocGraphData, new FileOutputStream(new File(
 					Constants.XML_GRAPHDATA)));
 
 		} catch (Exception ex) {
@@ -212,8 +289,9 @@ public class JDomGraphDataCreator {
 	}
 
 	private String getAttributeValueForK(Element el, String k) {
-		if (el.getAttributeValue("k").trim().equals(k))
+		String v = el.getAttributeValue("k");
+		if (v != null && v.trim().equals(k))
 			return el.getAttributeValue("v");
-		return "";
+		return null;
 	}
 }

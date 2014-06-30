@@ -33,11 +33,10 @@ public interface Constants {
 	public final static String WAY_MOTORWAY_LINK = "motorway_link";
 	public final static String WAY_EXIT_TO = "exit_to";
 	
-	public final static String EDGE = "edge";
-	public final static String EDGE_NODE = "node";
-	public final static String EDGE_ID = "id";
-	public final static String EDGE_LATITUDE = "lat";
-	public final static String EDGE_LONGITUDE = "lon";
+	public final static String NEW_NODE_S = "nodes";
+	public final static String NEW_NODE = "node";
+	public final static String NEW_NODE_IDS = "ids";
+	public final static String NEW_NODE_NAME = "name";
 	
 
 }
