@@ -79,7 +79,6 @@ public class JDomGraphDataCreator {
 				if (name != null)
 					nm.addNode(name, node.getAttributeValue(Constants.NODE_ID));
 			}
-
 		}
 		
 		while(nm.hasNode()){
@@ -90,8 +89,8 @@ public class JDomGraphDataCreator {
 			rootNewNodes.addContent(newNode);
 		}
 		
-		try {
-			outp.output(xmlDocNodes, new FileWriter(Constants.XML_NODES));
+		try { 
+			outp.output(xmlDocNodes, new FileOutputStream(Constants.XML_NODES));//        FileWriter(Constants.XML_NODES));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
