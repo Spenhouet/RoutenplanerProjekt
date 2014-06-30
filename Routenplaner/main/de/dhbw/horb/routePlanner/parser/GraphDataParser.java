@@ -2,8 +2,6 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -48,14 +46,14 @@ public class GraphDataParser {
 		try {
 			while(graphSR.hasNext()){
 				
-				if(graphSR.next() == graphSR.END_ELEMENT){
-					
-					String end = this.graphSR.getLocalName();
-					
-					//TODO wieder löschen
-					
-					
-				}
+//				if(graphSR.next() == graphSR.END_ELEMENT){
+//					
+//					String end = this.graphSR.getLocalName();
+//					
+//					//TODO wieder löschen
+//					
+//					
+//				}
 				
 				
 				
@@ -67,28 +65,6 @@ public class GraphDataParser {
 		
 	}
 	
-
-	public List<String> containsName(String name) {
-
-		List<String> names = new ArrayList<String>();
-
-		try {
-			while (graphSR.nextStartElement()) {
-				String k = graphSR.getAttributeValue("k");
-				if (graphSR.isTag() && k.trim().equals(Constants.NODE_TAG_NAME)) {
-					String v = graphSR.getAttributeValue("v");
-					if (!names.contains(v) && v.toLowerCase().contains(name.toLowerCase()))
-						names.add(v);
-				}
-			}
-
-		} catch (NumberFormatException | XMLStreamException e) {
-			e.printStackTrace();
-		}
-
-		return names;
-	}
-
 	public Node getNode(Long id) throws XMLStreamException {
 
 		Double lat = null;

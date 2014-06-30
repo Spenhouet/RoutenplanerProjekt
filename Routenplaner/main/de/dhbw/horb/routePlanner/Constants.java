@@ -33,11 +33,23 @@ public interface Constants {
 	public final static String WAY_MOTORWAY_LINK = "motorway_link";
 	public final static String WAY_EXIT_TO = "exit_to";
 	
-	public final static String NEW_NODE_S = "nodes";
 	public final static String NEW_NODE = "node";
+	public final static String NEW_NODE_S = "nodes";
 	public final static String NEW_NODE_IDS = "ids";
 	public final static String NEW_NODE_ID = "id";
 	public final static String NEW_NODE_NAME = "name";
+	
+	public final static String NEW_ROUTE = "route";
+	public final static String NEW_ROUTE_S = "routes";
+	public final static String NEW_ROUTE_WAY = "way";
+	public final static String NEW_ROUTE_WAYS = "ways";
+	public final static String NEW_ROUTE_DEPARTUREID = "departureID";
+	public final static String NEW_ROUTE_DISTANCE = "distance";
+	public final static String NEW_ROUTE_TIME = "time";
+	public final static String NEW_ROUTE_DESTINATIONNODEID = "destinationNodeID";
+	public final static String NEW_ROUTE_ID = "id";
+	public final static String NEW_ROUTE_MAXSPEED = "maxspeed";
+	
 	
 
 }

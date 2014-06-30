@@ -2,7 +2,6 @@ package de.dhbw.horb.routePlanner.parser;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -33,69 +32,69 @@ public class JDomGraphDataCreator {
 	List<Element> listWay;
 	GoogleMapsProjection2 gmp;
 	XMLOutputter outp;
+	Boolean nodesXMLfileExists = false;
+	Boolean routesXMLfileExists = false;
 
 	public JDomGraphDataCreator() {
-
-		gmp = new GoogleMapsProjection2();
-		SAXBuilder builder = new SAXBuilder();
-
-		outp = new XMLOutputter();
-		outp.setFormat(Format.getPrettyFormat());
-
 		try {
-			xmlDocGraphData = builder.build(new File(Constants.XML_GRAPHDATA));
+			gmp = new GoogleMapsProjection2();
+			SAXBuilder builder = new SAXBuilder();
 
-			// xmlDocRoutes = builder.build(new File(Constants.XML_ROUTES));
-			rootGraphData = xmlDocGraphData.getRootElement();
-			listNodes = rootGraphData.getChildren(Constants.NODE);
-			// listWay = rootGraphData.getChildren("way");
-
+			/**
+			 * Loading nodes document
+			 */
 			File f = new File(Constants.XML_NODES);
 			if (f.exists() && !f.isDirectory()) {
-				xmlDocNodes = builder.build(f);
+				nodesXMLfileExists = true;
+				// xmlDocNodes = builder.build(f);
 			} else {
 				Element nodes = new Element(Constants.NEW_NODE_S);
 				xmlDocNodes = new Document(nodes);
 			}
-			//
+
+			/**
+			 * Loading routes document
+			 */
+			f = new File(Constants.XML_ROUTES);
+			if (f.exists() && !f.isDirectory()) {
+				routesXMLfileExists = true;
+				// xmlDocRoutes = builder.build(f);
+			} else {
+				Element nodes = new Element(Constants.NEW_NODE_S);
+				xmlDocRoutes = new Document(nodes);
+			}
+
+			if (!nodesXMLfileExists || !routesXMLfileExists) {
+				outp = new XMLOutputter();
+				outp.setFormat(Format.getPrettyFormat());
+
+				/**
+				 * Loading graphData document and a list of nodes and ways.
+				 */
+				xmlDocGraphData = builder.build(new File(Constants.XML_GRAPHDATA));
+				rootGraphData = xmlDocGraphData.getRootElement();
+				listNodes = rootGraphData.getChildren(Constants.NODE);
+				// listWay = rootGraphData.getChildren("way");
+			}
+
 		} catch (JDOMException | IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void createNodeXML() {
+	public void createNewXMLFiles() {
+		if (!nodesXMLfileExists)
+			createNodeXML();
 
-		NodeMap nm = new NodeMap();
-		Element rootNewNodes = xmlDocNodes.getRootElement();
-
-		for (int i = 0; i < listNodes.size(); i++) {
-			Element node = (Element) listNodes.get(i);
-			if (node == null)
-				continue;
-			List<Element> listTags = node.getChildren(Constants.WAY_TAG);
-			for (int x = 0; x < listTags.size(); x++) {
-				Element tag = (Element) listTags.get(x);
-				String name = getAttributeValueForK(tag, Constants.NODE_TAG_NAME);
-				if (name != null)
-					nm.addNode(name, node.getAttributeValue(Constants.NODE_ID));
-			}
-		}
-		
-		while(nm.hasNode()){
-			Map<String, String> nodeMap = nm.removeNode();
-			Element newNode = new Element(Constants.NODE);
-			newNode.setAttribute(new Attribute(Constants.NEW_NODE_NAME, nodeMap.get(Constants.NEW_NODE_NAME)));
-			newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, nodeMap.get(Constants.NEW_NODE_ID)));
-			rootNewNodes.addContent(newNode);
-		}
-		
-		try { 
-			outp.output(xmlDocNodes, new FileOutputStream(Constants.XML_NODES));//        FileWriter(Constants.XML_NODES));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if (!routesXMLfileExists)
+			createRouteXML();
 	}
 
+	public void createRouteXML() {
+
+	}
+
+	// TODO kein Update sondern neue Datei.
 	public void updateWays() {
 
 		try {
@@ -247,6 +246,39 @@ public class JDomGraphDataCreator {
 		}
 
 		return null;
+	}
+
+	public void createNodeXML() {
+
+		NodeMap nm = new NodeMap();
+		Element rootNewNodes = xmlDocNodes.getRootElement();
+
+		for (int i = 0; i < listNodes.size(); i++) {
+			Element node = (Element) listNodes.get(i);
+			if (node == null)
+				continue;
+			List<Element> listTags = node.getChildren(Constants.WAY_TAG);
+			for (int x = 0; x < listTags.size(); x++) {
+				Element tag = (Element) listTags.get(x);
+				String name = getAttributeValueForK(tag, Constants.NODE_TAG_NAME);
+				if (name != null)
+					nm.addNode(name, node.getAttributeValue(Constants.NODE_ID));
+			}
+		}
+
+		while (nm.hasNode()) {
+			Map<String, String> nodeMap = nm.removeNode();
+			Element newNode = new Element(Constants.NODE);
+			newNode.setAttribute(new Attribute(Constants.NEW_NODE_NAME, nodeMap.get(Constants.NEW_NODE_NAME)));
+			newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, nodeMap.get(Constants.NEW_NODE_ID)));
+			rootNewNodes.addContent(newNode);
+		}
+
+		try {
+			outp.output(xmlDocNodes, new FileOutputStream(Constants.XML_NODES));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private String getAttributeValueForK(Element el, String k) {
