@@ -16,7 +16,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 	public boolean isNode() {
 		if (getLocalName().trim().equals(Constants.NODE)
 				|| getLocalName().trim().equals(
-						Constants.WAY_NODE))
+						Constants.WAY_NODE)|| getLocalName().trim().equals(
+								Constants.NEW_NODE))
 			return true;
 		return false;
 	}
