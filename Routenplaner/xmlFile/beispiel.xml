@@ -1,14 +1,21 @@
-<route departureID="" distance="" time="" destinationNodeID="">
-	<ways>
-		<way id="" distance="" maxspeed=""/>
-		<way id="" distance="" maxspeed=""/>
-		.
-		.
-		.
-	</ways>
-</route>
+<routes>
+	<route departureID="" distance="" time="" destinationNodeID="">
+		<ways>
+			<way id="" distance="" maxspeed=""/>
+			<way id="" distance="" maxspeed=""/>
+			.
+			.
+			.
+		</ways>
+	</route>
+	.
+	.
+	.
+</routes>
 
 <nodes>
 	<node name="" ids="34498578,3459834,43507438,34590309"/>
-
+	.
+	.
+	.
 </nodes>
