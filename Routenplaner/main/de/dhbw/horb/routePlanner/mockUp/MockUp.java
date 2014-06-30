@@ -2,7 +2,7 @@ package de.dhbw.horb.routePlanner.mockUp;
 
 
 import de.dhbw.horb.routePlanner.Constants;
-import de.dhbw.horb.routePlanner.parser.GraphDataDom;
+import de.dhbw.horb.routePlanner.parser.JDomGraphDataCreator;
 import de.dhbw.horb.routePlanner.parser.GraphDataParser;
 
 public class MockUp {

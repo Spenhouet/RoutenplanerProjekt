@@ -35,6 +35,7 @@ public class Route {
 		nodeAndEdge = new ArrayList<Object>();
 		start = node;
 		addNode(node);
+		//TODO überarbeiten für nur Wege
 	}
 
 	/**
