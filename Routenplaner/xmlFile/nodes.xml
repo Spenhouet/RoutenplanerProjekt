@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+  <node name="Remich Schengen" ids="311591505" />
+  <node name="Perl-Besch" ids="34595182" />
+  <node name="Remich Schengen" ids="311591505" />
+  <node name="Remich Schengen" ids="311591505" />
+  <node name="Perl-Besch" ids="34595182" />
+  <node name="Perl-Besch" ids="261068457" />
+  <node name="Perl-Borg" ids="1555494174" />
+  <node name="Perl-Borg" ids="309516323" />
+  <node name="Dillingen-Mitte" ids="288545335" />
+  <node name="Dillingen-Mitte" ids="34592756" />
+  <node name="Rehlingen" ids="290363274" />
+  <node name="Rehlingen" ids="316846411" />
+  <node name="Merzig-Wellingen" ids="301393111" />
+  <node name="Merzig-Wellingen" ids="1555494149" />
+  <node name="Merzig-Schwemlingen" ids="269182526" />
+  <node name="Merzig" ids="269014374" />
+  <node name="Merzig-Schwemlingen" ids="259818712" />
+  <node name="Merzig" ids="317791519" />
+  <node name="Grenzübergang Mesenich LU-&gt;DE" ids="286859540" />
+  <node name="Grenzübergang Mesenich DE-&gt;LU" ids="286859541" />
+  <node name="Trier" ids="249282362" />
+  <node name="Trier" ids="101454147" />
+  <node name="Trier-Verteilerkreis" ids="60369867" />
+  <node name="Trier-Verteilerkreis" ids="90352920" />
+  <node name="Trier-Ehrang" ids="59923756" />
+  <node name="Trier-Ehrang" ids="60375695" />
+  <node name="Efringen-Kirchen" ids="243912316" />
+  <node name="Efringen-Kirchen" ids="30415520" />
+  <node name="Dreieck Neuenburg" ids="30961083" />
+  <node name="Dreieck Neuenburg" ids="30961072" />
+  <node name="Dreieck Neuenburg" ids="30961144" />
+  <node name="Weil am Rhein / Hüningen" ids="453208" />
+  <node name="Dreieck Weil am Rhein" ids="456191" />
+  <node name="Dreieck Weil am Rhein" ids="453197" />
+  <node name="Dreieck Weil am Rhein" ids="9323948" />
+  <node name="Weil am Rhein / Hüningen" ids="305503211" />
+  <node name="Rheinfelden-Süd" ids="26969647" />
+  <node name="Rheinfelden-Süd" ids="298538604" />
+  <node name="Lörrach-Ost" ids="74093462" />
+  <node name="Lörrach-Ost" ids="298899691" />
+  <node name="Dreieck Hochrhein" ids="241752775" />
+  <node name="Dreieck Hochrhein" ids="1656224113" />
+  <node name="Rheinfelden-Mitte" ids="291930859" />
+  <node name="Rheinfelden-Mitte" ids="2136236344" />
+  <node name="Eimeldingen" ids="9323945" />
+  <node name="Eimeldingen" ids="26968409" />
+  <node name="Binzen" ids="9323941" />
+  <node name="Kandern" ids="29145685" />
+  <node name="Kandern" ids="26969715" />
+  <node name="Lörrach-Mitte" ids="27192769" />
+  <node name="Lörrach-Mitte" ids="298896045" />
+  <node name="Müllheim / Neuenburg" ids="251929836" />
+  <node name="Müllheim / Neuenburg" ids="264884010" />
+  <node name="Hartheim / Heitersheim" ids="456324" />
+  <node name="Hartheim / Heitersheim" ids="75733133" />
+  <node name="Bad Krozingen" ids="456351" />
+  <node name="Bad Krozingen" ids="453024" />
+  <node name="Raststätte Breisgau" ids="456374" />
+  <node name="Freiburg-Süd" ids="456416" />
+  <node name="Freiburg-Süd" ids="124565240" />
+  <node name="Freiburg-Mitte" ids="522135910" />
+  <node name="Freiburg-Mitte" ids="31448392" />
+  <node name="Riegel" ids="255327322" />
+  <node name="Herbolzheim" ids="15931176" />
+  <node name="Herbolzheim" ids="82721007" />
+  <node name="Raststätte Schauinsland" ids="108284327" />
+  <node name="Freiburg-Nord" ids="2118953559" />
+  <node name="Freiburg-Nord" ids="2118959836" />
+  <node name="Teningen" ids="59669808" />
+  <node name="Teningen" ids="59672513" />
+  <node name="Riegel" ids="262526024" />
+  <node name="Gottmadingen" ids="2136750970" />
+  <node name="Hilzingen" ids="294938631" />
+  <node name="Hilzingen" ids="307858289" />
+  <node name="Singen" ids="1470072703" />
+  <node name="Singen" ids="28919500" />
+  <node name="Kreuz Hegau" ids="13048413" />
+  <node name="Kreuz Hegau" ids="50780400" />
+  <node name="Kreuz Hegau" ids="832450227" />
+  <node name="Kreuz Hegau" ids="48976461" />
+  <node name="Donaueschingen" ids="121782591" />
+  <node name="Dreieck Bad Dürrheim" ids="120339939" />
+  <node name="Geisingen" ids="28917242" />
+  <node name="Geisingen" ids="256100930" />
+  <node name="Engen" ids="256108048" />
+  <node name="Engen" ids="256108119" />
+  <node name="Im Hegau" ids="252331007" />
+  <node name="Im Hegau" ids="2104718" />
+  <node name="Rastplatz Unterhölzer Wald" ids="287219898" />
+  <node name="Rastplatz Räthisgraben" ids="430096758" />
+  <node name="Dreieck Bad Dürrheim" ids="28916258" />
+  <node name="Dreieck Bad Dürrheim" ids="27309641" />
+  <node name="Tuningen" ids="30907984" />
+  <node name="Tuningen" ids="255602460" />
+  <node name="Villingen-Schwenningen" ids="30009242" />
+  <node name="Villingen-Schwenningen" ids="255928250" />
+  <node name="Rastplatz Eschachtal" ids="27309692" />
+  <node name="Rottweil" ids="31924085" />
+  <node name="Rottweil" ids="383412394" />
+  <node name="Stockach-West" ids="301217517" />
+  <node name="Stockach-West" ids="132813893" />
+  <node name="Stockach-Ost" ids="221204206" />
+  <node name="Stockach-Ost" ids="292955681" />
+  <node name="Lindau" ids="837299299" />
+  <node name="Lindau" ids="2525086995" />
+  <node name="Lindau" ids="18157947" />
+  <node name="Lindau" ids="2110483" />
+  <node name="Sigmarszell" ids="18157729" />
+  <node name="Sigmarszell" ids="2110469" />
+  <node name="Weißensberg" ids="276278605" />
+  <node name="Weißensberg" ids="177529624" />
+  <node name="Behelfsausfahrt" ids="291421466" />
+  <node name="Wangen-West" ids="289745323" />
+  <node name="Wangen-West" ids="247872770" />
+  <node name="Wangen-Nord" ids="18118475" />
+  <node name="Wangen-Nord" ids="183782884" />
+  <node name="Kißlegg" ids="666750023" />
+  <node name="Kißlegg" ids="18110342" />
+  <node name="Wasserscheide" ids="1447878402" />
+  <node name="Wasserscheide" ids="1447878404" />
+  <node name="Leutkirch-Süd" ids="1646703177" />
+  <node name="Leutkirch-Süd" ids="1646703185" />
+  <node name="Leutkirch-West" ids="1646703197" />
+  <node name="Leutkirch-West" ids="1646703211" />
+  <node name="Aichstetten" ids="18109224" />
+  <node name="Aichstetten" ids="278547432" />
+  <node name="Rust" ids="13875745" />
+  <node name="Rust" ids="61198935" />
+  <node name="Ettenheim" ids="456538" />
+  <node name="Ettenheim" ids="108291272" />
+  <node name="Raststätte Mahlberg" ids="456549" />
+  <node name="Raststätte Mahlberg" ids="452859" />
+  <node name="Lahr" ids="32863790" />
+  <node name="Lahr" ids="265164049" />
+  <node name="Rastplatz Schutter" ids="264576306" />
+  <node name="Rastplatz Unditz" ids="269273816" />
+  <node name="Offenburg" ids="456611" />
+  <node name="Offenburg" ids="14917071" />
+  <node name="Appenweier" ids="456636" />
+  <node name="Appenweier" ids="2756338846" />
+  <node name="Raststätte Renchtal" ids="456649" />
+  <node name="Raststätte Renchtal" ids="13888659" />
+  <node name="Achern" ids="456680" />
+  <node name="Achern" ids="452722" />
+  <node name="Bühl" ids="74978265" />
+  <node name="Bühl" ids="503048382" />
+  <node name="Raststätte Bühl" ids="264582645" />
+  <node name="Baden-Baden" ids="456759" />
+  <node name="Baden-Baden" ids="469556" />
+  <node name="Raststätte Baden-Baden" ids="122483958" />
+  <node name="Raststätte Baden-Baden" ids="25578788" />
+  <node name="Rastatt-Süd" ids="260170024" />
+  <node name="Rastatt-Süd" ids="260170389" />
+  <node name="Rastatt-Nord" ids="452629" />
+  <node name="Rastatt-Nord" ids="456800" />
+  <node name="Karlsruhe-Süd" ids="456864" />
+  <node name="Karlsruhe-Süd" ids="1677677307" />
+  <node name="Kandel-Süd" ids="84736863" />
+  <node name="Kandel-Süd" ids="84736910" />
+  <node name="Kandel-Mitte" ids="149722936" />
+  <node name="Kandel-Mitte" ids="300428211" />
+  <node name="Wörth-Dorschberg" ids="105761643" />
+  <node name="Wörth-Dorschberg" ids="105761745" />
+</nodes>
