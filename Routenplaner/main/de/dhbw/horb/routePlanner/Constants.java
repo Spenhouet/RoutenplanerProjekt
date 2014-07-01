@@ -18,7 +18,6 @@ public interface Constants {
 	public final static String NODE_ID = "id";
 	public final static String NODE_LATITUDE = "lat";
 	public final static String NODE_LONGITUDE = "lon";
-	
 	public final static String NODE_TAG_NAME = "name";
 
 	public final static String WAY = "way";
@@ -26,12 +25,10 @@ public interface Constants {
 	public final static String WAY_NODE = "nd";
 	public final static String WAY_REF = "ref";
 	public final static String WAY_TAG = "tag";
-	public final static String WAY_DISTANCE = "distance";
 	public final static String WAY_MAXSPEED = "maxspeed";
 	public final static String WAY_HIGHWAY = "highway";
 	public final static String WAY_MOTORWAY_JUNCTION = "motorway_junction";
 	public final static String WAY_MOTORWAY_LINK = "motorway_link";
-	public final static String WAY_EXIT_TO = "exit_to";
 	
 	public final static String NEW_NODE = "node";
 	public final static String NEW_NODE_S = "nodes";
@@ -42,15 +39,11 @@ public interface Constants {
 	
 	public final static String NEW_ROUTE = "route";
 	public final static String NEW_ROUTE_S = "routes";
-	public final static String NEW_ROUTE_WAY = "way";
-	public final static String NEW_ROUTE_WAYS = "ways";
-	public final static String NEW_ROUTE_DEPARTUREID = "departureID";
+	public final static String NEW_ROUTE_NUMBER = "nr";
+	public final static String NEW_ROUTE_WAYIDS = "wayIDs";
 	public final static String NEW_ROUTE_DISTANCE = "distance";
-	public final static String NEW_ROUTE_TIME = "time";
+	public final static String NEW_ROUTE_DURATION = "duration";
+	public final static String NEW_ROUTE_DEPARTURENODEID = "departureNodeID";
 	public final static String NEW_ROUTE_DESTINATIONNODEID = "destinationNodeID";
-	public final static String NEW_ROUTE_ID = "id";
-	public final static String NEW_ROUTE_MAXSPEED = "maxspeed";
-	
-	
 
 }

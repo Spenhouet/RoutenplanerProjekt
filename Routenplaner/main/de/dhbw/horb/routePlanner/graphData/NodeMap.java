@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.dhbw.horb.routePlanner.Constants;
+import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class NodeMap {
 
@@ -35,16 +36,8 @@ public class NodeMap {
 		String key = nodes.keySet().iterator().next();
 
 		node.put(Constants.NEW_NODE_NAME, key);
-		node.put(Constants.NEW_NODE_ID, removeIDsAsCommaString(key));
+		node.put(Constants.NEW_NODE_ID, SupportMethods.strListToCommaStr(nodes.remove(key)));
 
 		return node;
-	}
-
-	private String removeIDsAsCommaString(String key) {
-		String value = "";
-		for (String i : nodes.remove(key)) {
-			value += value.isEmpty() ? i : "," + i;
-		}
-		return value;
 	}
 }
