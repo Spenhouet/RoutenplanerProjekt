@@ -3,97 +3,71 @@ package de.dhbw.horb.routePlanner.graphData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Klasse die eine Strecke repräsentiert.
- * 
- * @author Sebastian
- * @param start
- *            Der Knoten an dem die Strecke beginnt.
- * @param end
- *            Der Knoten an dem die Strecke aufhört.
- * @param length
- *            Die gesamt länge der Strecke.
- * @param nodeAndEdge
- *            Liste die immer abwechselnd aus Knoten und Kanten besteht.
- */
+import de.dhbw.horb.routePlanner.SupportMethods;
+
 public class Route {
 
-	private Node start;
-	private Node end;
-	private int length = 0;
-	private List<Object> nodeAndEdge;
-	private Boolean nodeAddAble = true;
-	private Boolean edgeAddAble = false;
+	private String number = null;
 
-	/**
-	 * Konstruktor der Strecke.
-	 * 
-	 * @param node
-	 *            Der Knoten bei dem die Strecke beginnt.
-	 */
-	public Route(Node node) {
-		nodeAndEdge = new ArrayList<Object>();
-		start = node;
-		addNode(node);
-		//TODO überarbeiten für nur Wege
+	private String departureNodeID = null;
+	private String destinationNodeID = null;
+
+	private List<String> wayIDs;
+
+	private Node lastNode = null;
+
+	private Long durationInSeconds = 0L;
+	private Double distance = 0.0;
+	private Double newDistance = 0.0;
+
+	public Route(Node departureNode) {
+		wayIDs = new ArrayList<String>();
+		this.departureNodeID = departureNode.getId();
+		lastNode = departureNode;
 	}
 
-	/**
-	 * Ein Knoten wird zur Strecke hinzugefügt. Wenn als letztes eine Kante
-	 * hinzugefügt wurde, lässt sich nun ein Knoten hinzufügen.
-	 * 
-	 * @param node
-	 *            Ein neuer Knoten wird an das Ende der Strecke gehängt.
-	 */
-	public void addNode(Node node) {
-		if (nodeAddAble) {
-			nodeAndEdge.add(node);
-			end = node;
-		} else {
-			// TODO: Exception wenn versucht wird ein Knoten nach einem Knoten
-			// anzuhängen?
-		}
-
-		switchBlock();
+	public void addNode(Node nextNode) {
+		departureNodeID = nextNode.getId();
+		newDistance = SupportMethods.fromLatLonToDistanceInKM(lastNode, nextNode);
 	}
 
-	/*
-	 * Eine Kante wird zur Strecke hinzugefügt.
-	 * 
-	 * @param length Eine neue Kante verlängert die Strecke.
-	 */
-	public void addEdge(Way edge) {
-		if (edgeAddAble) {
-			nodeAndEdge.add(edge);
-			// length += edge.getLength();
-			// TODO
-		} else {
-			// TODO: Exception wenn versucht wird eine Kante nach einer Kante
-			// anzuhängen?
-		}
+	public void finalizeWay(String wayID, String nr, int speed) {
 
-		switchBlock();
+		if (wayID == null)
+			return;
+
+		if (number == null && nr != null)
+			number = nr;
+
+		wayIDs.add(wayID);
+
+		durationInSeconds += SupportMethods.fromDistanceAndSpeedToSeconds(newDistance, speed);
+
+		distance += newDistance;
+		newDistance = 0.0;
 	}
 
-	private void switchBlock() {
-		nodeAddAble = !nodeAddAble;
-		edgeAddAble = !edgeAddAble;
+	public String getWayIDsAsCommaString() {
+		return SupportMethods.strListToCommaStr(wayIDs);
 	}
 
-	public Node getSource() {
-		return start;
+	public String getNumber() {
+		return number;
 	}
 
-	public Node getTarget() {
-		return end;
+	public String getDepartureNodeID() {
+		return departureNodeID;
 	}
 
-	public int getLength() {
-		return length;
+	public String getDestinationNodeID() {
+		return destinationNodeID;
 	}
 
-	public int getNodeAndEdgeCount() {
-		return nodeAndEdge.size();
+	public Long getDurationInSeconds() {
+		return durationInSeconds;
 	}
 
+	public Double getDistance() {
+		return distance;
+	}
 }

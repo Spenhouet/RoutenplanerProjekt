@@ -1,13 +1,5 @@
 <routes>
-	<route departureID="" distance="" time="" destinationNodeID="">
-		<ways>
-			<way id="" distance="" maxspeed=""/>
-			<way id="" distance="" maxspeed=""/>
-			.
-			.
-			.
-		</ways>
-	</route>
+	<route departureNodeID="" distance="" duration="" destinationNodeID="" wayIDs="34498578,3459834,43507438,34590309" nr="A 8"/>
 	.
 	.
 	.

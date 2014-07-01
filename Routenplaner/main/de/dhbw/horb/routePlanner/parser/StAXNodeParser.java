@@ -3,13 +3,13 @@ package de.dhbw.horb.routePlanner.parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
 import de.dhbw.horb.routePlanner.Constants;
+import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXNodeParser {
 
@@ -47,7 +47,8 @@ public class StAXNodeParser {
 		} catch (NumberFormatException | XMLStreamException e) {
 			e.printStackTrace();
 		}
-
+		
+		close();
 		return names;
 	}
 
@@ -57,7 +58,7 @@ public class StAXNodeParser {
 			if (graphSR.nextStartElement() && graphSR.isNode()) {
 
 				String commaIDs = graphSR.getAttributeValue(Constants.NEW_NODE_IDS);
-				List<String> ids = new ArrayList<String>(Arrays.asList(commaIDs.split(",")));
+				List<String> ids = SupportMethods.commaStrToStrList(commaIDs);
 
 				if (ids.size() > Constants.NEW_NODE_MAX_IDS)
 					return null;
@@ -78,5 +79,13 @@ public class StAXNodeParser {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void close(){
+		try {
+			graphSR.close();
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+		}
 	}
 }

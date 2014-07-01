@@ -7,7 +7,7 @@ package de.dhbw.horb.routePlanner.graphData;
  */
 public class Node {
 
-	private Long id;
+	private String id;
 	private Double latitude;
 	private Double longitude;
 
@@ -21,9 +21,8 @@ public class Node {
 	 * @param longitude
 	 *            Längengrad auf dem sich der Knoten befindet.
 	 */
-	public Node(Long id, Double latitude, Double longitude) {
-
-		setID(id);
+	public Node(String id, Double latitude, Double longitude) {
+		setId(id);
 		setLatitude(latitude);
 		setLongitude(longitude);
 	}
@@ -32,7 +31,7 @@ public class Node {
 		return latitude;
 	}
 
-	public void setLatitude(Double latitude) {
+	private void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
@@ -40,16 +39,15 @@ public class Node {
 		return longitude;
 	}
 
-	public void setLongitude(Double longitude) {
+	private void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public Long getID() {
+	public String getId() {
 		return id;
 	}
 
-	public void setID(Long id) {
+	private void setId(String id) {
 		this.id = id;
 	}
-
 }
