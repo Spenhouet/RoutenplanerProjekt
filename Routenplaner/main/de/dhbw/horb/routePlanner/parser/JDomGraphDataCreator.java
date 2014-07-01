@@ -74,7 +74,7 @@ public class JDomGraphDataCreator {
 				xmlDocGraphData = builder.build(new File(Constants.XML_GRAPHDATA));
 				rootGraphData = xmlDocGraphData.getRootElement();
 				listNodes = rootGraphData.getChildren(Constants.NODE);
-				// listWay = rootGraphData.getChildren("way");
+				listWay = rootGraphData.getChildren("way");
 			}
 
 		} catch (JDOMException | IOException e) {
@@ -92,56 +92,77 @@ public class JDomGraphDataCreator {
 
 	public void createRouteXML() {
 
+		int count= 0;
+		
+		StAXNodeParser np = StAXNodeParser.getStAXNodeParser();
+		
+		while (np.hasNext()) {
+
+			List<String> ids = np.getNextNodeIDs();
+			if (ids == null)
+				continue;
+			for (String id : ids) {
+				//TODO Routen anlegen und rekursiv verfolgen. (MT)
+				System.out.println(id.trim());
+				count++;
+			}
+
+		}
+		System.out.println("Count ="+count);
+
 	}
 
 	// TODO kein Update sondern neue Datei.
-	public void updateWays() {
-
-		try {
-			for (int i = 0; i < listWay.size(); i++) {
-				if ((i % 1000) == 0)
-					outp.output(xmlDocGraphData, new FileOutputStream(new File(Constants.XML_GRAPHDATA)));
-
-				Element elWay = (Element) (listWay.get(i));
-
-				if (null == elWay)
-					continue;
-
-				String distance = elWay.getAttributeValue(Constants.WAY_DISTANCE);
-				String maxspeed = elWay.getAttributeValue(Constants.WAY_MAXSPEED);
-				String ref = elWay.getAttributeValue(Constants.WAY_REF);
-				Boolean isLink = false;
-
-				if (distance != null && maxspeed != null && ref != null)
-					continue;
-
-				List<Element> listTag = elWay.getChildren(Constants.WAY_TAG);
-
-				isLink = isLink(listTag);
-
-				if (!isLink && distance == null)
-					elWay.setAttribute(Constants.WAY_DISTANCE, getDistanceFromWay(elWay).toString());
-
-				if (!isLink && maxspeed == null)
-					elWay.setAttribute(Constants.WAY_MAXSPEED, getMaxSpeed(listTag));
-
-				if (!isLink && ref == null)
-					elWay.setAttribute(Constants.WAY_REF, getRef(listTag));
-
-				if (isLink) {
-					deleteWay(listWay, i);
-					i--;
-				} else {
-					deleteAllTags(listTag);
-				}
-			}
-
-			outp.output(xmlDocGraphData, new FileOutputStream(new File(Constants.XML_GRAPHDATA)));
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+	// public void updateWays() {
+	//
+	// try {
+	// for (int i = 0; i < listWay.size(); i++) {
+	// if ((i % 1000) == 0)
+	// outp.output(xmlDocGraphData, new FileOutputStream(new
+	// File(Constants.XML_GRAPHDATA)));
+	//
+	// Element elWay = (Element) (listWay.get(i));
+	//
+	// if (null == elWay)
+	// continue;
+	//
+	// String distance = elWay.getAttributeValue(Constants.WAY_DISTANCE);
+	// String maxspeed = elWay.getAttributeValue(Constants.WAY_MAXSPEED);
+	// String ref = elWay.getAttributeValue(Constants.WAY_REF);
+	// Boolean isLink = false;
+	//
+	// if (distance != null && maxspeed != null && ref != null)
+	// continue;
+	//
+	// List<Element> listTag = elWay.getChildren(Constants.WAY_TAG);
+	//
+	// isLink = isLink(listTag);
+	//
+	// if (!isLink && distance == null)
+	// elWay.setAttribute(Constants.WAY_DISTANCE,
+	// getDistanceFromWay(elWay).toString());
+	//
+	// if (!isLink && maxspeed == null)
+	// elWay.setAttribute(Constants.WAY_MAXSPEED, getMaxSpeed(listTag));
+	//
+	// if (!isLink && ref == null)
+	// elWay.setAttribute(Constants.WAY_REF, getRef(listTag));
+	//
+	// if (isLink) {
+	// deleteWay(listWay, i);
+	// i--;
+	// } else {
+	// deleteAllTags(listTag);
+	// }
+	// }
+	//
+	// outp.output(xmlDocGraphData, new FileOutputStream(new
+	// File(Constants.XML_GRAPHDATA)));
+	//
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	// }
 
 	private void deleteAllTags(List<Element> tags) {
 		while (!tags.isEmpty()) {

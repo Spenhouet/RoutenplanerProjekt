@@ -3,6 +3,7 @@ package de.dhbw.horb.routePlanner.parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
@@ -48,5 +49,34 @@ public class StAXNodeParser {
 		}
 
 		return names;
+	}
+
+	public List<String> getNextNodeIDs() {
+
+		try {
+			if (graphSR.nextStartElement() && graphSR.isNode()) {
+
+				String commaIDs = graphSR.getAttributeValue(Constants.NEW_NODE_IDS);
+				List<String> ids = new ArrayList<String>(Arrays.asList(commaIDs.split(",")));
+
+				if (ids.size() > Constants.NEW_NODE_MAX_IDS)
+					return null;
+
+				return ids;
+			}
+		} catch (NumberFormatException | XMLStreamException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Boolean hasNext() {
+
+		try {
+			return graphSR.hasNext();
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -38,6 +38,7 @@ public interface Constants {
 	public final static String NEW_NODE_IDS = "ids";
 	public final static String NEW_NODE_ID = "id";
 	public final static String NEW_NODE_NAME = "name";
+	public final static int NEW_NODE_MAX_IDS = 15;
 	
 	public final static String NEW_ROUTE = "route";
 	public final static String NEW_ROUTE_S = "routes";
