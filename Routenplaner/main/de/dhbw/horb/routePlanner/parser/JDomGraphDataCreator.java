@@ -102,43 +102,68 @@ public class JDomGraphDataCreator {
 
 	private void createRoute(String startID) {
 
-		Route rm = new Route(removeNode(startID));
+		Node node = removeNode(startID);
+		Route rm = new Route(node);
+		String id = startID;
+		Boolean isEnd = false;
+		
 
-		Element elWay = getWayContainsNodeID(startID);
+		while (!isEnd) {
+			for (int x = 0; x < listWay.size(); x++) {
+				Element elWay = (Element) (listWay.get(x));
+				if (elWay == null)
+					continue;
 
-		// Node nd = removeNode(startID);
-	}
+				String highway = getTagValue(elWay, Constants.WAY_HIGHWAY);
+				if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK))
+					listWay.remove(x);
 
-	private Element getWayContainsNodeID(String id) {
+				Boolean rightWay = false;
+				List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
+				for (int y = 0; y < listNode.size(); y++) {
+					Element nd = listNode.get(y);
+					if (nd.getAttributeValue(Constants.WAY_REF).trim().equals(id)) {
+						
 
-		for (int x = 0; x < listWay.size(); x++) {
-			Element elWay = (Element) (listWay.get(x));
-			if (elWay == null)
-				continue;
+					}
 
-			if (isLink(elWay))
-				listWay.remove(x);
-
-			List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
-			for (int y = 0; y < listNode.size(); y++)
-				if (listNode.get(y).getAttributeValue(Constants.WAY_REF).trim().equals(id))
-					return elWay;
+					if(!((y+1)< listNode.size())) continue;
+					
+					
+					
+					// Hier Weg gefunden
+					
+//					node = removeNode(id)
+//					 getTagValue(nd
+					
+				}
+			}
 		}
-
+	}
+	
+	//Rekursive lösung für Route berechnen
+	private Node doWay(Route rm, String id){
+		
+		
+		
+		
+		
+		
+		
+		
 		return null;
 	}
 
-	private Boolean isLink(Element elWay) {
+	private String getTagValue(Element elWay, String k) {
 		List<Element> tags = elWay.getChildren(Constants.WAY_TAG);
 		for (int i = 0; i < tags.size(); i++) {
 			Element elTag = (Element) (tags.get(i));
 			if (elTag == null)
 				continue;
-			String highway = getAttributeValueForK(elTag, Constants.WAY_HIGHWAY);
-			if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK))
-				return true;
+			return getAttributeValueForK(elTag, k);
+
 		}
-		return false;
+		return null;
 	}
 
 	private Node removeNode(String id) {
