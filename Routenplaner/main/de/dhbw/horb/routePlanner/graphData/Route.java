@@ -1,6 +1,6 @@
 package de.dhbw.horb.routePlanner.graphData;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.dhbw.horb.routePlanner.SupportMethods;
@@ -21,7 +21,7 @@ public class Route {
 	private Double newDistance = 0.0;
 
 	public Route(Node departureNode) {
-		wayIDs = new ArrayList<String>();
+		wayIDs = new LinkedList<String>();
 		this.departureNodeID = departureNode.getId();
 		lastNode = departureNode;
 	}
