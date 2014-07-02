@@ -10,6 +10,8 @@ public class MockUp {
 		JDomGraphDataCreator dom = new JDomGraphDataCreator();
 		dom.createNewXMLFiles();
 		
+		
+		
 	}
 
 }
