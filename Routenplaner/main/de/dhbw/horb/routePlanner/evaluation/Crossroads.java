@@ -12,10 +12,26 @@ import java.util.List;
  */
 public class Crossroads {
 
-	private int coast;
+	private int price;
 	private List<String> ids = new ArrayList<String>();
-	
-	public Crossroads(List<String> ids){
+
+	public Crossroads() {
+
+	}
+
+	public Crossroads(List<String> ids) {
 		this.ids = ids;
+	}
+	
+	public List<String> getIds(){
+		return ids;
+	}
+	
+	public void setPrice(int price){
+		this.price = price;
+	}
+	
+	public int getPrice(){
+		return price;
 	}
 }
