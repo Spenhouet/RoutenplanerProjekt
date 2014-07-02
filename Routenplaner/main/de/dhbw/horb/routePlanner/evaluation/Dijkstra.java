@@ -13,18 +13,30 @@ public class Dijkstra {
 
 	private Crossroads startnode;
 	private Crossroads endnode;
-	private String nearestNode;
-	private String[] nodePrice;
+	private Crossroads nearestNode;
 	private boolean targetReached;
+	private List<String> nodePrice = new ArrayList<String>();
 	private List<Crossroads> prioQue = new ArrayList<Crossroads>();
 	private List<Crossroads> goneNodes = new ArrayList<Crossroads>();
 	private List<Crossroads> cheapNeighbours = new ArrayList<Crossroads>();
-	
-	
-	public Dijkstra(List<String> startnode, List<String> endnode){
+	private Paths paths;
+
+	public Dijkstra(List<String> startnode, List<String> endnode) {
 		this.startnode = new Crossroads(startnode);
 		this.endnode = new Crossroads(endnode);
-		
+		this.nearestNode = new Crossroads();
+		paths = new Paths(this.startnode, this.endnode);
+		paths.add(new Way(this.startnode, this.endnode));
+	}
+
+	public void calculatingRoute() {
+		while (!targetReached){
+			calcNewNodePrices(nearestNode);
+		}
 	}
 	
+	private void calcNewNodePrices(Crossroads initialNode){
+		
+	}
+
 }
