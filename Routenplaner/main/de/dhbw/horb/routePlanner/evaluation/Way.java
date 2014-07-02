@@ -16,6 +16,12 @@ public class Way {
 	private int price;
 	private List<Crossroads> nodes = new ArrayList<Crossroads>();
 
+	public Way(Crossroads startnode, Crossroads endnode) {
+		setStartnode(startnode);
+		setEndnode(endnode);
+		nodes.add(startnode);
+	}
+	
 	public Way(Crossroads startnode, Crossroads endnode, List<Crossroads> nodes, int gonePrice, Crossroads newNode,
 			int newPrice) {
 		setStartnode(startnode);
