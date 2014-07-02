@@ -27,7 +27,7 @@ public class Route {
 	}
 
 	public void addNode(Node nextNode) {
-		departureNodeID = nextNode.getId();
+		destinationNodeID = nextNode.getId();
 		newDistance = SupportMethods.fromLatLonToDistanceInKM(lastNode, nextNode);
 	}
 
@@ -36,8 +36,7 @@ public class Route {
 		if (wayID == null)
 			return;
 
-		if (number == null && nr != null)
-			number = nr;
+		number = nr;
 
 		wayIDs.add(wayID);
 

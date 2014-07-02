@@ -111,7 +111,7 @@ public class JDomGraphDataCreator {
 		Element rootNewRoute = xmlDocRoutes.getRootElement();
 
 		Element newRoute = new Element(Constants.NEW_ROUTE);
-		;
+		
 		newRoute.setAttribute(new Attribute(
 				Constants.NEW_ROUTE_DEPARTURENODEID, rm.getDepartureNodeID()));
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, rm
@@ -123,8 +123,8 @@ public class JDomGraphDataCreator {
 						.getDestinationNodeID()));
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, rm
 				.getWayIDsAsCommaString()));
-		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_NUMBER, rm
-				.getNumber()));
+//		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_NUMBER, rm
+//				.getNumber()));
 
 		rootNewRoute.addContent(newRoute);
 
@@ -141,21 +141,21 @@ public class JDomGraphDataCreator {
 		if (rm == null)
 			return;
 
+		String lastID = null;
+		Boolean rightWay = false;
+		Element elWay = null;
 		for (int x = 0; x < listWay.size(); x++) {
-			Element elWay = (Element) (listWay.get(x));
+			elWay = (Element) (listWay.get(x));
 			if (elWay == null)
 				continue;
 
-			String highway = getTagValue(elWay, Constants.WAY_HIGHWAY);
-			if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK))
-				listWay.remove(x);
+//			String highway = getTagValue(elWay, Constants.WAY_HIGHWAY);
+//			if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK))
+//				listWay.remove(x);
 
-			String lastID = null;
-			Boolean rightWay = false;
 			List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
 			for (int y = 0; y < listNode.size(); y++) {
-				Element nd = listNode.get(y);
-				String ndID = nd.getAttributeValue(Constants.WAY_REF);
+				String ndID = listNode.get(y).getAttributeValue(Constants.WAY_REF);
 				if (!rightWay && ndID != null && ndID.trim().equals(id))
 					rightWay = true;
 
@@ -168,15 +168,27 @@ public class JDomGraphDataCreator {
 				Node n = removeNode(ndID);
 				lastID = n.getId();
 				rm.addNode(n);
+				
+				
 			}
-			if (rightWay && lastID != null) {
+			break;
+		}
+		
+		if (rightWay && lastID != null && elWay != null) {
+			
+			String wayID = elWay.getAttributeValue(Constants.WAY_ID);
+			String nr = getAttributeValueForK(elWay, Constants.WAY_REF);
+			String maxspeed = getAttributeValueForK(elWay, Constants.WAY_MAXSPEED);
+			if(maxspeed == null || maxspeed == "" || maxspeed == "none")
+				maxspeed = "120";
+			
+			int speed = Integer.valueOf(maxspeed);
+			
+			rm.finalizeWay(wayID, nr, speed);
+			doWay(lastID);
 
-				doWay(lastID);
-				break;
-			}
 		}
 
-		return;
 	}
 
 	private String getTagValue(Element elWay, String k) {
