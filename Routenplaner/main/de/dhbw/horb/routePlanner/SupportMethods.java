@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.dhbw.horb.routePlanner.graphData.Node;
-
 public class SupportMethods {
-	public static Long fromDistanceAndSpeedToSeconds(Double distance, int speed) {
-		return minutesToSeconds(hoursToMinutes((distance/speed))).longValue();
+	public static Long fromDistanceAndSpeedToMilliseconds(Double distance, int speed) {
+		return secondsToMilliseconds(minutesToSeconds(hoursToMinutes((distance/speed)))).longValue();
 	}
 	
 	public static Double daysToHours(Double days){
@@ -24,6 +22,10 @@ public class SupportMethods {
 		return (minutes*60.0);		
 	}
 	
+	public static Double secondsToMilliseconds(Double seconds){
+		return (seconds*1000.0);		
+	}
+	
 	public static Double secondsToMinutes(Double seconds){
 		return (seconds/60.0);		
 	}
@@ -36,16 +38,20 @@ public class SupportMethods {
 		return (hours/24.0);		
 	}
 	
-	public static double fromLatLonToDistanceInKM(Node start, Node end) {
+	public static Double millisecondsToSeconds(Double milliseconds){
+		return (milliseconds/1000.0);		
+	}
+	
+	public static double fromLatLonToDistanceInKM(Double lat1, Double lon1, Double lat2, Double lon2) {
 
-		if (start == null || end == null)
+		if (lat1 == null || lon1 == null || lat2 == null || lon2 == null)
 			return 0.0;
 
 		int R = 6371;
-		double phi1 = degreesToRadians(start.getLatitude());
-		double phi2 = degreesToRadians(end.getLatitude());
-		double deltaPhi = degreesToRadians(end.getLatitude() - start.getLatitude());
-		double deltaLambda = degreesToRadians(end.getLongitude() - start.getLongitude());
+		double phi1 = degreesToRadians(lat1);
+		double phi2 = degreesToRadians(lat2);
+		double deltaPhi = degreesToRadians(lat2 - lat1);
+		double deltaLambda = degreesToRadians(lon2 - lon1);
 
 		double a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2)
 				* Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);

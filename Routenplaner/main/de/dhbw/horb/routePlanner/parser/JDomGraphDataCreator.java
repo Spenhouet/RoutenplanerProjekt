@@ -15,7 +15,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import de.dhbw.horb.routePlanner.Constants;
-import de.dhbw.horb.routePlanner.graphData.Node;
 import de.dhbw.horb.routePlanner.graphData.NodeMap;
 import de.dhbw.horb.routePlanner.graphData.Route;
 
@@ -31,6 +30,7 @@ public class JDomGraphDataCreator {
 	private Boolean nodesXMLfileExists = false;
 	private Boolean routesXMLfileExists = false;
 	private Route rm;
+	private DomMapNodeParser nodeMapDom;
 
 	public JDomGraphDataCreator() {
 		try {
@@ -88,6 +88,7 @@ public class JDomGraphDataCreator {
 
 	public void createRouteXML() {
 
+		nodeMapDom = new DomMapNodeParser();
 		StAXNodeParser np = StAXNodeParser.getStAXNodeParser();
 
 		while (np.hasNext()) {
@@ -103,8 +104,12 @@ public class JDomGraphDataCreator {
 
 	private void createRoute(String startID) {
 
-		Node node = removeNode(startID, false);
-		rm = new Route(node);
+		Map<String, String> nmd = nodeMapDom.getNode(startID);
+
+		if(nmd == null) return;
+
+		rm = new Route(startID, Double.valueOf(nmd.get(Constants.NODE_LATITUDE)),
+				Double.valueOf(nmd.get(Constants.NODE_LONGITUDE)));
 		doWay(startID);
 
 		Element rootNewRoute = xmlDocRoutes.getRootElement();
@@ -112,7 +117,7 @@ public class JDomGraphDataCreator {
 		Element newRoute = new Element(Constants.NEW_ROUTE);
 
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODEID, rm.getDepartureNodeID()));
-		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, rm.getDestinationNodeID()));
+		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, rm.getDistance().toString()));
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION, rm.getDurationInSeconds().toString()));
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DESTINATIONNODEID, rm.getDestinationNodeID()));
 		newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, rm.getWayIDsAsCommaString()));
@@ -143,21 +148,29 @@ public class JDomGraphDataCreator {
 
 			List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
 			for (int y = 0; y < listNode.size(); y++) {
+				
 				String ndID = listNode.get(y).getAttributeValue(Constants.WAY_REF);
-				if (ndID != null && ndID.trim().equals(id))
+				if (ndID != null && ndID.trim().equals(id)){
 					rightWay = true;
+					
+					if (y == 0) {
+						listWay.remove(x);
+						x--;
+					}
+					
+					continue;
+				}
 
 				if (!rightWay)
 					continue;
 
-				if (y == 0) {
-					listWay.remove(x);
-					x--;
-				}
+				Map<String, String> nmd = nodeMapDom.getNode(ndID);
 
-				Node n = removeNode(ndID, (y>0 && y<(listNode.size()-1)));
-				lastID = n.getId();
-				rm.addNode(n);
+				if(nmd == null) continue;
+				
+				lastID = ndID;
+				rm.addNode(ndID, Double.valueOf(nmd.get(Constants.NODE_LATITUDE)),
+						Double.valueOf(nmd.get(Constants.NODE_LONGITUDE)));
 
 			}
 			if (rightWay)
@@ -179,40 +192,6 @@ public class JDomGraphDataCreator {
 
 		}
 
-	}
-
-	// private String getTagValue(Element elWay, String k) {
-	// List<Element> tags = elWay.getChildren(Constants.WAY_TAG);
-	// for (int i = 0; i < tags.size(); i++) {
-	// Element elTag = (Element) (tags.get(i));
-	// if (elTag == null)
-	// continue;
-	// return getAttributeValueForK(elTag, k);
-	//
-	// }
-	// return null;
-	// }
-
-	private Node removeNode(String id, Boolean canBeRemoved) {
-
-		for (int x = 0; x < listNodes.size(); x++) {
-			Element elNode = (Element) (listNodes.get(x));
-			if (elNode == null)
-				continue;
-
-			if (elNode.getAttributeValue(Constants.NODE_ID).equals(id)) {
-				Node back = new Node(id, Double.valueOf(elNode.getAttributeValue(Constants.NODE_LATITUDE)),
-						Double.valueOf(elNode.getAttributeValue(Constants.NODE_LONGITUDE)));
-
-				if (canBeRemoved && getAttributeValueForK(elNode, Constants.NODE_TAG_NAME) == null) {
-					listNodes.remove(x);
-					x--;
-				}
-
-				return back;
-			}
-		}
-		return null;
 	}
 
 	public void createNodeXML() {
