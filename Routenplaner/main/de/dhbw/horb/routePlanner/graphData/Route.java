@@ -1,8 +1,11 @@
 package de.dhbw.horb.routePlanner.graphData;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class Route {
@@ -14,21 +17,31 @@ public class Route {
 
 	private List<String> wayIDs;
 
-	private Node lastNode = null;
+	private Map<String, Object> lastNode = null;
 
-	private Long durationInSeconds = 0L;
+	private Long durationInMilliseconds = 0L;
 	private Double distance = 0.0;
 	private Double newDistance = 0.0;
 
-	public Route(Node departureNode) {
+	public Route(String id, Double lat, Double lon) {
+		lastNode = new HashMap<String, Object>();
 		wayIDs = new LinkedList<String>();
-		this.departureNodeID = departureNode.getId();
-		lastNode = departureNode;
+		this.departureNodeID = id;
+		lastNode.put(Constants.NODE_ID, id);
+		lastNode.put(Constants.NODE_LATITUDE, lat);
+		lastNode.put(Constants.NODE_LONGITUDE, lon);
 	}
 
-	public void addNode(Node nextNode) {
-		destinationNodeID = nextNode.getId();
-		newDistance = SupportMethods.fromLatLonToDistanceInKM(lastNode, nextNode);
+	public void addNode(String id, Double lat, Double lon) {
+		destinationNodeID = id;
+		newDistance = SupportMethods
+				.fromLatLonToDistanceInKM((Double)lastNode.get(Constants.NODE_LATITUDE), (Double)lastNode.get(Constants.NODE_LONGITUDE), lat, lon);
+		if (!((String)lastNode.get(Constants.NODE_ID)).equals(id)){
+			lastNode = new HashMap<String, Object>();
+			lastNode.put(Constants.NODE_ID, id);
+			lastNode.put(Constants.NODE_LATITUDE, lat);
+			lastNode.put(Constants.NODE_LONGITUDE, lon);
+		}
 	}
 
 	public void finalizeWay(String wayID, String nr, int speed) {
@@ -40,7 +53,7 @@ public class Route {
 
 		wayIDs.add(wayID);
 
-		durationInSeconds += SupportMethods.fromDistanceAndSpeedToSeconds(newDistance, speed);
+		durationInMilliseconds += SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance, speed);
 
 		distance += newDistance;
 		newDistance = 0.0;
@@ -63,7 +76,7 @@ public class Route {
 	}
 
 	public Long getDurationInSeconds() {
-		return durationInSeconds;
+		return SupportMethods.millisecondsToSeconds(durationInMilliseconds.doubleValue()).longValue();
 	}
 
 	public Double getDistance() {
