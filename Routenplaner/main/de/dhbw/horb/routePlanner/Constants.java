@@ -18,7 +18,10 @@ public interface Constants {
 	public final static String NODE_ID = "id";
 	public final static String NODE_LATITUDE = "lat";
 	public final static String NODE_LONGITUDE = "lon";
-	public final static String NODE_TAG_NAME = "name";
+	public final static String NODE_TAG = "name";
+	public final static String NODE_NAME = "name";
+	public final static String NODE_HIGHWAY = "highway";
+	public final static String NODE_MOTORWAY_JUNCTION = "motorway_junction";
 
 	public final static String WAY = "way";
 	public final static String WAY_ID = "id";
@@ -27,7 +30,7 @@ public interface Constants {
 	public final static String WAY_TAG = "tag";
 	public final static String WAY_MAXSPEED = "maxspeed";
 	public final static String WAY_HIGHWAY = "highway";
-	public final static String WAY_MOTORWAY_JUNCTION = "motorway_junction";
+	public final static String WAY_MOTORWAY = "motorway";
 	public final static String WAY_MOTORWAY_LINK = "motorway_link";
 	
 	public final static String NEW_NODE = "node";

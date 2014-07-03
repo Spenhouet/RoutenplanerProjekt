@@ -8,16 +8,13 @@ import de.dhbw.horb.routePlanner.Constants;
 
 public class GraphDataStreamReader extends StreamReaderDelegate {
 
-	public GraphDataStreamReader(XMLStreamReader streamReader)
-			throws XMLStreamException {
+	public GraphDataStreamReader(XMLStreamReader streamReader) throws XMLStreamException {
 		super(streamReader);
 	}
-	
+
 	public boolean isNode() {
-		if (getLocalName().trim().equals(Constants.NODE)
-				|| getLocalName().trim().equals(
-						Constants.WAY_NODE)|| getLocalName().trim().equals(
-								Constants.NEW_NODE))
+		if (getLocalName().trim().equals(Constants.NODE) || getLocalName().trim().equals(Constants.WAY_NODE)
+				|| getLocalName().trim().equals(Constants.NEW_NODE))
 			return true;
 		return false;
 	}
@@ -47,8 +44,26 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 		for (int x = 0; x < getAttributeCount(); x++)
 			if (getAttributeLocalName(x).trim().equals(AttributeLocalName))
 				return getAttributeValue(x);
-		
+
 		return null;
 	}
+
+//	TODO wieder weg wenn nicht benötigt;
+//	public String getAttributeKV(String endElement, String k) throws XMLStreamException {
+//		String v = null;
+//		while (hasNext()) {
+//			int type = next();
+//			if (type != END_ELEMENT && !getLocalName().equals(endElement)) {
+//				if(getLocalName().equals(Constants.NODE_TAG))
+//				
+//				
+//				
+//				return v;
+//			} else {
+//				return v;
+//			}
+//		}
+//		return v;
+//	}
 
 }
