@@ -88,4 +88,22 @@ public class StAXNodeParser {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	//TODO: Methode 1: nachbar ids einer ID zurück geben Methode 2: ist id enthalten
+	
+	public List<String> getNeighbours(String id){
+		while(hasNext()){
+			
+			List<String> nodes = getNextNodeIDs();
+			if(nodes != null && nodes.contains(id)){
+				nodes.remove(id);
+				close();
+				return nodes;
+			}
+		}
+		close();
+		return null;
+	}
 }

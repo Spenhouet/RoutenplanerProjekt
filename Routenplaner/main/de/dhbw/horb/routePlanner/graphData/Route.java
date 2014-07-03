@@ -7,6 +7,7 @@ import java.util.Map;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
+import de.dhbw.horb.routePlanner.parser.DomMapNodeParser;
 
 public class Route {
 
@@ -33,10 +34,12 @@ public class Route {
 	}
 
 	public void addNode(String id, Double lat, Double lon) {
-		destinationNodeID = id;
-		newDistance = SupportMethods
-				.fromLatLonToDistanceInKM((Double)lastNode.get(Constants.NODE_LATITUDE), (Double)lastNode.get(Constants.NODE_LONGITUDE), lat, lon);
-		if (!((String)lastNode.get(Constants.NODE_ID)).equals(id)){
+		if (destinationNodeID == null) {
+			destinationNodeID = id;
+		}
+		newDistance += SupportMethods.fromLatLonToDistanceInKM((Double) lastNode.get(Constants.NODE_LATITUDE),
+				(Double) lastNode.get(Constants.NODE_LONGITUDE), lat, lon);
+		if (!((String) lastNode.get(Constants.NODE_ID)).equals(id)) {
 			lastNode = new HashMap<String, Object>();
 			lastNode.put(Constants.NODE_ID, id);
 			lastNode.put(Constants.NODE_LATITUDE, lat);
@@ -44,19 +47,31 @@ public class Route {
 		}
 	}
 
-	public void finalizeWay(String wayID, String nr, int speed) {
+	public void finalizeWay(String wayID, String nr, int speed, DomMapNodeParser nodeMapDom, List<String> nodes) {
 
-		if (wayID == null)
+		if (wayID == null || nodes == null)
 			return;
+		newDistance = 0.0;
+		while (!nodes.isEmpty()) {
 
-		number = nr;
+			String id = nodes.remove((nodes.size()-1));
+			Map<String, String> nmd = nodeMapDom.getNode(id);
+			if (nmd == null)
+				return;
+
+			addNode(id, Double.valueOf(nmd.get(Constants.NODE_LATITUDE)),
+					Double.valueOf(nmd.get(Constants.NODE_LONGITUDE)));
+
+		}
+
+		if ((number == null || number.isEmpty()) && (nr != null && !nr.isEmpty()))
+			number = nr;
 
 		wayIDs.add(wayID);
 
-		durationInMilliseconds += SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance, speed);
+		durationInMilliseconds += (SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance, speed)/2L);
 
-		distance += newDistance;
-		newDistance = 0.0;
+		distance += (newDistance/2.0);
 	}
 
 	public String getWayIDsAsCommaString() {

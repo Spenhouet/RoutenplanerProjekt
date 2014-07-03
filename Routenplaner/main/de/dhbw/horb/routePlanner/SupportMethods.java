@@ -1,47 +1,46 @@
 package de.dhbw.horb.routePlanner;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SupportMethods {
 	public static Long fromDistanceAndSpeedToMilliseconds(Double distance, int speed) {
-		return secondsToMilliseconds(minutesToSeconds(hoursToMinutes((distance/speed)))).longValue();
-	}
-	
-	public static Double daysToHours(Double days){
-		return (days*24.0);		
-	}
-	
-	public static Double hoursToMinutes(Double hours){
-		return (hours*60.0);		
+		return secondsToMilliseconds(minutesToSeconds(hoursToMinutes((distance / speed)))).longValue();
 	}
 
-	public static Double minutesToSeconds(Double minutes){
-		return (minutes*60.0);		
+	public static Double daysToHours(Double days) {
+		return (days * 24.0);
 	}
-	
-	public static Double secondsToMilliseconds(Double seconds){
-		return (seconds*1000.0);		
+
+	public static Double hoursToMinutes(Double hours) {
+		return (hours * 60.0);
 	}
-	
-	public static Double secondsToMinutes(Double seconds){
-		return (seconds/60.0);		
+
+	public static Double minutesToSeconds(Double minutes) {
+		return (minutes * 60.0);
 	}
-	
-	public static Double minutesToHours(Double minutes){
-		return (minutes/60.0);		
+
+	public static Double secondsToMilliseconds(Double seconds) {
+		return (seconds * 1000.0);
 	}
-	
-	public static Double hoursToDays(Double hours){
-		return (hours/24.0);		
+
+	public static Double secondsToMinutes(Double seconds) {
+		return (seconds / 60.0);
 	}
-	
-	public static Double millisecondsToSeconds(Double milliseconds){
-		return (milliseconds/1000.0);		
+
+	public static Double minutesToHours(Double minutes) {
+		return (minutes / 60.0);
 	}
-	
+
+	public static Double hoursToDays(Double hours) {
+		return (hours / 24.0);
+	}
+
+	public static Double millisecondsToSeconds(Double milliseconds) {
+		return (milliseconds / 1000.0);
+	}
+
 	public static double fromLatLonToDistanceInKM(Double lat1, Double lon1, Double lat2, Double lon2) {
 
 		if (lat1 == null || lon1 == null || lat2 == null || lon2 == null)
@@ -81,5 +80,14 @@ public class SupportMethods {
 		if (commaStr == null)
 			return null;
 		return new ArrayList<String>(Arrays.asList(commaStr.split(",")));
+	}
+
+	public static boolean isNumeric(String str) {
+		try {
+			Double.parseDouble(str);
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+		return true;
 	}
 }
