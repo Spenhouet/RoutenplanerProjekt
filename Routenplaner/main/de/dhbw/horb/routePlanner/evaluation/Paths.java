@@ -13,12 +13,12 @@ import java.util.LinkedList;
 public class Paths extends LinkedList<Way> {
 
 	private static final long serialVersionUID = 1L;
-	private Crossroads startnode;
-	private Crossroads endnode;
+	private Junction startnode;
+	private Junction endnode;
 	private Way cheapestWay;
 	private int cheapestWayPrice;
 
-	public Paths(Crossroads startnode, Crossroads endnode) {
+	public Paths(Junction startnode, Junction endnode) {
 		this.startnode = startnode;
 		this.endnode = endnode;
 	}
