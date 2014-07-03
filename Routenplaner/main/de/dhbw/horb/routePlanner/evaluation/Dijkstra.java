@@ -38,7 +38,7 @@ public class Dijkstra {
 	 * Wege neu initialisiert und die Prioritätswarteschlange neusortiert (welcher Knoten wird als nächstes abgearbeitet)
 	 */
 	public void calculatingRoute() {
-		
+
 		while (!targetReached) {
 			calcNewNodePrices(nearestNode);
 			initializeRoute();
@@ -50,23 +50,25 @@ public class Dijkstra {
 			targetReached = true;
 			//paths.initializeCheapestWay();
 		}
-		
+
 	}
 
 	private void calcNewNodePrices(Junction initialNode) {
 
 		for (int i = 0; i < initialNode.getIds().size(); i++) {
-			Junction focusedNeighbour = new Junction(currentNeighbours.get(i).getIds(), currentNeighbours.get(i).getPrice());
-			
-			if (/*Abstand initialNode zu focusedNeighbour*/+initialNode.getPrice() < focusedNeighbour.getPrice() || focusedNeighbour.getPrice() == 0) {
-				
+			Junction focusedNeighbour = new Junction(currentNeighbours.get(i).getIds(), currentNeighbours.get(i)
+					.getPrice());
+
+			if (/*Abstand initialNode zu focusedNeighbour*/+initialNode.getPrice() < focusedNeighbour.getPrice()
+					|| focusedNeighbour.getPrice() == 0) {
+
 				if (focusedNeighbour.getPrice() != 0)
-//					deleteWay(focusedNeighbour);
-					
-				/*Setzte Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
-				//TODO: Vergleichsmethode schreiben
-				if (!prioQue.contains(focusedNeighbour) && focusedNeighbour != startnode)
-					cheapNeighbours.add(focusedNeighbour);
+					//					deleteWay(focusedNeighbour);
+
+					/*Setzte Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
+					//TODO: Vergleichsmethode schreiben
+					if (!prioQue.contains(focusedNeighbour) && focusedNeighbour != startnode)
+						cheapNeighbours.add(focusedNeighbour);
 			}
 		}
 
@@ -80,4 +82,8 @@ public class Dijkstra {
 
 	}
 
+	private boolean isEqual(Junction one, Junction two) {
+
+		return false;
+	}
 }
