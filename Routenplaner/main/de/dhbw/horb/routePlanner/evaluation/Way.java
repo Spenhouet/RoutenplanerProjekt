@@ -11,18 +11,18 @@ import java.util.List;
  */
 public class Way {
 
-	private Crossroads startnode;
-	private Crossroads endnode;
+	private Junction startnode;
+	private Junction endnode;
 	private int price;
-	private List<Crossroads> nodes = new ArrayList<Crossroads>();
+	private List<Junction> nodes = new ArrayList<Junction>();
 
-	public Way(Crossroads startnode, Crossroads endnode) {
+	public Way(Junction startnode, Junction endnode) {
 		setStartnode(startnode);
 		setEndnode(endnode);
 		nodes.add(startnode);
 	}
 	
-	public Way(Crossroads startnode, Crossroads endnode, List<Crossroads> nodes, int gonePrice, Crossroads newNode,
+	public Way(Junction startnode, Junction endnode, List<Junction> nodes, int gonePrice, Junction newNode,
 			int newPrice) {
 		setStartnode(startnode);
 		setEndnode(endnode);
@@ -31,13 +31,17 @@ public class Way {
 		this.nodes.add(newNode);
 	}
 
-	private void addNodes(List<Crossroads> nodes) {
-		for (Crossroads node : nodes) {
+	/**
+	 * Zum aktuellen Weg werden alle übergebenen Knoten hinzugefügt
+	 * @param nodes
+	 */
+	private void addNodes(List<Junction> nodes) {
+		for (Junction node : nodes) {
 			this.nodes.add(node);
 		}
 	}
 
-	public Crossroads getLastNode() {
+	public Junction getLastNode() {
 		return nodes.get(nodes.size() - 1);
 	}
 
@@ -49,15 +53,15 @@ public class Way {
 		this.price = price;
 	}
 
-	public List<Crossroads> getNodes() {
+	public List<Junction> getNodes() {
 		return nodes;
 	}
 
-	public void setStartnode(Crossroads startnode) {
+	public void setStartnode(Junction startnode) {
 		this.startnode = startnode;
 	}
 
-	public void setEndnode(Crossroads endnode) {
+	public void setEndnode(Junction endnode) {
 		this.endnode = endnode;
 	}
 

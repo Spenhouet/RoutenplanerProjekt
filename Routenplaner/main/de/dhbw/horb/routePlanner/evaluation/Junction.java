@@ -10,21 +10,30 @@ import java.util.List;
  * @author Simon
  *
  */
-public class Crossroads {
-
+public class Junction {
+	
 	private int price;
 	private List<String> ids = new ArrayList<String>();
-
-	public Crossroads() {
-
+	
+	public Junction(List<String> ids, int price) {
+		this.ids = ids;
+		this.price = price;
+	}
+	
+	public Junction(){
+		
 	}
 
-	public Crossroads(List<String> ids) {
+	public Junction(List<String> ids) {
 		this.ids = ids;
 	}
 	
 	public List<String> getIds(){
 		return ids;
+	}
+	
+	public void setId(int index, String id){
+		ids.set(index, id);
 	}
 	
 	public void setPrice(int price){
