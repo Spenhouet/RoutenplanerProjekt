@@ -47,14 +47,13 @@ public class DomMapWayParser {
 				Boolean run = true;
 				do{
 					int nextType = waySR.next();
-					run =!(nextType == XMLStreamConstants.END_ELEMENT && waySR.getLocalName().equals(Constants.NODE));
+					run =!(nextType == XMLStreamConstants.END_ELEMENT && waySR.getLocalName().equals(Constants.WAY));
 					
 					if(nextType != XMLStreamConstants.START_ELEMENT) continue;
 					
 					String localName = waySR.getLocalName();
 					if(localName.equals(Constants.WAY_NODE)){
 						String refID = waySR.getAttributeValue(Constants.WAY_REF);
-						nodeMapDom.addWayIdToNode(refID, id);;
 						listND.add(refID);
 					} else if (localName.equals(Constants.WAY_TAG)){
 						String k = waySR.getAttributeValue("k");
@@ -68,6 +67,9 @@ public class DomMapWayParser {
 						}
 					}
 				} while(run);
+				
+				for(int i=0; i<(listND.size()-1); i++)
+					nodeMapDom.addWayIdToNode(listND.get(i), id);
 				
 				Map<String, String> way = new HashMap<String, String>();
 				
@@ -94,8 +96,10 @@ public class DomMapWayParser {
 		return wm.get(Constants.WAY_HIGHWAY).equals(Constants.WAY_MOTORWAY_LINK);
 	}
 	
-	public Boolean getNextNodeID(String wayID, String nodeID){
+	public String getNextNodeID(String wayID, String nodeID){
 		Map<String, String> wm = ways.get(wayID);
-		return wm.get(Constants.WAY_HIGHWAY).equals(Constants.WAY_MOTORWAY_LINK);
+		
+		List<String> nodes = SupportMethods.commaStrToStrList(wm.get(Constants.WAY_NODE));
+		return nodes.get(nodes.indexOf(nodeID)+1);
 	}
 }

@@ -3,6 +3,7 @@ package de.dhbw.horb.routePlanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class SupportMethods {
 	public static Long fromDistanceAndSpeedToMilliseconds(Double distance, int speed) {
@@ -79,7 +80,15 @@ public class SupportMethods {
 	public static List<String> commaStrToStrList(String commaStr) {
 		if (commaStr == null)
 			return null;
-		return new ArrayList<String>(Arrays.asList(commaStr.split(",")));
+		
+		List<String> list = new ArrayList<String>();
+		StringTokenizer st2 = new StringTokenizer(commaStr, ",");
+		 
+		while (st2.hasMoreElements()) {
+			list.add(st2.nextElement().toString());
+		}
+		
+		return list;
 	}
 
 	public static boolean isNumeric(String str) {
