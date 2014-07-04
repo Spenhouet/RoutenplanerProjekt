@@ -91,7 +91,7 @@ public class StAXNodeParser {
 	
 	
 	
-	//TODO: Methode 1: nachbar ids einer ID zurück geben Methode 2: ist id enthalten
+	//TODO: Methode 2: ist id enthalten
 	
 	public List<String> getNeighbours(String id){
 		while(hasNext()){

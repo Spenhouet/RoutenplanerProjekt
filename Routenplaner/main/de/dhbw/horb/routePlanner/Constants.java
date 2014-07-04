@@ -18,7 +18,7 @@ public interface Constants {
 	public final static String NODE_ID = "id";
 	public final static String NODE_LATITUDE = "lat";
 	public final static String NODE_LONGITUDE = "lon";
-	public final static String NODE_TAG = "name";
+	public final static String NODE_TAG = "tag";
 	public final static String NODE_NAME = "name";
 	public final static String NODE_HIGHWAY = "highway";
 	public final static String NODE_MOTORWAY_JUNCTION = "motorway_junction";
