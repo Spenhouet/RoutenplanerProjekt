@@ -22,61 +22,58 @@ import de.dhbw.horb.routePlanner.graphData.Route;
 
 public class JDomGraphDataCreator {
 
-	private Document xmlDocGraphData;
+	// private Document xmlDocGraphData;
 	private Document xmlDocNodes;
 	private Document xmlDocRoutes;
-	private Element rootGraphData;
-	private List<Element> listNodes;
-	private List<Element> listWay;
+	// private Element rootGraphData;
+	// private List<Element> listNodes;
+	// private List<Element> listWay;
 	private XMLOutputter outp;
 	private Boolean nodesXMLfileExists = false;
 	private Boolean routesXMLfileExists = false;
 	private Route rm;
 	private DomMapNodeParser nodeMapDom;
+	private DomMapWayParser wayMapDom;
 
 	public JDomGraphDataCreator() {
-		try {
-			SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = new SAXBuilder();
+
+		/**
+		 * Loading nodes document
+		 */
+		File f = new File(Constants.XML_NODES);
+		if (f.exists() && !f.isDirectory()) {
+			nodesXMLfileExists = true;
+			// xmlDocNodes = builder.build(f);
+		} else {
+			Element nodes = new Element(Constants.NEW_NODE_S);
+			xmlDocNodes = new Document(nodes);
+		}
+
+		/**
+		 * Loading routes document
+		 */
+		f = new File(Constants.XML_ROUTES);
+		if (f.exists() && !f.isDirectory()) {
+			routesXMLfileExists = true;
+			// xmlDocRoutes = builder.build(f);
+		} else {
+			Element nodes = new Element(Constants.NEW_NODE_S);
+			xmlDocRoutes = new Document(nodes);
+		}
+
+		if (!nodesXMLfileExists || !routesXMLfileExists) {
+			outp = new XMLOutputter();
+			outp.setFormat(Format.getPrettyFormat());
 
 			/**
-			 * Loading nodes document
+			 * Loading graphData document and a list of nodes and ways.
 			 */
-			File f = new File(Constants.XML_NODES);
-			if (f.exists() && !f.isDirectory()) {
-				nodesXMLfileExists = true;
-				// xmlDocNodes = builder.build(f);
-			} else {
-				Element nodes = new Element(Constants.NEW_NODE_S);
-				xmlDocNodes = new Document(nodes);
-			}
-
-			/**
-			 * Loading routes document
-			 */
-			f = new File(Constants.XML_ROUTES);
-			if (f.exists() && !f.isDirectory()) {
-				routesXMLfileExists = true;
-				// xmlDocRoutes = builder.build(f);
-			} else {
-				Element nodes = new Element(Constants.NEW_NODE_S);
-				xmlDocRoutes = new Document(nodes);
-			}
-
-			if (!nodesXMLfileExists || !routesXMLfileExists) {
-				outp = new XMLOutputter();
-				outp.setFormat(Format.getPrettyFormat());
-
-				/**
-				 * Loading graphData document and a list of nodes and ways.
-				 */
-				xmlDocGraphData = builder.build(new File(Constants.XML_GRAPHDATA));
-				rootGraphData = xmlDocGraphData.getRootElement();
-				listNodes = rootGraphData.getChildren(Constants.NODE);
-				listWay = rootGraphData.getChildren("way");
-			}
-
-		} catch (JDOMException | IOException e) {
-			e.printStackTrace();
+			// xmlDocGraphData = builder.build(new
+			// File(Constants.XML_GRAPHDATA));
+			// rootGraphData = xmlDocGraphData.getRootElement();
+			// listNodes = rootGraphData.getChildren(Constants.NODE);
+			// listWay = rootGraphData.getChildren("way");
 		}
 	}
 
@@ -91,6 +88,7 @@ public class JDomGraphDataCreator {
 	public void createRouteXML() {
 
 		nodeMapDom = new DomMapNodeParser();
+		wayMapDom = new DomMapWayParser(nodeMapDom);
 		StAXNodeParser np = StAXNodeParser.getStAXNodeParser();
 
 		while (np.hasNext()) {
@@ -111,27 +109,37 @@ public class JDomGraphDataCreator {
 		if (nmd == null)
 			return;
 
-		rm = new Route(startID, Double.valueOf(nmd.get(Constants.NODE_LATITUDE)), Double.valueOf(nmd
-				.get(Constants.NODE_LONGITUDE)));
+		rm = new Route(startID,
+				Double.valueOf(nmd.get(Constants.NODE_LATITUDE)),
+				Double.valueOf(nmd.get(Constants.NODE_LONGITUDE)));
 		if (doWay(startID)) {
 
 			Element rootNewRoute = xmlDocRoutes.getRootElement();
 
 			Element newRoute = new Element(Constants.NEW_ROUTE);
 
-			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODEID, rm.getDepartureNodeID()));
-			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, rm.getDistance().toString()));
-			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION, rm.getDurationInSeconds().toString()));
-			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DESTINATIONNODEID, rm.getDestinationNodeID()));
-			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, rm.getWayIDsAsCommaString()));
+			newRoute.setAttribute(new Attribute(
+					Constants.NEW_ROUTE_DEPARTURENODEID, rm
+							.getDepartureNodeID()));
+			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE,
+					rm.getDistance().toString()));
+			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION,
+					rm.getDurationInSeconds().toString()));
+			newRoute.setAttribute(new Attribute(
+					Constants.NEW_ROUTE_DESTINATIONNODEID, rm
+							.getDestinationNodeID()));
+			newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, rm
+					.getWayIDsAsCommaString()));
 			String nr = rm.getNumber();
 			if (nr != null)
-				newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_NUMBER, nr));
+				newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_NUMBER,
+						nr));
 
 			rootNewRoute.addContent(newRoute);
 
 			try {
-				outp.output(xmlDocRoutes, new FileOutputStream(Constants.XML_ROUTES));
+				outp.output(xmlDocRoutes, new FileOutputStream(
+						Constants.XML_ROUTES));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -148,71 +156,80 @@ public class JDomGraphDataCreator {
 		Boolean rightWay = false;
 		Boolean reachedEnd = false;
 		Element elWay = null;
-		for (int x = 0; x < listWay.size(); x++) {
-			elWay = (Element) (listWay.get(x));
-			if (elWay == null)
-				continue;
 
-			List<Element> listNode = elWay.getChildren(Constants.WAY_NODE);
-			for (int y = 0; y < listNode.size(); y++) {
-
-				String ndID = listNode.get(y).getAttributeValue(Constants.WAY_REF);
-				if (ndID != null && ndID.trim().equals(id) && (y < listNode.size() - 1)) {
-					rightWay = true;
-
-					if (y == 0) {
-						listWay.remove(x);
-						x--;
-					}
-
-					continue;
-				}
-
-				if (!rightWay)
-					continue;
-
-				lastID = ndID;
-				ids.add(ndID);
-
-				List<String> nn = StAXNodeParser.getStAXNodeParser().getNeighbours(ndID);
-				if (nn != null && nn.size() > 0 && !nn.contains(rm.getDepartureNodeID())) {
-					reachedEnd = true;
-					break;
-				}
+		
+		List<String> ways = nodeMapDom.getWayListForNode(id);
+		String way = null;
+		int size = ways.size();
+		if (size == 0) {
+			return false;
+		} else if (size == 1) {
+			way = ways.get(0);
+		} else if (size > 1) {
+			for(String i: ways){
+				if(wayMapDom.isLink(i))
+					way = i;
+				if(way == null)
+					way = ways.get(0);
 			}
-
-			if (rightWay && lastID != null && elWay != null) {
-
-				String wayID = elWay.getAttributeValue(Constants.WAY_ID);
-
-				List<Element> listTags = elWay.getChildren(Constants.WAY_TAG);
-				String nr = getAttributeValueForK(listTags, Constants.WAY_REF);
-				String maxspeed = getAttributeValueForK(listTags, Constants.WAY_MAXSPEED);
-				if (maxspeed == null || maxspeed.isEmpty() || !SupportMethods.isNumeric(maxspeed)) {
-					String highway = getAttributeValueForK(listTags, Constants.WAY_HIGHWAY);
-					if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK)) {
-						maxspeed = "60";
-					} else if (highway != null && highway.equals(Constants.WAY_MOTORWAY)) {
-						maxspeed = "120";
-					} else {
-						maxspeed = "120";
-					}
-				}
-
-				int speed = Integer.valueOf(maxspeed);
-
-				Boolean ok = false;
-
-				if (!reachedEnd) {
-					ok = doWay(lastID);
-				}
-
-				if (reachedEnd || ok) {
-					rm.finalizeWay(wayID, nr, speed, nodeMapDom, ids);
-					return true;
-				}
-			}
+			
+		} else {
+			return false;
 		}
+		
+		
+//		TODO Umbauen auf DomMapWay
+		
+		
+
+//		lastID = ndID;
+//		ids.add(ndID);
+//
+//		List<String> nn = StAXNodeParser.getStAXNodeParser()
+//				.getNeighbours(ndID);
+//		if (nn != null && nn.size() > 0
+//				&& !nn.contains(rm.getDepartureNodeID())) {
+//			reachedEnd = true;
+//			break;
+//		}
+//
+//		if (rightWay && lastID != null && elWay != null) {
+//
+//			String wayID = elWay.getAttributeValue(Constants.WAY_ID);
+//
+//			List<Element> listTags = elWay.getChildren(Constants.WAY_TAG);
+//			String nr = getAttributeValueForK(listTags, Constants.WAY_REF);
+//			String maxspeed = getAttributeValueForK(listTags,
+//					Constants.WAY_MAXSPEED);
+//			if (maxspeed == null || maxspeed.isEmpty()
+//					|| !SupportMethods.isNumeric(maxspeed)) {
+//				String highway = getAttributeValueForK(listTags,
+//						Constants.WAY_HIGHWAY);
+//				if (highway != null
+//						&& highway.equals(Constants.WAY_MOTORWAY_LINK)) {
+//					maxspeed = "60";
+//				} else if (highway != null
+//						&& highway.equals(Constants.WAY_MOTORWAY)) {
+//					maxspeed = "120";
+//				} else {
+//					maxspeed = "120";
+//				}
+//			}
+//
+//			int speed = Integer.valueOf(maxspeed);
+//
+//			Boolean ok = false;
+//
+//			if (!reachedEnd) {
+//				ok = doWay(lastID);
+//			}
+//
+//			if (reachedEnd || ok) {
+//				rm.finalizeWay(wayID, nr, speed, nodeMapDom, ids);
+//				return true;
+//			}
+//		}
+
 		return false;
 	}
 
@@ -220,24 +237,26 @@ public class JDomGraphDataCreator {
 
 		NodeMap nm = new NodeMap();
 		Element rootNewNodes = xmlDocNodes.getRootElement();
-
-		for (int i = 0; i < listNodes.size(); i++) {
-			Element node = (Element) listNodes.get(i);
-			if (node == null)
-				continue;
-			List<Element> listTags = node.getChildren(Constants.WAY_TAG);
-
-			String name = getAttributeValueForK(listTags, Constants.NODE_NAME);
-			if (name != null)
-				nm.addNode(name, node.getAttributeValue(Constants.NODE_ID));
-
-		}
+//		TODO Umstellen auf neue Datei
+//		for (int i = 0; i < listNodes.size(); i++) {
+//			Element node = (Element) listNodes.get(i);
+//			if (node == null)
+//				continue;
+//			List<Element> listTags = node.getChildren(Constants.WAY_TAG);
+//
+//			String name = getAttributeValueForK(listTags, Constants.NODE_NAME);
+//			if (name != null)
+//				nm.addNode(name, node.getAttributeValue(Constants.NODE_ID));
+//
+//		}
 
 		while (nm.hasNode()) {
 			Map<String, String> nodeMap = nm.removeNode();
 			Element newNode = new Element(Constants.NODE);
-			newNode.setAttribute(new Attribute(Constants.NEW_NODE_NAME, nodeMap.get(Constants.NEW_NODE_NAME)));
-			newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, nodeMap.get(Constants.NEW_NODE_ID)));
+			newNode.setAttribute(new Attribute(Constants.NEW_NODE_NAME, nodeMap
+					.get(Constants.NEW_NODE_NAME)));
+			newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, nodeMap
+					.get(Constants.NEW_NODE_ID)));
 			rootNewNodes.addContent(newNode);
 		}
 
