@@ -1,22 +1,33 @@
-XML Parsen mit STAX cursor API:
+Node und Route XML Parsen mit STAX cursor API:
   -schnell
   -belegt wenig Arbeitsspeicher
   -parsen on demand
   -kein großer Aufbau am Anfang
+  (oder speichern in eigener Datenstruktur)?
+  - Wenn nicht vorhanden -> erzeugen.
 
-Projekt Multithreaded (alle Klassen müssen Thread sicher sein!):
-  1. Controller
-  2. GUI
-  3. Dijkstra
-  4. jede Route
-  
+Overpass Daten:
+  -Parsen und in eigenen Datenstrukturen speichern.
+  -Aus diesen zwei neue XML Dateien erzeugen
+  -Auf Befehl von GUI -> Lade Anzeige?
+  -Update beziehen? WGET?
+
 GUI:
-  -Arbeitsspeicher leer halten!
-  -Knoten und Kanten nacheinander hinzufügen
-  -Zoomem?
+  -Anzeige der Wege über Webview
+  -Neue XML Files auf Befehl erzeugen.
+  -Hilfe / Hinweise für Bedienelemente?
+  -Mehrsprachige Stringauslagerung (Englisch/Deutsch)?
 
 Eingabe:
   -Erkennen von Knoten (Stadt) Eingabe
   -Ähnliche Ergebnisse vorschlagen
-  -live Vorschläge?
+  -Autovervollständigung der Suchvorschläge
   
+Wege berechnen:
+  -Nach Strecke (km)
+  -Nach Dauer
+  -Mittelweg?
+  
+  Algorithmen:
+    -Dijkstra
+    -?

@@ -48,22 +48,15 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 		return null;
 	}
 
-//	TODO wieder weg wenn nicht benötigt;
-//	public String getAttributeKV(String endElement, String k) throws XMLStreamException {
-//		String v = null;
-//		while (hasNext()) {
-//			int type = next();
-//			if (type != END_ELEMENT && !getLocalName().equals(endElement)) {
-//				if(getLocalName().equals(Constants.NODE_TAG))
-//				
-//				
-//				
-//				return v;
-//			} else {
-//				return v;
-//			}
-//		}
-//		return v;
-//	}
+	public String getAttributeKV(String inK) throws XMLStreamException {
+		if (getLocalName().equals(Constants.NODE_TAG)){
+			String k = getAttributeValue("k");
+			String v = getAttributeValue("v");
+			if(k.equals(inK)){
+				return v;
+			}
+		}
+		return null;
+	}
 
 }

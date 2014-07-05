@@ -40,7 +40,7 @@ public class RoutePlannerMainController {
 	private ComboBox<String> startComboBox;
 
 	@FXML
-    private ComboBox<String> targetComboBox;
+	private ComboBox<String> targetComboBox;
 
 	@FXML
 	private Button calculateRouteButton;
@@ -54,7 +54,7 @@ public class RoutePlannerMainController {
 
 	@FXML
 	void testButtonClicked(ActionEvent event) {
-		//webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%28238669065%29%3Bway%2826577114%29%3B%29%3B%3E%3B%29%3Bout%3B&target=ol_fixed");
+		// webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%28238669065%29%3Bway%2826577114%29%3B%29%3B%3E%3B%29%3Bout%3B&target=ol_fixed");
 		webEngine.getLoadWorker().stateProperty().addListener(
 	            new ChangeListener<State>() {
 	              @Override public void changed(ObservableValue ov, State oldState, State newState) {
@@ -74,10 +74,10 @@ public class RoutePlannerMainController {
 	
 	
 	@FXML
-    void startComboBoxClicked(ActionEvent event) {
+	void startComboBoxClicked(ActionEvent event) {
 
-    }
-	
+	}
+
 	@FXML
 	void calculateRouteButtonClicked(ActionEvent event) {
 
@@ -105,33 +105,33 @@ public class RoutePlannerMainController {
 		webEngine = testWebView.getEngine();
 	}
 
-	private String  generateLinkQuery() {
+	private String generateLinkQuery() {
 		String linkStart = Constants.LINK_LINKSTART;
 		String linkEnd = Constants.LINK_LINKEND;
 		String completeLink = Constants.LINL_COMPLETELINK;
-		
-		//TODO Testweise:
+
+		// DELETE Testweise:
 		ArrayList<String> ways = new ArrayList<>();
 		ways.add("238669065");
 		ways.add("26577114");
 		ArrayList<String> nodes = new ArrayList<>();
 		nodes.add("291435955");
 		nodes.add("96140183");
-		
+
 		for (String string : ways) {
 			completeLink += "way(" + string + ");";
 		}
-		
+
 		for (String string : nodes) {
 			completeLink += "node(" + string + ");";
 		}
-		
+
 		completeLink += linkEnd;
-		
-		//TODO Andere Möglichkeit?!
+
+		// FIXME Andere Möglichkeit?!
 		String result = linkStart + URLEncoder.encode(completeLink) + Constants.LINK_LINKTARGET;
-		
+
 		return result;
-		
+
 	}
 }

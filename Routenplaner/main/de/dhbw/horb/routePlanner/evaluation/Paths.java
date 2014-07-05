@@ -3,9 +3,8 @@ package de.dhbw.horb.routePlanner.evaluation;
 import java.util.LinkedList;
 
 /**
- * Klasse Route
- * Erweitert LinkedList mit erweiterten Operationen in Bezug auf die Klasse Weg 
- * Enthält in der LinkedList Datenobjekte vom Typ Weg
+ * Klasse Route Erweitert LinkedList mit erweiterten Operationen in Bezug auf
+ * die Klasse Weg Enthält in der LinkedList Datenobjekte vom Typ Weg
  * 
  * @author Simon
  * 
@@ -13,7 +12,7 @@ import java.util.LinkedList;
 public class Paths extends LinkedList<Way> {
 
 	private static final long serialVersionUID = 1L;
-	private Junction startnode;
+	private Junction startnode; // DELETE wenn nicht gebraucht
 	private Junction endnode;
 	private Way cheapestWay;
 	private int cheapestWayPrice;

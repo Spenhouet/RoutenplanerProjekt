@@ -13,6 +13,8 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXNodeParser {
 
+	// IMPROVE Als DOM im stack
+
 	public static StAXNodeParser getStAXNodeParser() {
 		try {
 			return new StAXNodeParser(Constants.XML_NODES);
@@ -47,7 +49,7 @@ public class StAXNodeParser {
 		} catch (NumberFormatException | XMLStreamException e) {
 			e.printStackTrace();
 		}
-		
+
 		close();
 		return names;
 	}
@@ -80,24 +82,22 @@ public class StAXNodeParser {
 		}
 		return null;
 	}
-	
-	public void close(){
+
+	public void close() {
 		try {
 			graphSR.close();
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	//TODO: Methode 1: nachbar ids einer ID zurück geben Methode 2: ist id enthalten
-	
-	public List<String> getNeighbours(String id){
-		while(hasNext()){
-			
+
+	// TODO: Methode 2: ist id enthalten
+
+	public List<String> getNeighbours(String id) {
+		while (hasNext()) {
+
 			List<String> nodes = getNextNodeIDs();
-			if(nodes != null && nodes.contains(id)){
+			if (nodes != null && nodes.contains(id)) {
 				nodes.remove(id);
 				close();
 				return nodes;
