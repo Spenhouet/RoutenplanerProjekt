@@ -14,11 +14,11 @@
               <MenuItem fx:id="closeMenuButton" mnemonicParsing="false" onAction="#closeMenuButtonClicked" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
+            <Menu mnemonicParsing="false" text="Kartendaten">
+               <items>
+                  <MenuItem fx:id="readDataButton" mnemonicParsing="false" onAction="#readDataButtonClicked" text="Daten einlesen" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
