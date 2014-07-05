@@ -1,8 +1,8 @@
 package de.dhbw.horb.routePlanner.parser;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,49 +21,28 @@ public class JDomGraphDataCreator {
 	private Document xmlDocNodes;
 	private Document xmlDocRoutes;
 	private XMLOutputter outp;
-	private Boolean nodesXMLfileExists = false;
-	private Boolean routesXMLfileExists = false;
 	private Route rm;
 	private DomMapNodeParser nodeMapDom;
 	private DomMapWayParser wayMapDom;
 
 	public JDomGraphDataCreator() {
-		/**
-		 * Loading nodes document
-		 */
-		File f = new File(Constants.XML_NODES);
-		if (f.exists() && !f.isDirectory()) {
-			nodesXMLfileExists = true;
-		} else {
-			Element nodes = new Element(Constants.NEW_NODE_S);
-			xmlDocNodes = new Document(nodes);
-		}
 
-		/**
-		 * Loading routes document
-		 */
-		f = new File(Constants.XML_ROUTES);
-		if (f.exists() && !f.isDirectory()) {
-			routesXMLfileExists = true;
-		} else {
-			Element nodes = new Element(Constants.NEW_NODE_S);
-			xmlDocRoutes = new Document(nodes);
-		}
+		Element nodes = new Element(Constants.NEW_NODE_S);
+		xmlDocNodes = new Document(nodes);
 
-		if (!nodesXMLfileExists || !routesXMLfileExists) {
-			outp = new XMLOutputter();
-			outp.setFormat(Format.getPrettyFormat());
+		Element routes = new Element(Constants.NEW_ROUTE_S);
+		xmlDocRoutes = new Document(routes);
 
-			nodeMapDom = new DomMapNodeParser();
-		}
+		outp = new XMLOutputter();
+		outp.setFormat(Format.getPrettyFormat());
+
+		nodeMapDom = new DomMapNodeParser();
+
 	}
 
 	public void createNewXMLFiles() {
-		if (!nodesXMLfileExists)
-			createNodeXML();
-
-		if (!routesXMLfileExists)
-			createRouteXML();
+		createNodeXML();
+		createRouteXML();
 	}
 
 	public void createRouteXML() {
@@ -88,6 +67,8 @@ public class JDomGraphDataCreator {
 
 		if (nmd == null)
 			return;
+
+		routeIDs = new HashMap<String, String>();
 
 		rm = new Route(startID, nodeMapDom, wayMapDom);
 		if (doNextNode(startID)) {
@@ -115,9 +96,14 @@ public class JDomGraphDataCreator {
 		rm = null;
 	}
 
+	private Map<String, String> routeIDs;
+
 	private Boolean doNextNode(String id) {
 
 		if (rm == null || id == null)
+			return false;
+
+		if (routeIDs != null && routeIDs.containsKey(id))
 			return false;
 
 		if (rm.hadRun() && nodeMapDom.isMotorwayJunction(id)) {
@@ -146,9 +132,12 @@ public class JDomGraphDataCreator {
 
 				if (wayID != null) {
 					String nextNodeID = wayMapDom.getNextNodeID(wayID, id);
+					routeIDs.put(id, null);
 					if (doNextNode(nextNodeID)) {
 						rm.addNode(nextNodeID, wayID);
 						return true;
+					} else {
+						routeIDs.remove(id);
 					}
 				}
 
