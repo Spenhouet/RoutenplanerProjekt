@@ -7,17 +7,27 @@ Node und Route XML Parsen mit STAX cursor API:
   - Wenn nicht vorhanden -> erzeugen.
 
 Overpass Daten:
-  Parsen und in eigenen Datenstrukturen speichern.
-  Aus diesen zwei neue XML Dateien erzeugen
-  Auf Befehl von GUI -> Lade Anzeige?
-  Update beziehen? WGET?
+  -Parsen und in eigenen Datenstrukturen speichern.
+  -Aus diesen zwei neue XML Dateien erzeugen
+  -Auf Befehl von GUI -> Lade Anzeige?
+  -Update beziehen? WGET?
 
 GUI:
-  Anzeige der Wege über Webview
-  Neue XML Files auf Befehl erzeugen.
+  -Anzeige der Wege über Webview
+  -Neue XML Files auf Befehl erzeugen.
+  -Hilfe / Hinweise für Bedienelemente?
+  -Mehrsprachige Stringauslagerung (Englisch/Deutsch)?
 
 Eingabe:
   -Erkennen von Knoten (Stadt) Eingabe
   -Ähnliche Ergebnisse vorschlagen
   -Autovervollständigung der Suchvorschläge
   
+Wege berechnen:
+  -Nach Strecke (km)
+  -Nach Dauer
+  -Mittelweg?
+  
+  Algorithmen:
+    -Dijkstra
+    -?
