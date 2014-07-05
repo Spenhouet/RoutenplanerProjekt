@@ -1,0 +1,31 @@
+WGET:
+wget -O autobahn.osm --post-file=anfrage.txt http://overpass-api.de/api/interpreter
+
+
+[timeout:3600];
+area[name="Deutschland"]->.a;
+(way(area.a)[highway="motorway"];>;
+  way(area.a)[highway="motorway_link"];>;
+  way(area.a)[highway="trunk"];>;
+  way(area.a)[highway="trunk_link"];>;
+  way(area.a)[highway="primary"];>;
+  way(area.a)[highway="primary_link"];>;);
+out;
+
+
+
+
+
+Overpass-Turbo:
+<osm-script output="xml" timeout="9999">
+  <id-query {{nominatimArea:Germany}} into="area"/>
+  <query type="way">
+    <has-kv k="highway" regv="motorway|motorway_link"/>
+    <area-query from="area"/>
+  </query>
+  <union>
+    <item/>
+    <recurse type="way-node"/>
+  </union>
+  <print mode="body" order="quadtile"/>
+</osm-script>
