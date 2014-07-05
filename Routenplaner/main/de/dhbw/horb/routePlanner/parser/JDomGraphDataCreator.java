@@ -90,7 +90,7 @@ public class JDomGraphDataCreator {
 			return;
 
 		rm = new Route(startID, nodeMapDom, wayMapDom);
-		if (doWay(startID)) {
+		if (doNextNode(startID)) {
 			Element rootNewRoute = xmlDocRoutes.getRootElement();
 
 			Element newRoute = new Element(Constants.NEW_ROUTE);
@@ -115,12 +115,15 @@ public class JDomGraphDataCreator {
 		rm = null;
 	}
 
-	private Boolean doWay(String id) {
+	private Boolean doNextNode(String id) {
 
-		if (rm == null)
+		if (rm == null || id == null)
 			return false;
 
 		if (rm.hadRun() && nodeMapDom.isMotorwayJunction(id)) {
+			if (id.equals(rm.getDepartureNodeID())) {
+				return false;
+			}
 			return true;
 		}
 
@@ -143,7 +146,7 @@ public class JDomGraphDataCreator {
 
 				if (wayID != null) {
 					String nextNodeID = wayMapDom.getNextNodeID(wayID, id);
-					if (doWay(nextNodeID)) {
+					if (doNextNode(nextNodeID)) {
 						rm.addNode(nextNodeID, wayID);
 						return true;
 					}
