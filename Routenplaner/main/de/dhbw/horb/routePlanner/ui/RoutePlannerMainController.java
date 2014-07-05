@@ -3,12 +3,19 @@ package de.dhbw.horb.routePlanner.ui;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import org.w3c.dom.Attr;
+
 import de.dhbw.horb.routePlanner.Constants;
 
 public class RoutePlannerMainController {
@@ -48,9 +55,24 @@ public class RoutePlannerMainController {
 	@FXML
 	void testButtonClicked(ActionEvent event) {
 		//webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%28238669065%29%3Bway%2826577114%29%3B%29%3B%3E%3B%29%3Bout%3B&target=ol_fixed");
-		webEngine.load(generateLinkQuery());
+		webEngine.getLoadWorker().stateProperty().addListener(
+	            new ChangeListener<State>() {
+	              @Override public void changed(ObservableValue ov, State oldState, State newState) {
+
+	                  if (newState == Worker.State.SUCCEEDED) {
+	              		Attr styleAttr = webEngine.getDocument().getElementById("statusline").getAttributeNode("style");
+	            		styleAttr.setValue("display: none;");
+	                  }
+	                  
+	                }
+	            });
+		webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%2827809852%29%3Bway%2827809853%29%3Bway%2842720124%29%3Bway%284004562%29%3Bway%2829201096%29%3Bway%2842720117%29%3Bway%2841189157%29%3Bway%285052588%29%3B%29%3B%3E%3B%29%3Bout%20body%3B%0A&target=ol_fixed");
+		//webEngine.load(generateLinkQuery());
+
 	}
 
+	
+	
 	@FXML
     void startComboBoxClicked(ActionEvent event) {
 
