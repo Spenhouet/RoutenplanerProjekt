@@ -25,15 +25,15 @@ public class Route {
 
 	private DomMapNodeParser nodeMapDom;
 	private DomMapWayParser wayMapDom;
-	
+
 	Boolean firstRun = false;
 
 	public Route(String nodeID, DomMapNodeParser nodeMapDom, DomMapWayParser wayMapDom) {
 		this.nodeMapDom = nodeMapDom;
 		this.wayMapDom = wayMapDom;
-		
+
 		this.wayIDs = new LinkedList<String>();
-		
+
 		this.departureNodeID = nodeID;
 		this.lastNode = nodeMapDom.getNode(nodeID);
 	}
@@ -42,24 +42,25 @@ public class Route {
 		if (destinationNodeID == null) {
 			destinationNodeID = nodeID;
 		}
-		
-		if(!wayIDs.contains(wayID))
+
+		if (!wayIDs.contains(wayID))
 			wayIDs.add(wayID);
-		
+
 		Map<String, String> node = nodeMapDom.getNode(nodeID);
 		Double lat1 = Double.valueOf(lastNode.get(Constants.NODE_LATITUDE));
 		Double lon1 = Double.valueOf(lastNode.get(Constants.NODE_LONGITUDE));
 		Double lat2 = Double.valueOf(node.get(Constants.NODE_LATITUDE));
 		Double lon2 = Double.valueOf(node.get(Constants.NODE_LONGITUDE));
-		
+
 		Double newDistance = null;
-		
-		if(lat1 != null && lon1 != null && lat2 != null && lon2 != null)
+
+		// INVESTIGATE Stecke wirkt zu lange.
+		if (lat1 != null && lon1 != null && lat2 != null && lon2 != null)
 			newDistance = SupportMethods.fromLatLonToDistanceInKM(lat1, lon1, lat2, lon2);
-		
+
 		Map<String, String> way = wayMapDom.getWay(wayID);
-		if(way != null && newDistance != null){
-			
+		if (way != null && newDistance != null) {
+
 			String maxspeed = way.get(Constants.WAY_MAXSPEED);
 			if (maxspeed == null || maxspeed.isEmpty() || !SupportMethods.isNumeric(maxspeed)) {
 				String highway = way.get(Constants.WAY_HIGHWAY);
@@ -71,28 +72,28 @@ public class Route {
 					maxspeed = "120";
 				}
 			}
-			
-			durationInMilliseconds += (SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance, Integer.valueOf(maxspeed)));
+
+			durationInMilliseconds += (SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance,
+					Integer.valueOf(maxspeed)));
 			this.distance += newDistance;
-			
-			
+
 			String nr = way.get(Constants.WAY_REF);
-			if((number == null || number.isEmpty()) && nr != null && !nr.isEmpty())
+			if ((number == null || number.isEmpty()) && nr != null && !nr.isEmpty())
 				this.number = nr;
 		}
-		
+
 		lastNode = node;
-		
+
 	}
-	
-	public void firstRun(){
+
+	public void firstRun() {
 		this.firstRun = true;
 	}
-	
-	public Boolean hadRun(){
+
+	public Boolean hadRun() {
 		return firstRun;
 	}
-	
+
 	public String getWayIDsAsCommaString() {
 		return SupportMethods.strListToCommaStr(wayIDs);
 	}
