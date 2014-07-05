@@ -7,8 +7,18 @@ public class MockUp {
 
 	public static void main(String[] args) {
 		
-		JDomGraphDataCreator dom = new JDomGraphDataCreator();
-		dom.createNewXMLFiles();
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				JDomGraphDataCreator dom = new JDomGraphDataCreator();
+				dom.createNewXMLFiles();
+				
+				
+			}
+		}).start();
+		
 		
 	}
 
