@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasse Way
- * Repräsentiert einen Weg von Start zu beliebigem Endknoten
+ * Klasse Way Repräsentiert einen Weg von Start zu beliebigem Endknoten
+ * 
  * @author Simon
- *
+ * 
  */
 public class Way {
 
-	private Junction startnode;
-	private Junction endnode;
+	private Junction startnode; // DELETE wenn nicht gebraucht
+	private Junction endnode; // DELETE wenn nicht gebraucht
 	private int price;
 	private List<Junction> nodes = new ArrayList<Junction>();
 
@@ -21,9 +21,8 @@ public class Way {
 		setEndnode(endnode);
 		nodes.add(startnode);
 	}
-	
-	public Way(Junction startnode, Junction endnode, List<Junction> nodes, int gonePrice, Junction newNode,
-			int newPrice) {
+
+	public Way(Junction startnode, Junction endnode, List<Junction> nodes, int gonePrice, Junction newNode, int newPrice) {
 		setStartnode(startnode);
 		setEndnode(endnode);
 		setPrice(gonePrice + newPrice);
@@ -33,6 +32,7 @@ public class Way {
 
 	/**
 	 * Zum aktuellen Weg werden alle übergebenen Knoten hinzugefügt
+	 * 
 	 * @param nodes
 	 */
 	private void addNodes(List<Junction> nodes) {
@@ -48,7 +48,7 @@ public class Way {
 	public int getPrice() {
 		return price;
 	}
-	
+
 	public void setPrice(int price) {
 		this.price = price;
 	}

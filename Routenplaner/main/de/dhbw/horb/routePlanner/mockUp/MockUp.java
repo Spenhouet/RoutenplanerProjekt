@@ -6,6 +6,8 @@ import java.util.Calendar;
 
 import de.dhbw.horb.routePlanner.parser.JDomGraphDataCreator;
 
+//	DELETE wenn nicht mehr benötigt.
+
 public class MockUp {
 
 	public static void main(String[] args) {
