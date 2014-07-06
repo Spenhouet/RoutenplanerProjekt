@@ -11,13 +11,13 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
-public class StAXNodeParser {
+public class DomStAXMapNodeParser {
 
 	// IMPROVE Als DOM im stack
 
-	public static StAXNodeParser getStAXNodeParser() {
+	public static DomStAXMapNodeParser getStAXNodeParser() {
 		try {
-			return new StAXNodeParser(Constants.XML_NODES);
+			return new DomStAXMapNodeParser(Constants.XML_NODES);
 		} catch (XMLStreamException | FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -26,7 +26,7 @@ public class StAXNodeParser {
 
 	private GraphDataStreamReader graphSR;
 
-	private StAXNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
+	private DomStAXMapNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));

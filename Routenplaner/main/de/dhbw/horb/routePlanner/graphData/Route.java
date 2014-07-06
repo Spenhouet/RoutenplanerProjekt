@@ -6,8 +6,8 @@ import java.util.Map;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
-import de.dhbw.horb.routePlanner.parser.DomMapNodeParser;
-import de.dhbw.horb.routePlanner.parser.DomMapWayParser;
+import de.dhbw.horb.routePlanner.parser.DomStAXMapGraphDataNodesParser;
+import de.dhbw.horb.routePlanner.parser.DomStAXMapGraphDataWaysParser;
 
 public class Route {
 
@@ -23,12 +23,12 @@ public class Route {
 	private Long durationInMilliseconds = 0L;
 	private Double distance = 0.0;
 
-	private DomMapNodeParser nodeMapDom;
-	private DomMapWayParser wayMapDom;
+	private DomStAXMapGraphDataNodesParser nodeMapDom;
+	private DomStAXMapGraphDataWaysParser wayMapDom;
 
 	Boolean firstRun = false;
 
-	public Route(String nodeID, DomMapNodeParser nodeMapDom, DomMapWayParser wayMapDom) {
+	public Route(String nodeID, DomStAXMapGraphDataNodesParser nodeMapDom, DomStAXMapGraphDataWaysParser wayMapDom) {
 		this.nodeMapDom = nodeMapDom;
 		this.wayMapDom = wayMapDom;
 
