@@ -48,7 +48,7 @@ public class JDomGraphDataCreator {
 	public void createRouteXML() {
 
 		wayMapDom = new DomStAXMapGraphDataWaysParser(nodeMapDom);
-		DomStAXMapNodeParser np = DomStAXMapNodeParser.getStAXNodeParser();
+		StAXNodeParser np = StAXNodeParser.getStAXNodeParser();
 
 		while (np.hasNext()) {
 
