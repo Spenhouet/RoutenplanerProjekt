@@ -22,8 +22,8 @@ public class JDomGraphDataCreator {
 	private Document xmlDocRoutes;
 	private XMLOutputter outp;
 	private Route rm;
-	private DomMapNodeParser nodeMapDom;
-	private DomMapWayParser wayMapDom;
+	private DomStAXMapGraphDataNodesParser nodeMapDom;
+	private DomStAXMapGraphDataWaysParser wayMapDom;
 
 	public JDomGraphDataCreator() {
 
@@ -36,7 +36,7 @@ public class JDomGraphDataCreator {
 		outp = new XMLOutputter();
 		outp.setFormat(Format.getPrettyFormat());
 
-		nodeMapDom = new DomMapNodeParser();
+		nodeMapDom = new DomStAXMapGraphDataNodesParser();
 
 	}
 
@@ -47,8 +47,8 @@ public class JDomGraphDataCreator {
 
 	public void createRouteXML() {
 
-		wayMapDom = new DomMapWayParser(nodeMapDom);
-		StAXNodeParser np = StAXNodeParser.getStAXNodeParser();
+		wayMapDom = new DomStAXMapGraphDataWaysParser(nodeMapDom);
+		DomStAXMapNodeParser np = DomStAXMapNodeParser.getStAXNodeParser();
 
 		while (np.hasNext()) {
 

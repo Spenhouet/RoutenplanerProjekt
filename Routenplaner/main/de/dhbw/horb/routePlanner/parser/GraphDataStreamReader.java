@@ -31,6 +31,12 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 		return false;
 	}
 
+	public boolean isRoute() {
+		if (getLocalName().trim().equals(Constants.NEW_ROUTE))
+			return true;
+		return false;
+	}
+
 	public boolean nextStartElement() throws XMLStreamException {
 		while (hasNext()) {
 			if (next() == START_ELEMENT) {
@@ -49,10 +55,10 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 	}
 
 	public String getAttributeKV(String inK) throws XMLStreamException {
-		if (getLocalName().equals(Constants.NODE_TAG)){
+		if (getLocalName().equals(Constants.NODE_TAG)) {
 			String k = getAttributeValue("k");
 			String v = getAttributeValue("v");
-			if(k.equals(inK)){
+			if (k.equals(inK)) {
 				return v;
 			}
 		}

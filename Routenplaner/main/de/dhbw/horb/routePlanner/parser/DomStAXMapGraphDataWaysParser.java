@@ -14,10 +14,10 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
-public class DomMapWayParser {
+public class DomStAXMapGraphDataWaysParser {
 	private Map<String, Map<String, String>> ways;
 
-	public DomMapWayParser(DomMapNodeParser nodeMapDom) {
+	public DomStAXMapGraphDataWaysParser(DomStAXMapGraphDataNodesParser nodeMapDom) {
 
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		try {

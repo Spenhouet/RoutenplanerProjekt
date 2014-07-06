@@ -9,7 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import de.dhbw.horb.routePlanner.parser.StAXNodeParser;
+import de.dhbw.horb.routePlanner.parser.DomStAXMapNodeParser;
 
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
@@ -67,7 +67,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 		List<String> names;
 		String input = AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase();
 
-		names = StAXNodeParser.getStAXNodeParser().containsName(input);
+		names = DomStAXMapNodeParser.getStAXNodeParser().containsName(input);
 		Collections.sort(names);
 		for (String name : names) {
 			list.add((T) name); // FIXME Typsicherheit

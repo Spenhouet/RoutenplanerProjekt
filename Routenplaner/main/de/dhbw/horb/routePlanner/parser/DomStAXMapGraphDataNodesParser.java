@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
-public class DomMapNodeParser {
+public class DomStAXMapGraphDataNodesParser {
 
 	/**
 	 * Node Map: Key: Node ID Value: Map mit keys: latitude, longitude, highway?
@@ -21,7 +21,7 @@ public class DomMapNodeParser {
 	 */
 	private Map<String, Map<String, String>> node;
 
-	public DomMapNodeParser() {
+	public DomStAXMapGraphDataNodesParser() {
 
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		try {
