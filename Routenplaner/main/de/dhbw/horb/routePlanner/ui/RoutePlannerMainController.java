@@ -1,5 +1,6 @@
 package de.dhbw.horb.routePlanner.ui;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -13,9 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-
-import org.w3c.dom.Attr;
-
 import de.dhbw.horb.routePlanner.Constants;
 
 public class RoutePlannerMainController {
@@ -23,6 +21,9 @@ public class RoutePlannerMainController {
 	// Reference to the main application.
 	private RoutePlannerMainApp routePlannerMainApp;
 	private WebEngine webEngine;
+
+	public String linkStart = Constants.LINK_LINKSTART;
+	public String linkEnd = Constants.LINK_LINKEND;
 
 	@FXML
 	private WebView testWebView;
@@ -54,25 +55,9 @@ public class RoutePlannerMainController {
 
 	@FXML
 	void testButtonClicked(ActionEvent event) {
-		// webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%28238669065%29%3Bway%2826577114%29%3B%29%3B%3E%3B%29%3Bout%3B&target=ol_fixed");
-		webEngine.getLoadWorker().stateProperty().addListener(
-	            new ChangeListener<State>() {
-	              @Override public void changed(ObservableValue ov, State oldState, State newState) {
-
-	                  if (newState == Worker.State.SUCCEEDED) {
-	              		Attr styleAttr = webEngine.getDocument().getElementById("statusline").getAttributeNode("style");
-	            		styleAttr.setValue("display: none;");
-	                  }
-	                  
-	                }
-	            });
-		webEngine.load("http://overpass-api.de/api/convert?data=%28%28way%2827809852%29%3Bway%2827809853%29%3Bway%2842720124%29%3Bway%284004562%29%3Bway%2829201096%29%3Bway%2842720117%29%3Bway%2841189157%29%3Bway%285052588%29%3B%29%3B%3E%3B%29%3Bout%20body%3B%0A&target=ol_fixed");
-		//webEngine.load(generateLinkQuery());
-
+		webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
 	}
 
-	
-	
 	@FXML
 	void startComboBoxClicked(ActionEvent event) {
 
@@ -103,35 +88,76 @@ public class RoutePlannerMainController {
 		new AutoCompleteComboBoxListener<>(startComboBox);
 		new AutoCompleteComboBoxListener<>(targetComboBox);
 		webEngine = testWebView.getEngine();
+		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+			@Override
+			public void changed(ObservableValue ov, State oldState, State newState) {
+
+				if (newState == Worker.State.SUCCEEDED) {
+					String ways = null;
+					try {
+						ways = generateLinkQuery_ways();
+					} catch (UnsupportedEncodingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					String nodes = null;
+					try {
+						nodes = generateLinkQuery_nodes();
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("Ways: " + ways);
+					System.out.println("Nodes: " + nodes);
+					webEngine.executeScript("init(\"" + ways + "\",\"" + nodes + "\")");
+				}
+
+			}
+		});
 	}
 
-	private String generateLinkQuery() {
-		String linkStart = Constants.LINK_LINKSTART;
-		String linkEnd = Constants.LINK_LINKEND;
-		String completeLink = Constants.LINL_COMPLETELINK;
+	private String generateLinkQuery_ways() throws UnsupportedEncodingException {
 
-		// DELETE Testweise:
+		String completeLink = Constants.LINK_COMPLETELINK;
+		String result_ways;
+
 		ArrayList<String> ways = new ArrayList<>();
-		ways.add("238669065");
-		ways.add("26577114");
-		ArrayList<String> nodes = new ArrayList<>();
-		nodes.add("291435955");
-		nodes.add("96140183");
+		ways.add("4811958");
+		ways.add("130792761");
+		ways.add("4811957");
+		ways.add("4811807");
+		ways.add("4811805");
+		ways.add("4811806");
+		ways.add("4811804");
 
 		for (String string : ways) {
 			completeLink += "way(" + string + ");";
 		}
 
+		result_ways = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
+
+		return result_ways;
+
+	}
+
+	private String generateLinkQuery_nodes() throws UnsupportedEncodingException {
+
+		String completeLink = Constants.LINK_COMPLETELINK;
+		String result_nodes;
+
+		completeLink = Constants.LINK_COMPLETELINK;
+
+		ArrayList<String> nodes = new ArrayList<>();
+		nodes.add("30898199");
+		nodes.add("30899103");
+
 		for (String string : nodes) {
 			completeLink += "node(" + string + ");";
 		}
 
-		completeLink += linkEnd;
+		result_nodes = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
 
-		// FIXME Andere Möglichkeit?!
-		String result = linkStart + URLEncoder.encode(completeLink) + Constants.LINK_LINKTARGET;
-
-		return result;
+		return result_nodes;
 
 	}
 }

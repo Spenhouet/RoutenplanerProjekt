@@ -5,11 +5,11 @@ public interface Constants {
 	public final static String FXML_ROOT = "RoutePlannerRoot.fxml";
 	public final static String FXML_MAIN = "RoutePlannerMain.fxml";
 
-	public final static String LINK_LINKSTART = "http://overpass-api.de/api/convert?data=";
-	public final static String LINL_COMPLETELINK = "((";
-	public final static String LINK_LINKEND = ");>;);out;";
+	public final static String LINK_LINKSTART = "http://overpass-api.de/api/interpreter?data=";
+	public final static String LINK_COMPLETELINK = "((";
+	public final static String LINK_LINKEND = "%29%3B%3E%3B%29%3Bout%20body%3B%0A";
 	public final static String LINK_LINKTARGET = "&target=ol_fixed";
-	
+
 	public final static String XML_GRAPHDATA = "xmlFile/graphData.xml";
 	public final static String XML_NODES = "xmlFile/nodes.xml";
 	public final static String XML_ROUTES = "xmlFile/routes.xml";
@@ -32,14 +32,14 @@ public interface Constants {
 	public final static String WAY_HIGHWAY = "highway";
 	public final static String WAY_MOTORWAY = "motorway";
 	public final static String WAY_MOTORWAY_LINK = "motorway_link";
-	
+
 	public final static String NEW_NODE = "node";
 	public final static String NEW_NODE_S = "nodes";
 	public final static String NEW_NODE_IDS = "ids";
 	public final static String NEW_NODE_ID = "id";
 	public final static String NEW_NODE_NAME = "name";
 	public final static int NEW_NODE_MAX_IDS = 15;
-	
+
 	public final static String NEW_ROUTE = "route";
 	public final static String NEW_ROUTE_S = "routes";
 	public final static String NEW_ROUTE_NUMBER = "nr";
