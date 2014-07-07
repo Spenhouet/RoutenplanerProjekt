@@ -89,7 +89,7 @@ public class StAXNodeParser {
 		}
 	}
 
-	// TODO: Methode 2: ist id enthalten
+	// TODO: ID Liste für Namen
 
 	public List<String> getNeighbours(String id) {
 		while (hasNext()) {
