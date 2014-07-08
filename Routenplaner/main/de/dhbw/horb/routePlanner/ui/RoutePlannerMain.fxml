@@ -19,30 +19,66 @@
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="testButton" layoutX="14.0" layoutY="658.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-                  <VBox layoutX="38.0" layoutY="52.0">
+                  <TabPane prefHeight="600.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Routenangabe">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
+                                       <children>
+                                          <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
+                                          <ComboBox fx:id="targetComboBox" editable="true" layoutX="73.0" layoutY="181.0" promptText="Ziel">
+                                             <VBox.margin>
+                                                <Insets top="15.0" />
+                                             </VBox.margin>
+                                          </ComboBox>
+                                          <Button fx:id="calculateRouteButton" layoutX="95.0" layoutY="228.0" mnemonicParsing="false" onAction="#calculateRouteButtonClicked" text="Route berechnen">
+                                             <VBox.margin>
+                                                <Insets top="15.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Kartenoptionen">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox layoutX="25.0" layoutY="25.0" spacing="26.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
+                                       <children>
+                                          <CheckBox layoutX="31.0" layoutY="84.0" mnemonicParsing="false" text="Ways anzeigen in:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
+                                          <CheckBox layoutX="38.0" layoutY="135.0" mnemonicParsing="false" text="Nodes anzeigen in:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="50.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="168.0" layoutY="21.0" spacing="10.0" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="25.0">
+                                       <children>
+                                          <ColorPicker layoutX="168.0" layoutY="21.0" />
+                                          <ColorPicker layoutX="168.0" layoutY="46.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <HBox layoutX="15.0" layoutY="658.0" spacing="110.0">
                      <children>
-                        <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
-                        <ComboBox fx:id="targetComboBox" editable="true" layoutX="73.0" layoutY="181.0" promptText="Ziel">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <Button fx:id="calculateRouteButton" layoutX="95.0" layoutY="228.0" mnemonicParsing="false" onAction="#calculateRouteButtonClicked" text="Route berechnen">
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <HBox layoutX="182.0" layoutY="658.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                     <children>
-                        <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="closeButton" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                        <Button fx:id="testButton" layoutX="14.0" layoutY="658.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+                        <HBox layoutX="182.0" layoutY="658.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                           <children>
+                              <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="closeButton" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                </children>
