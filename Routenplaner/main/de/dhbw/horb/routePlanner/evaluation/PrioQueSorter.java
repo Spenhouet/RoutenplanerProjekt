@@ -21,7 +21,6 @@ public class PrioQueSorter {
 			}
 			prioQue.set(j + 1, temp);
 		}
-
 		return prioQue;
 	}
 }
