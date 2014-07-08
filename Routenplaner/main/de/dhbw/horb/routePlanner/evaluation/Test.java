@@ -1,6 +1,6 @@
 package de.dhbw.horb.routePlanner.evaluation;
 
-public class ControllerTest {
+public class Test {
 
     static PrioQue testQue = new PrioQue();
     static Junction j1 = new Junction();
