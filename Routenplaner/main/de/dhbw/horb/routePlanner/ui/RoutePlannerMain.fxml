@@ -23,7 +23,6 @@
                      <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <Button fx:id="testButton" layoutX="14.0" layoutY="658.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
                               <VBox layoutX="38.0" layoutY="52.0">
                                  <children>
                                     <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
@@ -39,16 +38,7 @@
                                     </Button>
                                  </children>
                               </VBox>
-                              <HBox layoutX="182.0" layoutY="658.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <children>
-                                    <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button fx:id="closeButton" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                                 </children>
-                              </HBox>
+                              <Button fx:id="testButton" layoutX="247.0" layoutY="590.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="15.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -57,21 +47,10 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <HBox AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                 <children>
-                                    <Button fx:id="infoButton1" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button fx:id="closeButton1" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                                 </children>
-                              </HBox>
-                              <Button fx:id="testButton1" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-                              <CheckBox layoutX="68.0" layoutY="50.0" mnemonicParsing="false" text="Ways anzeigen in:" />
-                              <CheckBox layoutX="68.0" layoutY="81.0" mnemonicParsing="false" text="Nodes anzeigen in:" />
-                              <ColorPicker layoutX="200.0" layoutY="46.0" />
-                              <ColorPicker layoutX="200.0" layoutY="77.0" />
+                              <CheckBox layoutX="68.0" layoutY="50.0" mnemonicParsing="false" text="Ways anzeigen in:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="50.0" />
+                              <CheckBox layoutX="68.0" layoutY="81.0" mnemonicParsing="false" text="Nodes anzeigen in:" AnchorPane.leftAnchor="25.0" />
+                              <ColorPicker layoutX="170.0" layoutY="46.0" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="46.0" />
+                              <ColorPicker layoutX="200.0" layoutY="77.0" AnchorPane.leftAnchor="170.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -80,5 +59,15 @@
             </TabPane>
         </items>
       </SplitPane>
+      <HBox layoutX="870.0" layoutY="660.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <children>
+            <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="closeButton" layoutX="223.0" layoutY="659.0" mnemonicParsing="false" onAction="#closeButtonClicked" text="Beenden" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
