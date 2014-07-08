@@ -12,27 +12,26 @@ import java.util.LinkedList;
  */
 public class PrioQue extends LinkedList<Junction> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public PrioQue() {
-		
-	}
+    public PrioQue() {
 
-	/**
-	 * Prüft ob eine Kreuzung schon in der PrioQue vorhanden ist
-	 */
-	@Override
-	public boolean contains(Object crossroads) {
+    }
 
-		Junction cross = (Junction) crossroads;
-		for (String id : cross.getIds()) {
-			for (Junction c : this) {
-				for (String id2 : c.getIds()){
-					if (id == id2)
-						return true;
-				}
-			}
+    /**
+     * Prüft ob eine Kreuzung schon in der PrioQue vorhanden ist
+     */
+    @Override
+    public boolean contains(Object crossroads) {
+	Junction cross = (Junction) crossroads;
+	for (String id : cross.getIds()) {
+	    for (Junction c : this) {
+		for (String id2 : c.getIds()) {
+		    if (id == id2)
+			return true;
 		}
-		return false;
+	    }
 	}
+	return false;
+    }
 }

@@ -11,36 +11,38 @@ import java.util.List;
  *
  */
 public class Junction {
-	
-	private int price;
-	private List<String> ids = new ArrayList<String>();
-	
-	public Junction(List<String> ids, int price) {
-		this.ids = ids;
-		this.price = price;
-	}
-	
-	public Junction(){
-		
-	}
 
-	public Junction(List<String> ids) {
-		this.ids = ids;
-	}
-	
-	public List<String> getIds(){
-		return ids;
-	}
-	
-	public void setId(int index, String id){
-		ids.set(index, id);
-	}
-	
-	public void setPrice(int price){
-		this.price = price;
-	}
-	
-	public int getPrice(){
-		return price;
-	}
+    private static long counter;
+    private long junctionId = counter++;
+    private int price;
+    private List<String> ids = new ArrayList<String>();
+
+    public Junction(List<String> ids, int price) {
+	this.ids = ids;
+	this.price = price;
+    }
+
+    public Junction() {
+
+    }
+
+    public Junction(List<String> ids) {
+	this.ids = ids;
+    }
+
+    public List<String> getIds() {
+	return ids;
+    }
+
+    public void setId(int index, String id) {
+	ids.set(index, id);
+    }
+
+    public void setPrice(int price) {
+	this.price = price;
+    }
+
+    public int getPrice() {
+	return price;
+    }
 }
