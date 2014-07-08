@@ -62,15 +62,17 @@ public class Dijkstra {
 		    .getPrice() < focusedNeighbour.getPrice()
 		    || focusedNeighbour.getPrice() == 0) {
 
-		if (focusedNeighbour.getPrice() != 0)
-		    //					deleteWay(focusedNeighbour);
+		if (focusedNeighbour.getPrice() != 0) {
+		    //		    deleteWay(focusedNeighbour);		    
+		}
 
-		    /*Setzte Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
-		    if (!prioQue.contains(focusedNeighbour)
-			    && !isEqual(focusedNeighbour, startnode))
-			cheapNeighbours.add(focusedNeighbour);
+		/*Setze Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
+		if (!prioQue.contains(focusedNeighbour)
+			&& !isEqual(focusedNeighbour, startnode))
+		    cheapNeighbours.add(focusedNeighbour);
 	    }
 	}
+	currentNeighbours.clear();
     }
 
     private void initializeRoute() {
@@ -84,7 +86,8 @@ public class Dijkstra {
 	}
 	cheapNeighbours.clear();
 	prioQueInsertionSort();
-	nearestNode = prioQue.getFirst();
+	if (!prioQue.isEmpty())
+	    nearestNode = prioQue.getFirst();
     }
 
     // TODO Testen!
