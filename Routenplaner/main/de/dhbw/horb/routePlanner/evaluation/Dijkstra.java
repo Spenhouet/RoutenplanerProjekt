@@ -15,7 +15,7 @@ public class Dijkstra {
     private Junction startnode;
     private Junction endnode;
     private Junction nearestNode;
-    // TODO wie wird auf Kreuzungskosten zugegriffen?
+    // TODO Kreuzungskosten als Eigenschaft von Junction -> nodePrice-List nicht gebraucht
     private List<Junction> nodePrice = new ArrayList<Junction>();
     private LinkedList<Junction> prioQue = new LinkedList<Junction>();
     private List<Junction> goneNodes = new ArrayList<Junction>();
@@ -35,8 +35,8 @@ public class Dijkstra {
 
     /**
      * Hauptmethode
-     * Solange Ziel nicht erreicht ist, werden neue Knotenpreise berechnet,
-     * Wege neu initialisiert und die Prioritätswarteschlange neusortiert -> welcher Knoten wird als nächstes abgearbeitet
+     *  - Solange Ziel nicht erreicht ist, werden neue Knotenpreise berechnet,
+     *    Wege neu initialisiert und die Prioritätswarteschlange neusortiert
      */
     public void calculatingRoute() {
 
@@ -52,6 +52,13 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * Berechnet ausgehend vom zu bearbeitenden Knoten die Kosten der Nachbarn
+     *  - Wenn es schon einen kürzeren Weg zu einem dieser Nachbarn gibt, wird Kostenwert nicht überschrieben
+     *  - Wenn der Kostenwert kleiner als der Aktuelle ist, wird Wert überschrieben 
+     *    und alle Wege gelöscht, die als letzte Kreuzung diese Kreuzung haben
+     * @param initialNode
+     */
     private void calcNewNodePrices(Junction initialNode) {
 
 	for (int i = 0; i < initialNode.getIds().size(); i++) {
@@ -62,21 +69,33 @@ public class Dijkstra {
 		    .getPrice() < focusedNeighbour.getPrice()
 		    || focusedNeighbour.getPrice() == 0) {
 
-		if (focusedNeighbour.getPrice() != 0)
-		    //					deleteWay(focusedNeighbour);
+		if (focusedNeighbour.getPrice() != 0) {
+		    //		    deleteWay(focusedNeighbour);		    
+		}
 
-		    /*Setzte Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
-		    if (!prioQue.contains(focusedNeighbour)
-			    && !isEqual(focusedNeighbour, startnode))
-			cheapNeighbours.add(focusedNeighbour);
+		/*Setze Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
+		if (!prioQue.contains(focusedNeighbour)
+			&& !isEqual(focusedNeighbour, startnode))
+		    cheapNeighbours.add(focusedNeighbour);
 	    }
 	}
+	currentNeighbours.clear();
     }
 
+    /**
+     * Initialisiert alle verschiedenen Wege von Start zu Endknoten
+     *  - Für jeden bereits gegangenen Weg werden so viele neue Wege angelegt,
+     *    wie die jeweils letzte Kreuzung Nachbarn hat
+     */
     private void initializeRoute() {
 
     }
 
+    /**
+     * Die noch zu bearbeitenden Knoten werden nach ihren Kosten sortiert
+     *  - Die billigsten werden zuerst abgearbeitet
+     *  - Die erste Kreuzung der PrioQue ist die zu bearbeitende
+     */
     private void sortPrioQue() {
 
 	for (Junction cheapNeighbour : cheapNeighbours) {
@@ -84,10 +103,13 @@ public class Dijkstra {
 	}
 	cheapNeighbours.clear();
 	prioQueInsertionSort();
-	nearestNode = prioQue.getFirst();
+	if (!prioQue.isEmpty())
+	    nearestNode = prioQue.getFirst();
     }
 
-    // TODO Testen!
+    /**
+     * Sortiert die Elemente in der PrioQue ausgehend von deren Kosten
+     */
     private void prioQueInsertionSort() {
 
 	for (int i = 0; i < prioQue.size(); i++) {
@@ -101,6 +123,15 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * Vergleicht zwei übergebene Kreuzungen
+     *  - Wenn die erste Kreuzung eine id in der Liste ids besitzt, die einer id aus der zweiten Kreuzung gleicht,
+     *    liefert Methode true
+     *  - false, sonst
+     * @param one
+     * @param two
+     * @return
+     */
     public boolean isEqual(Junction one, Junction two) {
 
 	for (String s1 : one.getIds()) {
