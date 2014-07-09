@@ -90,7 +90,6 @@ public class Dijkstra {
 	    nearestNode = prioQue.getFirst();
     }
 
-    // TODO Testen!
     private void prioQueInsertionSort() {
 
 	for (int i = 0; i < prioQue.size(); i++) {
