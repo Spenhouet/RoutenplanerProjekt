@@ -13,95 +13,157 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXNodeParser {
 
-	public static StAXNodeParser getStAXNodeParser() {
-		try {
-			return new StAXNodeParser(Constants.XML_NODES);
-		} catch (XMLStreamException | FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+    public static StAXNodeParser getStAXNodeParser() {
+	try {
+	    return new StAXNodeParser(Constants.XML_NODES);
+	} catch (XMLStreamException | FileNotFoundException e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+
+    private GraphDataStreamReader graphSR;
+
+    private StAXNodeParser(String xmlFile) throws FileNotFoundException,
+	    XMLStreamException {
+
+	XMLInputFactory factory = XMLInputFactory.newInstance();
+	graphSR = new GraphDataStreamReader(
+		factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+    }
+
+    public List<String> containsName(String name) {
+
+	List<String> names = new ArrayList<String>();
+
+	try {
+	    while (graphSR.nextStartElement()) {
+		if (!graphSR.isNode())
+		    continue;
+		String v = graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
+
+		if (v.toLowerCase().contains(name.toLowerCase()))
+		    names.add(v);
+	    }
+
+	} catch (NumberFormatException | XMLStreamException e) {
+	    e.printStackTrace();
 	}
 
-	private GraphDataStreamReader graphSR;
+	if (names != null) {
 
-	private StAXNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
-
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+	    names = SupportMethods.sortListCompairedToEquality(names, name);
 	}
 
-	public List<String> containsName(String name) {
+	close();
+	return names;
+    }
 
-		List<String> names = new ArrayList<String>();
+    public List<String> getNextNodeIDs() {
 
-		try {
-			while (graphSR.nextStartElement()) {
-				if (!graphSR.isNode())
-					continue;
-				String v = graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
+	try {
+	    if (graphSR.nextStartElement()) {
+		return getNodeIDs();
+	    }
+	} catch (NumberFormatException | XMLStreamException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
 
-				if (v.toLowerCase().contains(name.toLowerCase()))
-					names.add(v);
-			}
+    private List<String> getNodeIDs() {
+	if (graphSR.isNode()) {
 
-		} catch (NumberFormatException | XMLStreamException e) {
-			e.printStackTrace();
-		}
+	    String commaIDs = graphSR.getAttributeValue(Constants.NEW_NODE_IDS);
+	    List<String> ids = SupportMethods.commaStrToStrList(commaIDs);
+
+	    if (ids.size() > Constants.NEW_NODE_MAX_IDS)
+		return null;
+
+	    return ids;
+	}
+	return null;
+    }
+
+    public Boolean hasNext() {
+
+	try {
+	    return graphSR.hasNext();
+	} catch (XMLStreamException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    public void close() {
+	try {
+	    graphSR.close();
+	} catch (XMLStreamException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public String getNameForID(String id) {
+	if (id == null)
+	    return null;
+
+	while (hasNext()) {
+
+	    try {
+		if (!graphSR.nextStartElement() || !graphSR.isNode())
+		    continue;
+
+		List<String> nodes = getNodeIDs();
+
+		if (nodes == null || !nodes.contains(id))
+		    continue;
 
 		close();
-		return names;
+		return graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
+	    } catch (XMLStreamException e) {
+		e.printStackTrace();
+	    }
 	}
+	close();
+	return null;
+    }
 
-	public List<String> getNextNodeIDs() {
+    public List<String> getIDsForName(String name) {
+	if (name == null)
+	    return null;
 
-		try {
-			if (graphSR.nextStartElement() && graphSR.isNode()) {
+	while (hasNext()) {
 
-				String commaIDs = graphSR.getAttributeValue(Constants.NEW_NODE_IDS);
-				List<String> ids = SupportMethods.commaStrToStrList(commaIDs);
-
-				if (ids.size() > Constants.NEW_NODE_MAX_IDS)
-					return null;
-
-				return ids;
-			}
-		} catch (NumberFormatException | XMLStreamException e) {
-			e.printStackTrace();
+	    try {
+		if (graphSR.nextStartElement()
+			&& graphSR.isNode()
+			&& name.equals(graphSR
+				.getAttributeValue(Constants.NEW_NODE_NAME))) {
+		    List<String> nodes = getNodeIDs();
+		    if (nodes != null) {
+			close();
+			return nodes;
+		    }
 		}
-		return null;
+	    } catch (XMLStreamException e) {
+		e.printStackTrace();
+	    }
 	}
+	close();
+	return null;
+    }
 
-	public Boolean hasNext() {
+    public List<String> getNeighbours(String id) {
+	while (hasNext()) {
 
-		try {
-			return graphSR.hasNext();
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public void close() {
-		try {
-			graphSR.close();
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// TODO: ID Liste für Namen
-
-	public List<String> getNeighbours(String id) {
-		while (hasNext()) {
-
-			List<String> nodes = getNextNodeIDs();
-			if (nodes != null && nodes.contains(id)) {
-				nodes.remove(id);
-				close();
-				return nodes;
-			}
-		}
+	    List<String> nodes = getNextNodeIDs();
+	    if (nodes != null && nodes.contains(id)) {
+		nodes.remove(id);
 		close();
-		return null;
+		return nodes;
+	    }
 	}
+	close();
+	return null;
+    }
 }

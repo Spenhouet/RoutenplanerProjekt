@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Junction {
 
+    //TODO junctionId benötigt?
     private static long counter;
     private long junctionId = counter++;
     private int price;
