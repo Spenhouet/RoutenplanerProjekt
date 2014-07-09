@@ -50,6 +50,11 @@ public class StAXNodeParser {
 	    e.printStackTrace();
 	}
 
+	if (names != null) {
+
+	    names = SupportMethods.sortListCompairedToEquality(names, name);
+	}
+
 	close();
 	return names;
     }
