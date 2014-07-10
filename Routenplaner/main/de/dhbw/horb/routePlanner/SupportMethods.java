@@ -91,7 +91,9 @@ public class SupportMethods {
 	StringTokenizer st2 = new StringTokenizer(commaStr, ",");
 
 	while (st2.hasMoreElements()) {
-	    list.add(st2.nextElement().toString());
+	    String nextElement = st2.nextElement().toString().trim();
+	    if (nextElement != null && !nextElement.isEmpty())
+		list.add(nextElement);
 	}
 
 	return list;
