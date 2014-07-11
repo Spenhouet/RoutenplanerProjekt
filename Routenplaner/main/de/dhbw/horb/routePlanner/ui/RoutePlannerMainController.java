@@ -81,7 +81,8 @@ public class RoutePlannerMainController {
 	String start = startComboBox.getValue();
 	String end = targetComboBox.getValue();
 
-	if (start != null && end != null && !start.isEmpty() && !end.isEmpty()) {
+	if (start != null && end != null && !start.trim().isEmpty()
+		&& !end.trim().isEmpty()) {
 
 	    Tab calculatedRouteTab = new Tab();
 	    calculatedRouteTab.setText("Berechnete Route");
