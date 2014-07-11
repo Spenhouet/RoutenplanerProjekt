@@ -1,4 +1,4 @@
-package de.dhbw.horb.routePlanner.evaluation;
+package de.dhbw.horb.routePlanner.evaluation.dijkstra;
 
 import java.util.LinkedList;
 
