@@ -1,4 +1,5 @@
-package de.dhbw.horb.routePlanner.evaluation;
+package de.dhbw.horb.routePlanner.evaluation.dijkstra;
+
 
 public class Test {
 
