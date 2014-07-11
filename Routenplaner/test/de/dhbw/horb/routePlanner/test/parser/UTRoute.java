@@ -1,6 +1,6 @@
 package de.dhbw.horb.routePlanner.test.parser;
 
-public class UTRouteTest {
+public class UTRoute {
 
 	// TODO Route Test schreiben
 }

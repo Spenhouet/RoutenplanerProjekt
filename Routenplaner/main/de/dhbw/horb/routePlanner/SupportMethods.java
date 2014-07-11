@@ -77,7 +77,9 @@ public class SupportMethods {
 
 	String value = "";
 	for (String i : strL) {
-	    value += value.isEmpty() ? i : "," + i;
+	    if (i == null || i.trim().isEmpty())
+		continue;
+	    value += value.isEmpty() ? i : "," + i.trim();
 	}
 
 	return value;
