@@ -12,8 +12,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+
+import org.controlsfx.dialog.Dialogs;
+
 import de.dhbw.horb.routePlanner.Constants;
 
 public class RoutePlannerMainController {
@@ -46,6 +52,11 @@ public class RoutePlannerMainController {
     @FXML
     private Button calculateRouteButton;
 
+    @FXML
+    private TabPane tabPane;
+
+    private Tab calculatedRouteTab;
+
     /**
      * The constructor. The constructor is called before the initialize()
      * method.
@@ -72,11 +83,20 @@ public class RoutePlannerMainController {
 
 	if (start != null && end != null && !start.isEmpty() && !end.isEmpty()) {
 
+	    Tab calculatedRouteTab = new Tab();
+	    calculatedRouteTab.setText("Berechnete Route");
+	    Label label = new Label("Berechnete Route.....");
+	    calculatedRouteTab.setContent(label);
+	    tabPane.getTabs().add(calculatedRouteTab);
+
+	    //tabPane.getTabs().remove(calculatedRouteTab);
 	    UIEvalutationInterface.calculateRoute(start, end);
+
 	} else {
 
-	    //	    TODO Robin: Fehler Message: "Ein Start und Ziel muss eingegeben werde."
-
+	    Dialogs.create().title("Keine Berechnung möglich!")
+		    .message("Bitte geben Sie sowohl Start als auch Ziel an.")
+		    .showError();
 	}
     }
 
@@ -111,18 +131,16 @@ public class RoutePlannerMainController {
 			    try {
 				ways = generateLinkQuery_ways();
 			    } catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			    }
 			    String nodes = null;
 			    try {
 				nodes = generateLinkQuery_nodes();
 			    } catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			    }
-			    System.out.println("Ways: " + ways);
-			    System.out.println("Nodes: " + nodes);
+			    //System.out.println("Ways: " + ways);
+			    //System.out.println("Nodes: " + nodes);
 			    webEngine.executeScript("init(\"" + ways + "\",\""
 				    + nodes + "\")");
 			}
