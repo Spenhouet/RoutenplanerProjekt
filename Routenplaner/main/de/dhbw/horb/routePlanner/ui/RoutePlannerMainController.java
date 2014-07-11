@@ -67,6 +67,17 @@ public class RoutePlannerMainController {
     @FXML
     void calculateRouteButtonClicked(ActionEvent event) {
 
+	String start = startComboBox.getValue();
+	String end = targetComboBox.getValue();
+
+	if (start != null && end != null && !start.isEmpty() && !end.isEmpty()) {
+
+	    UIEvalutationInterface.calculateRoute(start, end);
+	} else {
+
+	    //	    TODO Robin: Fehler Message: "Ein Start und Ziel muss eingegeben werde."
+
+	}
     }
 
     @FXML
@@ -100,12 +111,14 @@ public class RoutePlannerMainController {
 			    try {
 				ways = generateLinkQuery_ways();
 			    } catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			    }
 			    String nodes = null;
 			    try {
 				nodes = generateLinkQuery_nodes();
 			    } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			    }
 			    System.out.println("Ways: " + ways);
