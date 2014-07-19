@@ -11,6 +11,7 @@ Overpass Daten:
   -Aus diesen zwei neue XML Dateien erzeugen
   -Auf Befehl von GUI -> Lade Anzeige?
   -Update beziehen? WGET?
+  -Mehr Länder downloaden?
 
 GUI:
   -Anzeige der Wege über Webview
