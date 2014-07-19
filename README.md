@@ -1,6 +1,9 @@
 RoutenplanerProjekt
 ===================
 
+Deadline:       14.08.2014 24:00 Uhr
+Abgabe Termin:  15.08.2014 24:00 Uhr
+
 DHBW Java Routenplaner Projekt
 
 1. Methoden Namen überprüfen (Sinnvoll, verständlich, englisch...?)
