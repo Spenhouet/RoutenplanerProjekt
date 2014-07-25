@@ -10,34 +10,34 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class NodeMap {
 
-	private Map<String, List<String>> nodes;
+    private Map<String, List<String>> nodes;
 
-	public NodeMap() {
-		nodes = new HashMap<String, List<String>>();
+    public NodeMap() {
+	nodes = new HashMap<String, List<String>>();
+    }
+
+    public void addNode(String name, String id) {
+	if (nodes.containsKey(name)) {
+	    nodes.get(name).add(id);
+	} else {
+	    List<String> listIDs = new ArrayList<String>();
+	    listIDs.add(id);
+	    nodes.put(name, listIDs);
 	}
+    }
 
-	public void addNode(String name, String id) {
-		if (nodes.containsKey(name)) {
-			nodes.get(name).add(id);
-		} else {
-			List<String> listIDs = new ArrayList<String>();
-			listIDs.add(id);
-			nodes.put(name, listIDs);
-		}
-	}
+    public Boolean hasNode() {
+	return !nodes.isEmpty();
+    }
 
-	public Boolean hasNode() {
-		return !nodes.isEmpty();
-	}
+    public Map<String, String> removeNode() {
 
-	public Map<String, String> removeNode() {
+	Map<String, String> node = new HashMap<String, String>();
+	String key = nodes.keySet().iterator().next();
 
-		Map<String, String> node = new HashMap<String, String>();
-		String key = nodes.keySet().iterator().next();
+	node.put(Constants.NEW_NODE_NAME, key);
+	node.put(Constants.NEW_NODE_ID, SupportMethods.strListToCommaStr(nodes.remove(key)));
 
-		node.put(Constants.NEW_NODE_NAME, key);
-		node.put(Constants.NEW_NODE_ID, SupportMethods.strListToCommaStr(nodes.remove(key)));
-
-		return node;
-	}
+	return node;
+    }
 }

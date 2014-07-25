@@ -24,16 +24,13 @@ public class OverpassDownloader {
     public static void main(String[] args) throws Exception {
 
 	String area = "Deutschland"; // TODO Land über GUI auswählbar
-	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a;"
-		+ "(way(area.a)[highway=\"motorway\"];>;"
+	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a;" + "(way(area.a)[highway=\"motorway\"];>;"
 		+ "way(area.a)[highway=\"motorway_link\"];>;);" + "out;";
 
-	InputStream is = getDataViaOverpass(query);
-	System.out.println(is.toString());
-	copy(is, new File(Constants.XML_GRAPHDATA));
+	saveInputStreamToFile(getDataFromOverpass(query), new File(Constants.XML_GRAPHDATA));
     }
 
-    private static void copy(InputStream in, File file) {
+    private static void saveInputStreamToFile(InputStream in, File file) {
 	try {
 	    OutputStream out = new FileOutputStream(file);
 	    byte[] buf = new byte[1024];
@@ -50,26 +47,23 @@ public class OverpassDownloader {
 
     /**
     *
-    * @param query the overpass query
-    * @return the nodes in the formulated query
+    * @param query Overpass Anfrage
+    * @return Ergebnis der Anfrage als XML Daten.
     * @throws IOException
     * @throws ParserConfigurationException
     * @throws SAXException
     */
-    private static InputStream getDataViaOverpass(String query)
-	    throws IOException, ParserConfigurationException, SAXException {
-	String hostname = Constants.OVERPASS_API;
+    private static InputStream getDataFromOverpass(String query) throws IOException, ParserConfigurationException,
+	    SAXException {
 
-	URL osm = new URL(hostname);
-	HttpURLConnection connection = (HttpURLConnection) osm.openConnection();
+	URL overpass = new URL(Constants.OVERPASS_API);
+	HttpURLConnection connection = (HttpURLConnection) overpass.openConnection();
 	connection.setDoInput(true);
 	connection.setDoOutput(true);
-	connection.setRequestProperty("Content-Type",
-		"application/x-www-form-urlencoded");
+	connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 	connection.setReadTimeout(60 * 60 * 1000);
 
-	DataOutputStream printout = new DataOutputStream(
-		connection.getOutputStream());
+	DataOutputStream printout = new DataOutputStream(connection.getOutputStream());
 	printout.writeBytes("data=" + URLEncoder.encode(query, "utf-8"));
 	printout.flush();
 	printout.close();
