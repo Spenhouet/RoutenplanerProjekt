@@ -6,8 +6,8 @@ import java.util.Map;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
-import de.dhbw.horb.routePlanner.parser.DomStAXMapGraphDataNodesParser;
-import de.dhbw.horb.routePlanner.parser.DomStAXMapGraphDataWaysParser;
+import de.dhbw.horb.routePlanner.data.DomStAXMapGraphDataNodesParser;
+import de.dhbw.horb.routePlanner.data.DomStAXMapGraphDataWaysParser;
 
 public class Route {
 
