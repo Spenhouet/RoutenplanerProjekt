@@ -24,12 +24,10 @@ public class StAXNodeParser {
 
     private GraphDataStreamReader graphSR;
 
-    private StAXNodeParser(String xmlFile) throws FileNotFoundException,
-	    XMLStreamException {
+    private StAXNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
-	graphSR = new GraphDataStreamReader(
-		factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+	graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
     }
 
     public List<String> containsName(String name) {
@@ -135,10 +133,8 @@ public class StAXNodeParser {
 	while (hasNext()) {
 
 	    try {
-		if (graphSR.nextStartElement()
-			&& graphSR.isNode()
-			&& name.equals(graphSR
-				.getAttributeValue(Constants.NEW_NODE_NAME))) {
+		if (graphSR.nextStartElement() && graphSR.isNode()
+			&& name.equals(graphSR.getAttributeValue(Constants.NEW_NODE_NAME))) {
 		    List<String> nodes = getNodeIDs();
 		    if (nodes != null) {
 			close();

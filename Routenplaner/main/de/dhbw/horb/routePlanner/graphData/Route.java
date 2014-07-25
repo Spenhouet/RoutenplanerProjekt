@@ -28,8 +28,7 @@ public class Route {
 
     Boolean firstRun = false;
 
-    public Route(String nodeID, DomStAXMapGraphDataNodesParser nodeMapDom,
-	    DomStAXMapGraphDataWaysParser wayMapDom) {
+    public Route(String nodeID, DomStAXMapGraphDataNodesParser nodeMapDom, DomStAXMapGraphDataWaysParser wayMapDom) {
 	this.nodeMapDom = nodeMapDom;
 	this.wayMapDom = wayMapDom;
 
@@ -57,35 +56,29 @@ public class Route {
 
 	// INVESTIGATE Strecke wirkt zu lange.
 	if (lat1 != null && lon1 != null && lat2 != null && lon2 != null)
-	    newDistance = SupportMethods.fromLatLonToDistanceInKM(lat1, lon1,
-		    lat2, lon2);
+	    newDistance = SupportMethods.fromLatLonToDistanceInKM(lat1, lon1, lat2, lon2);
 
 	Map<String, String> way = wayMapDom.getWay(wayID);
 	if (way != null && newDistance != null) {
 
 	    String maxspeed = way.get(Constants.WAY_MAXSPEED);
-	    if (maxspeed == null || maxspeed.isEmpty()
-		    || !SupportMethods.isNumeric(maxspeed)) {
+	    if (maxspeed == null || maxspeed.isEmpty() || !SupportMethods.isNumeric(maxspeed)) {
 		String highway = way.get(Constants.WAY_HIGHWAY);
-		if (highway != null
-			&& highway.equals(Constants.WAY_MOTORWAY_LINK)) {
+		if (highway != null && highway.equals(Constants.WAY_MOTORWAY_LINK)) {
 		    maxspeed = "60";
-		} else if (highway != null
-			&& highway.equals(Constants.WAY_MOTORWAY)) {
+		} else if (highway != null && highway.equals(Constants.WAY_MOTORWAY)) {
 		    maxspeed = "120";
 		} else {
 		    maxspeed = "120";
 		}
 	    }
 
-	    durationInMilliseconds += (SupportMethods
-		    .fromDistanceAndSpeedToMilliseconds(newDistance,
-			    Integer.valueOf(maxspeed)));
+	    durationInMilliseconds += (SupportMethods.fromDistanceAndSpeedToMilliseconds(newDistance,
+		    Integer.valueOf(maxspeed)));
 	    this.distance += newDistance;
 
 	    String nr = way.get(Constants.WAY_REF);
-	    if ((number == null || number.isEmpty()) && nr != null
-		    && !nr.isEmpty())
+	    if ((number == null || number.isEmpty()) && nr != null && !nr.isEmpty())
 		this.number = nr;
 	}
 
@@ -118,8 +111,7 @@ public class Route {
     }
 
     public Long getDurationInSeconds() {
-	return SupportMethods.millisecondsToSeconds(
-		durationInMilliseconds.doubleValue()).longValue();
+	return SupportMethods.millisecondsToSeconds(durationInMilliseconds.doubleValue()).longValue();
     }
 
     public Double getDistance() {
