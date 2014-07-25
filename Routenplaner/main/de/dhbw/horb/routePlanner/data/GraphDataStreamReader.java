@@ -1,4 +1,4 @@
-package de.dhbw.horb.routePlanner.parser;
+package de.dhbw.horb.routePlanner.data;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

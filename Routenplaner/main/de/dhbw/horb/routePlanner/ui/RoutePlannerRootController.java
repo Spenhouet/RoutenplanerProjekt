@@ -1,6 +1,6 @@
 package de.dhbw.horb.routePlanner.ui;
 
-import de.dhbw.horb.routePlanner.parser.JDomGraphDataCreator;
+import de.dhbw.horb.routePlanner.data.JDomGraphDataCreator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;

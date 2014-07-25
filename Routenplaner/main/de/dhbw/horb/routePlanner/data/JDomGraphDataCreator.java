@@ -1,4 +1,4 @@
-package de.dhbw.horb.routePlanner.parser;
+package de.dhbw.horb.routePlanner.data;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

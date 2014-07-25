@@ -3,7 +3,7 @@ package de.dhbw.horb.routePlanner.ui;
 import java.util.List;
 import java.util.Map;
 
-import de.dhbw.horb.routePlanner.parser.StAXNodeParser;
+import de.dhbw.horb.routePlanner.data.StAXNodeParser;
 
 public class UIEvalutationInterface {
 
