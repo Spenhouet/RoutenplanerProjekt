@@ -1,10 +1,11 @@
 package de.dhbw.horb.routePlanner.data;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -13,24 +14,38 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-public class OverpassDownloader {
+import de.dhbw.horb.routePlanner.Constants;
 
-    private static final String OVERPASS_API = "http://www.overpass-api.de/api/interpreter";
+public class OverpassDownloader {
+    // TODO Methoden überarbeiten
+    // TODO Fortschrittsanzeige hinzufügen
+    // TODO Eintrag in GUI Menü
 
     public static void main(String[] args) throws Exception {
 
-	//	String query = "[timeout:3600]; area[name=\"Deutschland\"]->.a;"
-	//		+ "(way(area.a)[highway=\"motorway\"];>;"
-	//		+ "way(area.a)[highway=\"motorway_link\"];>;"
-	//		+ "way(area.a)[highway=\"trunk\"];>;"
-	//		+ "way(area.a)[highway=\"trunk_link\"];>;"
-	//		+ "way(area.a)[highway=\"primary\"];>;"
-	//		+ "way(area.a)[highway=\"primary_link\"];>;);" + "out;";
+	String area = "Deutschland"; // TODO Land über GUI auswählbar
+	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a;"
+		+ "(way(area.a)[highway=\"motorway\"];>;"
+		+ "way(area.a)[highway=\"motorway_link\"];>;);" + "out;";
 
-	String queryString = readFileAsString("xmlFile/anfrage.txt");
-	InputStream is = getDataViaOverpass(queryString);
+	InputStream is = getDataViaOverpass(query);
 	System.out.println(is.toString());
+	copy(is, new File(Constants.XML_GRAPHDATA));
+    }
 
+    private static void copy(InputStream in, File file) {
+	try {
+	    OutputStream out = new FileOutputStream(file);
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = in.read(buf)) > 0) {
+		out.write(buf, 0, len);
+	    }
+	    out.close();
+	    in.close();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -43,7 +58,7 @@ public class OverpassDownloader {
     */
     private static InputStream getDataViaOverpass(String query)
 	    throws IOException, ParserConfigurationException, SAXException {
-	String hostname = OVERPASS_API;
+	String hostname = Constants.OVERPASS_API;
 
 	URL osm = new URL(hostname);
 	HttpURLConnection connection = (HttpURLConnection) osm.openConnection();
@@ -51,7 +66,7 @@ public class OverpassDownloader {
 	connection.setDoOutput(true);
 	connection.setRequestProperty("Content-Type",
 		"application/x-www-form-urlencoded");
-	connection.setReadTimeout(2 * 60 * 1000);//2 minute timeout
+	connection.setReadTimeout(60 * 60 * 1000);
 
 	DataOutputStream printout = new DataOutputStream(
 		connection.getOutputStream());
@@ -59,31 +74,6 @@ public class OverpassDownloader {
 	printout.flush();
 	printout.close();
 
-	//DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-	//DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-	//return docBuilder.parse(connection.getInputStream());
 	return connection.getInputStream();
     }
-
-    /**
-     * 
-     * @param filePath
-     * @return
-     * @throws java.io.IOException
-     */
-    private static String readFileAsString(String filePath)
-	    throws java.io.IOException {
-	StringBuffer fileData = new StringBuffer(1000);
-	BufferedReader reader = new BufferedReader(new FileReader(filePath));
-	char[] buf = new char[1024];
-	int numRead = 0;
-	while ((numRead = reader.read(buf)) != -1) {
-	    String readData = String.valueOf(buf, 0, numRead);
-	    fileData.append(readData);
-	    buf = new char[1024];
-	}
-	reader.close();
-	return fileData.toString();
-    }
-
 }
