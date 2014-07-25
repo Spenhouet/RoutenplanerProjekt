@@ -21,16 +21,21 @@ public class OverpassDownloader {
     // TODO Fortschrittsanzeige hinzufügen
     // TODO Eintrag in GUI Menü
 
-    public static void main(String[] args) throws Exception {
+    public void main(String[] args) throws Exception {
 
 	String area = "Deutschland"; // TODO Land über GUI auswählbar
-	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a;" + "(way(area.a)[highway=\"motorway\"];>;"
-		+ "way(area.a)[highway=\"motorway_link\"];>;);" + "out;";
+	downloadGraphData(area);
+    }
+
+    public void downloadGraphData(String area) throws IOException, ParserConfigurationException, SAXException {
+
+	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a; (way(area.a)[highway=\"motorway\"];>;"
+		+ "way(area.a)[highway=\"motorway_link\"];>;); out;";
 
 	saveInputStreamToFile(getDataFromOverpass(query), new File(Constants.XML_GRAPHDATA));
     }
 
-    private static void saveInputStreamToFile(InputStream in, File file) {
+    private void saveInputStreamToFile(InputStream in, File file) {
 	try {
 	    OutputStream out = new FileOutputStream(file);
 	    byte[] buf = new byte[1024];
@@ -53,7 +58,7 @@ public class OverpassDownloader {
     * @throws ParserConfigurationException
     * @throws SAXException
     */
-    private static InputStream getDataFromOverpass(String query) throws IOException, ParserConfigurationException,
+    private InputStream getDataFromOverpass(String query) throws IOException, ParserConfigurationException,
 	    SAXException {
 
 	URL overpass = new URL(Constants.OVERPASS_API);
