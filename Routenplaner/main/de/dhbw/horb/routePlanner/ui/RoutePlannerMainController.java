@@ -55,6 +55,7 @@ public class RoutePlannerMainController {
     @FXML
     private TabPane tabPane;
 
+    @FXML
     private Tab calculatedRouteTab;
 
     /**
@@ -66,8 +67,7 @@ public class RoutePlannerMainController {
 
     @FXML
     void testButtonClicked(ActionEvent event) {
-	webEngine.load(this.getClass().getResource("overpass.html")
-		.toExternalForm());
+	webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
     }
 
     @FXML
@@ -81,8 +81,7 @@ public class RoutePlannerMainController {
 	String start = startComboBox.getValue();
 	String end = targetComboBox.getValue();
 
-	if (start != null && end != null && !start.trim().isEmpty()
-		&& !end.trim().isEmpty()) {
+	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
 
 	    Tab calculatedRouteTab = new Tab();
 	    calculatedRouteTab.setText("Berechnete Route");
@@ -96,8 +95,7 @@ public class RoutePlannerMainController {
 	} else {
 
 	    Dialogs.create().title("Keine Berechnung möglich!")
-		    .message("Bitte geben Sie sowohl Start als auch Ziel an.")
-		    .showError();
+		    .message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 	}
     }
 
@@ -121,35 +119,38 @@ public class RoutePlannerMainController {
 	new AutoCompleteComboBoxListener<>(startComboBox);
 	new AutoCompleteComboBoxListener<>(targetComboBox);
 	webEngine = testWebView.getEngine();
-	webEngine.getLoadWorker().stateProperty()
-		.addListener(new ChangeListener<State>() {
-		    @Override
-		    public void changed(ObservableValue ov, State oldState,
-			    State newState) {
+	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+	    @Override
+	    public void changed(ObservableValue ov, State oldState, State newState) {
 
-			if (newState == Worker.State.SUCCEEDED) {
-			    String ways = null;
-			    try {
-				ways = generateLinkQuery_ways();
-			    } catch (UnsupportedEncodingException e1) {
-				e1.printStackTrace();
-			    }
-			    String nodes = null;
-			    try {
-				nodes = generateLinkQuery_nodes();
-			    } catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			    }
-			    //System.out.println("Ways: " + ways);
-			    //System.out.println("Nodes: " + nodes);
-			    webEngine.executeScript("init(\"" + ways + "\",\""
-				    + nodes + "\")");
-			}
-
+		if (newState == Worker.State.SUCCEEDED) {
+		    String ways = null;
+		    try {
+			ways = generateLinkQuery_ways();
+		    } catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
 		    }
-		});
+		    String nodes = null;
+		    try {
+			nodes = generateLinkQuery_nodes();
+		    } catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		    }
+		    //DEBUG:
+		    //System.out.println("Ways: " + ways);
+		    //System.out.println("Nodes: " + nodes);
+		    webEngine.executeScript("init(\"" + ways + "\",\"" + nodes + "\")");
+		}
+
+	    }
+	});
     }
 
+    /**
+     * 
+     * @return Abfrage-Query Ways
+     * @throws UnsupportedEncodingException
+     */
     private String generateLinkQuery_ways() throws UnsupportedEncodingException {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
@@ -168,15 +169,18 @@ public class RoutePlannerMainController {
 	    completeLink += "way(" + string + ");";
 	}
 
-	result_ways = linkStart + URLEncoder.encode(completeLink, "UTF-8")
-		+ linkEnd;
+	result_ways = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
 
 	return result_ways;
 
     }
 
-    private String generateLinkQuery_nodes()
-	    throws UnsupportedEncodingException {
+    /**
+     * 
+     * @return Abfrage-Query Nodes
+     * @throws UnsupportedEncodingException
+     */
+    private String generateLinkQuery_nodes() throws UnsupportedEncodingException {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
 	String result_nodes;
@@ -191,8 +195,7 @@ public class RoutePlannerMainController {
 	    completeLink += "node(" + string + ");";
 	}
 
-	result_nodes = linkStart + URLEncoder.encode(completeLink, "UTF-8")
-		+ linkEnd;
+	result_nodes = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
 
 	return result_nodes;
 

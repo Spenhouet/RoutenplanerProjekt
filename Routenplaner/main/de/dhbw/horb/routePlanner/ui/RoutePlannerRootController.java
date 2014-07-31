@@ -31,12 +31,12 @@ public class RoutePlannerRootController {
     }
 
     /**
-	 * Is called by the main application to give a reference back to itself.
-	 * 
-	 * @param mainApp
-	 */
-	public void setRoutePlannerMainApp(RoutePlannerMainApp routePlannerMainApp) {
-		this.routePlannerMainApp = routePlannerMainApp;
-	}
+     * Is called by the main application to give a reference back to itself.
+     * 
+     * @param mainApp
+     */
+    public void setRoutePlannerMainApp(RoutePlannerMainApp routePlannerMainApp) {
+	this.routePlannerMainApp = routePlannerMainApp;
+    }
 
 }

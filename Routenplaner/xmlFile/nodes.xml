@@ -29,7 +29,7 @@
   <node name="Zwartemeer" ids="999908439" />
   <node name="Darmstadt-Eberstadt" ids="457292,463231" />
   <node name="Lindau" ids="2110483,18157935" />
-  <node name="Weiden-West" ids="1582801738,1578588940" />
+  <node name="Weiden-West" ids="926087453,1582801738" />
   <node name="Landau an der Isar" ids="357734,129639" />
   <node name="Kavelstorf" ids="83035630,79897109" />
   <node name="Kreuz Hegau" ids="48976461,50780400,13048413,832450227" />
@@ -211,11 +211,11 @@
   <node name="Seligenstadt" ids="507959,266303639" />
   <node name="Rehau-Süd" ids="1685814399,155177584" />
   <node name="Neuental" ids="274488538,278998315" />
-  <node name="Wangen-Nord" ids="183782884,18118475" />
+  <node name="Wangen-Nord" ids="183782882,18118475" />
   <node name="Köln-Merheim" ids="1458721840,586301" />
   <node name="Kreuz Düsseldorf-Nord" ids="20984886,20984927,248583342,164754,164721,164737,1697994806" />
   <node name="Böblingen-Ost" ids="242501" />
-  <node name="Aichstetten" ids="278547432,18109224" />
+  <node name="Aichstetten" ids="1925267199,18109224" />
   <node name="Rohrdorf" ids="1548853138,268589900" />
   <node name="Bad Lauchstädt" ids="192768895,192768933" />
   <node name="Kreuz Schöneberg" ids="26908832,26908767,267337350,26908974" />
@@ -226,8 +226,8 @@
   <node name="Beelitz" ids="509559,268199987" />
   <node name="Etteln" ids="24959785,1634669346" />
   <node name="Bremerhaven-Süd" ids="1936301196,1659420009" />
+  <node name="Melle-West" ids="2821936582,30009483,255942093" />
   <node name="Taufkirchen-Ost" ids="268570536,268352171" />
-  <node name="Melle-West" ids="30009483,255942093" />
   <node name="Pfaffenhofen" ids="119803319,21518694" />
   <node name="Perl-Besch" ids="34595182,261068457" />
   <node name="Bornheim" ids="282291753,276675060,2759564972,2759564966" />
@@ -361,7 +361,7 @@
   <node name="Dortmund-Hombruch" ids="25435897,25435703" />
   <node name="Efringen-Kirchen" ids="243912316,30415520" />
   <node name="Roßdorf am Berg" ids="197422642,71218420" />
-  <node name="Weiden-Nord" ids="177684644,178866638" />
+  <node name="Weiden-Nord" ids="177684644,1192833850" />
   <node name="Kröpelin" ids="278856112,251206149" />
   <node name="Dortmund-Eichlinghofen" ids="689293732,732218481" />
   <node name="Traunstein" ids="26372760,17287129" />
@@ -408,7 +408,7 @@
   <node name="Dreieck Hockenheim" ids="163836,163830,71605012" />
   <node name="Soest-Ost" ids="906159,36166990" />
   <node name="Bautzen-West" ids="769847897,769847737" />
-  <node name="Parkplatz Waldnaabtal Ost" ids="2600754134,75665706" />
+  <node name="Parkplatz Waldnaabtal Ost" ids="2600754134" />
   <node name="Erfurt-Ost" ids="2499986601,1359030799" />
   <node name="Hamburg-Bergedorf" ids="1671606312,31821204" />
   <node name="Dreieck Hamburg-Nordwest" ids="1412129883,1412142431,496122" />
@@ -679,7 +679,7 @@
   <node name="Trockau" ids="142745591,16536347" />
   <node name="Bad Oldesloe - Nord" ids="93777432,93783065" />
   <node name="Malsfeld" ids="286483588,199339663" />
-  <node name="Krakow" ids="8127372,162251307" />
+  <node name="Krakow" ids="162251307,672934130" />
   <node name="Wüstenbrand" ids="279104918,29512052" />
   <node name="Aicha vorm Wald" ids="1430826597,1430826598" />
   <node name="Landau-Nord" ids="115977926,361553,29335273" />
@@ -918,7 +918,7 @@
   <node name="Würzburg-Heidingsfeld" ids="584501,10799103" />
   <node name="Ebersdorf bei Coburg" ids="80073146,80072760" />
   <node name="Nürnberg-Fischbach" ids="584775,241790448" />
-  <node name="Leutkirch-West" ids="1646703197,1646703211" />
+  <node name="Leutkirch-West" ids="1646703211,283142504" />
   <node name="Sulzbach-Rosenberg" ids="267764295,21741233" />
   <node name="Düsseldorf-Benrath" ids="255108558,1773968411" />
   <node name="Gollhofen" ids="262498091,21105297" />
@@ -1039,7 +1039,7 @@
   <node name="Engen" ids="256108048,256108119" />
   <node name="Seestraße" ids="26881960" />
   <node name="Neustadt / Pelzerhaken" ids="33517919,33517959" />
-  <node name="Glasewitz" ids="260061147,296228093" />
+  <node name="Glasewitz" ids="672969033,672969066" />
   <node name="Dierdorf" ids="266326295,1440554552" />
   <node name="Görlitz" ids="270832891,25626736" />
   <node name="Sulzbach" ids="1530722484,262803697" />
@@ -1078,7 +1078,7 @@
   <node name="Wallau" ids="1677677311,1677677717" />
   <node name="München-Perlach" ids="1596641883,472051" />
   <node name="Walldorf / Wiesloch" ids="1574364324,90636873" />
-  <node name="Fürstenwalde-West" ids="36265488,36265415" />
+  <node name="Fürstenwalde-West" ids="36265415,1054378105" />
   <node name="Exter" ids="36101446,365671907" />
   <node name="Mechernich" ids="243670686,302323441" />
   <node name="Dülmen-Nord" ids="49653352,278145838" />
@@ -1391,6 +1391,8 @@
   <node name="Seidelstraße" ids="26871401" />
   <node name="Schenefeld" ids="281758666,283280558" />
   <node name="Wörnitz" ids="272032402,278728429" />
+  <node name="A5 Frankfurt/Main" ids="526128" />
+  <node name="Beek" ids="44325156" />
   <node name="Dreieck Allgäu" ids="263438554,503129140,267407828,267411239" />
   <node name="Stapelfeld" ids="13330945,148040" />
   <node name="Bottrop" ids="307514987,248608325" />
@@ -1832,7 +1834,7 @@
   <node name="Schiersteiner Kreuz" ids="28463036,1569322083,31192032,28602934,28602943,31192104" />
   <node name="Feuchtwangen-Nord" ids="248708935,248709027" />
   <node name="Bad Staffelstein" ids="21732810,21724903" />
-  <node name="Leutkirch-Süd" ids="1646703185,1646703177" />
+  <node name="Leutkirch-Süd" ids="283130302,253115817" />
   <node name="Nieder-Eschbach" ids="504374,504298" />
   <node name="Sigmarszell" ids="2110469,18157729" />
   <node name="Wahlstedt" ids="1674865429,1674865462" />
@@ -1968,6 +1970,7 @@
   <node name="Bielefeld-Süd" ids="365829784,1917904987" />
   <node name="Forchheim-Nord" ids="258941445,331499854" />
   <node name="Arnstadt-Nord" ids="14208364,1622275377" />
+  <node name="A5 Stuttgart" ids="526126" />
   <node name="Wildeshausen-Nord" ids="82666636,82666087" />
   <node name="Dreieck München-Allach" ids="129001" />
   <node name="Oldenburg-Etzhorn" ids="457400489,1952138883" />
@@ -2018,6 +2021,7 @@
   <node name="Kaltenkirchen" ids="496265,490960" />
   <node name="Irschenberg" ids="155434,33960610" />
   <node name="Burghausen" ids="270912782,297740605" />
+  <node name="Viersen-Süchteln" ids="73011954" />
   <node name="Hof-Süd" ids="1687053675,177479428" />
   <node name="Selb-West" ids="177540072,177539364" />
   <node name="Ramstein-Miesenbach" ids="254515659,267638591" />
@@ -2059,7 +2063,7 @@
   <node name="Krefeld-Fichtenhain" ids="32532555,282771596" />
   <node name="Wesseling" ids="21290039,91447577" />
   <node name="Rodenkirchen" ids="56623074,56560741" />
-  <node name="Neustadt" ids="177675494,914382335" />
+  <node name="Neustadt" ids="914382197,177675494" />
   <node name="Arnsberg-Altstadt" ids="433142678,262537825" />
   <node name="Moers-Kapellen" ids="57567302,164922" />
   <node name="München-Zamdorf" ids="1573667774,1573667775" />
@@ -2515,7 +2519,7 @@
   <node name="Wiesloch / Rauenberg" ids="593089,592140" />
   <node name="Kirchheimbolanden" ids="279243706,279243791" />
   <node name="Viereth-Trunstadt" ids="349907078,31949788" />
-  <node name="Güstrow" ids="672958242,249874386" />
+  <node name="Güstrow" ids="672958136,672958156" />
   <node name="Wachtendonk" ids="32623214,32623218" />
   <node name="München-Lochhausen;Kreuz München-West" ids="564059" />
   <node name="Scharbeutz" ids="314898171,33529098" />
@@ -2547,7 +2551,7 @@
   <node name="Villingen-Schwenningen" ids="255928250,30009242" />
   <node name="Uffenheim / Langensteinach" ids="281805481,281805532" />
   <node name="Paderborn-Sennelager" ids="34026923,30090597" />
-  <node name="Wangen-West" ids="289745323,247872770" />
+  <node name="Wangen-West" ids="2110407,289745323" />
   <node name="Eilsleben" ids="281716698" />
   <node name="Oberaudorf" ids="193881232,36828284" />
   <node name="Dinkelsbühl / Fichtenau" ids="288648,3652391" />
@@ -2555,7 +2559,7 @@
   <node name="Burgau" ids="2390047943,292282625" />
   <node name="Heilbronn / Untereisesheim" ids="33204231,250420512" />
   <node name="Erkelenz-Süd" ids="27593080,1583625596" />
-  <node name="Altenstadt" ids="249546580,35428410,268410746,540970,1456526206,914382276" />
+  <node name="Altenstadt" ids="249546580,35428410,268410746,2931548942,1456526206,914382292" />
   <node name="Worms" ids="62163660,1677677321" />
   <node name="Duisburg-Neumühl" ids="1629557784,1629557588" />
   <node name="Ulmen" ids="293395291,30438989" />
