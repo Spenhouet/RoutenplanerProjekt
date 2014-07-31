@@ -48,6 +48,11 @@ public class RoutePlannerMainApp extends Application {
 		updateMessage("Initialisiere...");
 		for (iterations = 0; iterations < 5; iterations++) {
 		    if (isCancelled()) {
+			try {
+			    Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
 			updateMessage("Cancelled");
 			break;
 		    }
@@ -70,17 +75,16 @@ public class RoutePlannerMainApp extends Application {
 
 		    case 1:
 			if (checkGraphDataXML() == false) {
-			    updateMessage("GraphDataXML wird erzeugt...");
-			    String area = "Deutschland";
-			    OverpassDownloader odl = new OverpassDownloader();
-			    odl.downloadGraphData(area);
-			    //			    try {
-			    //				Thread.sleep(5000);
-			    //			    } catch (InterruptedException ex) {
-			    //				Thread.currentThread().interrupt();
-			    //			    }
-			    //			    this.cancel();
-			    //			    break;
+			    try {
+				updateMessage("GraphDataXML wird erzeugt...");
+				String area = "Deutschland";
+				OverpassDownloader odl = new OverpassDownloader();
+				odl.downloadGraphData(area);
+			    } catch (Exception e) {
+				updateMessage("GraphDataXML konnte nicht erzeugt werden");
+				this.cancel();
+				break;
+			    }
 			} else {
 			    try {
 				Thread.sleep(1000);
@@ -93,19 +97,15 @@ public class RoutePlannerMainApp extends Application {
 
 		    case 2:
 			if (checkNodeXML() == false) {
-			    if (checkRouteXML() == true) {
-
+			    try {
+				updateMessage("NodeXML/RouteXML wird erzeugt...");
+				JDomGraphDataCreator dom = new JDomGraphDataCreator();
+				dom.createNewXMLFiles();
+			    } catch (Exception e) {
+				updateMessage("NodeXML/RouteXML konnte nicht erzeugt werden");
+				this.cancel();
+				break;
 			    }
-			    updateMessage("NodeXML wird erzeugt...");
-			    JDomGraphDataCreator dom = new JDomGraphDataCreator();
-			    dom.createNewXMLFiles();
-			    //			    try {
-			    //				Thread.sleep(5000);
-			    //			    } catch (InterruptedException ex) {
-			    //				Thread.currentThread().interrupt();
-			    //			    }
-			    //			    this.cancel();
-			    //			    break;
 			} else {
 			    try {
 				Thread.sleep(1000);
@@ -118,16 +118,16 @@ public class RoutePlannerMainApp extends Application {
 
 		    case 3:
 			if (checkRouteXML() == false) {
-			    updateMessage("RouteXML wird erzeugt...");
-			    JDomGraphDataCreator dom = new JDomGraphDataCreator();
-			    dom.createNewXMLFiles();
-			    //			    try {
-			    //				Thread.sleep(5000);
-			    //			    } catch (InterruptedException ex) {
-			    //				Thread.currentThread().interrupt();
-			    //			    }
-			    //			    this.cancel();
-			    //			    break;
+			    try {
+				updateMessage("RouteXML/NodeXML wird erzeugt...");
+				JDomGraphDataCreator dom = new JDomGraphDataCreator();
+				dom.createNewXMLFiles();
+			    } catch (Exception e) {
+				updateMessage("RouteXML/NodeXML konnte nicht erzeugt werden");
+				this.cancel();
+				break;
+			    }
+
 			} else {
 			    try {
 				Thread.sleep(1000);
@@ -270,6 +270,18 @@ public class RoutePlannerMainApp extends Application {
 
 	try {
 	    InetAddress.getByName("overpass-api.de").isReachable(10000);
+	} catch (Exception e) {
+	    result = false;
+	}
+
+	try {
+	    File f = new File(Constants.PROGRAM_HOME);
+	    if (f.exists() && f.isDirectory()) {
+
+	    } else {
+		File progDir = new File(Constants.PROGRAM_HOME);
+		result = progDir.mkdir();
+	    }
 	} catch (Exception e) {
 	    result = false;
 	}

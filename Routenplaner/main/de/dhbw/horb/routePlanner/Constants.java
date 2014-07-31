@@ -12,9 +12,12 @@ public interface Constants {
 
     public final static String OVERPASS_API = "http://www.overpass-api.de/api/interpreter";
 
-    public final static String XML_GRAPHDATA = "xmlFile/graphData.xml";
-    public final static String XML_NODES = "xmlFile/nodes.xml";
-    public final static String XML_ROUTES = "xmlFile/routes.xml";
+    public final static String USER_HOME = System.getProperty("user.home");
+    public final static String PROGRAM_HOME = USER_HOME + System.getProperty("file.separator")
+	    + "DHBW-Routenplaner 2014";
+    public final static String XML_GRAPHDATA = PROGRAM_HOME + System.getProperty("file.separator") + "graphData.xml";
+    public final static String XML_NODES = PROGRAM_HOME + System.getProperty("file.separator") + "nodes.xml";
+    public final static String XML_ROUTES = PROGRAM_HOME + System.getProperty("file.separator") + "routes.xml";
 
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
