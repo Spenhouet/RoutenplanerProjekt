@@ -17,15 +17,7 @@ import org.xml.sax.SAXException;
 import de.dhbw.horb.routePlanner.Constants;
 
 public class OverpassDownloader {
-    // TODO Methoden überarbeiten
-    // TODO Fortschrittsanzeige hinzufügen
     // TODO Eintrag in GUI Menü
-
-    public void main(String[] args) throws Exception {
-
-	String area = "Deutschland"; // TODO Land über GUI auswählbar
-	downloadGraphData(area);
-    }
 
     public void downloadGraphData(String area) throws IOException, ParserConfigurationException, SAXException {
 
@@ -54,7 +46,7 @@ public class OverpassDownloader {
     *
     * @param query Overpass Anfrage
     * @return Ergebnis der Anfrage als XML Daten.
-    * @throws IOException
+    * @throws IOException: Internet Abfrage fehlgeschlagen. Eventuell kein Internet.
     * @throws ParserConfigurationException
     * @throws SAXException
     */
