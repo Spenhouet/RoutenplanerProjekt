@@ -90,7 +90,7 @@ public class RoutePlannerMainController {
 	    tabPane.getTabs().add(calculatedRouteTab);
 
 	    //tabPane.getTabs().remove(calculatedRouteTab);
-	    UIEvalutationInterface.calculateRoute(start, end);
+	    UIEvaluationInterface.calculateRoute(start, end);
 
 	} else {
 
