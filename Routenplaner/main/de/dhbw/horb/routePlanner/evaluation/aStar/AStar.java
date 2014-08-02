@@ -5,17 +5,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.DomStAXMapRouteParser;
 import de.dhbw.horb.routePlanner.data.StAXNodeParser;
+import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 public class AStar {
 
     public static void main(String[] args) {
-	String departure = "Kreuz Hamburg-Ost";
-	String destination = "Kreuz Duisburg";
+	String departure = "Bispingen";
+	String destination = "Kreuz Kamp-Lintfort";
 	AStar a = new AStar(departure, destination);
-	a.calculateWay();
+	a.calculateWay(Constants.NEW_ROUTE_DISTANCE);
     }
 
     private DomStAXMapRouteParser routeParser;
@@ -25,6 +27,8 @@ public class AStar {
     private String departure;
     private String destination;
 
+    private String calculateMethod;
+
     public AStar(String departure, String destination) {
 	openEdge = new LinkedList<Map<String, String>>();
 	closedEdge = new LinkedList<Map<String, String>>();
@@ -33,28 +37,35 @@ public class AStar {
 	this.destination = destination;
     }
 
-    public void calculateWay() {
-	openEdge.add(createEdge(departure, departure, "0"));
+    public void calculateWay(String calculateMethod) {
+	this.calculateMethod = calculateMethod;
+	if (calculateMethod == null
+		|| (!calculateMethod.equals(Constants.NEW_ROUTE_DISTANCE) && !calculateMethod
+			.equals(Constants.NEW_ROUTE_DURATION))) {
+	    System.err.println("Unknown calculating method!");
+	    return;
+	}
+
+	openEdge.add(createEdge(departure));
 	findDestination();
-	System.out.println("Strecke: " + getWay(this.destination));
-	System.out.println("Dauer: " + getWeightBack(this.departure, this.destination));
+	UIEvaluationInterface.printRoute(getWays(this.destination));
     }
 
-    private List<String> getWay(String destination) {
-	List<String> nodes = new LinkedList<String>();
+    private List<Map<String, String>> getWays(String destination) {
+	List<Map<String, String>> nodes = new LinkedList<Map<String, String>>();
 	Map<String, String> mp = getEdge(closedEdge, destination);
 
 	if (mp != null) {
-	    String newDestination = mp.get("A");
+	    String newDestination = mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME);
 
 	    if (newDestination != null) {
 
 		if (!newDestination.equals(departure)) {
-		    nodes = getWay(newDestination);
-		    nodes.add(destination);
+		    nodes = getWays(newDestination);
+		    nodes.add(mp);
 		} else {
-		    nodes.add(newDestination);
-		    nodes.add(destination);
+		    //		    nodes.add(newDestination);
+		    nodes.add(mp);
 		    return nodes;
 		}
 	    }
@@ -70,8 +81,8 @@ public class AStar {
 	Map<String, String> mp = getEdge(closedEdge, destination);
 
 	if (mp != null) {
-	    String newDestination = mp.get("A");
-	    String newWeight = mp.get("G");
+	    String newDestination = mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME);
+	    String newWeight = mp.get(Constants.NEW_ROUTE_WEIGHT);
 
 	    if (newDestination != null && newWeight != null && SupportMethods.isNumeric(newWeight)) {
 
@@ -92,32 +103,31 @@ public class AStar {
 
 	for (String id : ids) {
 
-	    Map<String, String> rm = routeParser.getRoute(id);
-	    if (rm == null)
+	    Map<String, String> edge = createEdge(id);
+
+	    if (edge == null)
 		continue;
 
-	    Map<String, String> edge = createEdge(StAXNodeParser.getStAXNodeParser().getNameForID(id), StAXNodeParser
-		    .getStAXNodeParser().getNameForID(rm.get("destinationNodeID")), rm.get("distance"));
-
-	    //	    if (destination.equals(edge.get("B")))
-
-	    if (containsName(closedEdge, edge.get("B")))
+	    if (containsName(closedEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME)))
 		continue;
 
-	    if (containsName(openEdge, edge.get("B"))) {
+	    if (containsName(openEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME))) {
 		Double newWeight = null;
 		Double oldWeight = null;
 
-		if (edge.get("G") != null && SupportMethods.isNumeric(edge.get("G")))
-		    newWeight = Double.valueOf(edge.get("G"));
+		if (edge.get(Constants.NEW_ROUTE_WEIGHT) != null
+			&& SupportMethods.isNumeric(edge.get(Constants.NEW_ROUTE_WEIGHT)))
+		    newWeight = Double.valueOf(edge.get(Constants.NEW_ROUTE_WEIGHT));
 
-		Map<String, String> mp = getEdge(openEdge, edge.get("B"));
+		Map<String, String> mp = getEdge(openEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
 
-		if (mp.get("G") != null && SupportMethods.isNumeric(mp.get("G")))
-		    oldWeight = Double.valueOf(mp.get("G"));
+		if (mp.get(Constants.NEW_ROUTE_WEIGHT) != null
+			&& SupportMethods.isNumeric(mp.get(Constants.NEW_ROUTE_WEIGHT)))
+		    oldWeight = Double.valueOf(mp.get(Constants.NEW_ROUTE_WEIGHT));
 
 		if (newWeight != null && mp != null && oldWeight != null) {
-		    Double wb = getWeightBack(mp.get("A"), edge.get("B"));
+		    Double wb = getWeightBack(mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME),
+			    edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
 
 		    if (wb == null)
 			continue;
@@ -138,7 +148,7 @@ public class AStar {
 	Map<String, String> mp = getSmallestEdge();
 	openEdge.remove(mp);
 	closedEdge.add(mp);
-	addNighboarToList(mp.get("B"));
+	addNighboarToList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
 	if (!openEdge.isEmpty())
 	    findDestination();
     }
@@ -148,8 +158,8 @@ public class AStar {
 
 	Map<String, String> rMp = null;
 	for (Map<String, String> mp : openEdge) {
-	    if (SupportMethods.isNumeric(mp.get("G"))) {
-		Double nw = Double.valueOf(mp.get("G"));
+	    if (SupportMethods.isNumeric(mp.get(Constants.NEW_ROUTE_WEIGHT))) {
+		Double nw = Double.valueOf(mp.get(Constants.NEW_ROUTE_WEIGHT));
 		if (weight == null || nw < weight) {
 		    rMp = mp;
 		    weight = nw;
@@ -165,17 +175,41 @@ public class AStar {
 
     private Map<String, String> getEdge(List<Map<String, String>> edge, String name) {
 	for (int i = (edge.size() - 1); i >= 0; i--) {
-	    if (edge.get(i).get("B").equals(name))
+	    if (edge.get(i).get(Constants.NEW_ROUTE_DESTINATIONNODENAME).equals(name))
 		return edge.get(i);
 	}
 	return null;
     }
 
-    private Map<String, String> createEdge(String departure, String destination, String duration) {
-	Map<String, String> edge = new HashMap<String, String>();
-	edge.put("A", departure);
-	edge.put("B", destination);
-	edge.put("G", duration);
-	return edge;
+    private Map<String, String> createEdge(String id) {
+
+	if (id != null && !id.isEmpty() && !SupportMethods.isNumeric(id)) {
+	    Map<String, String> sr = new HashMap<String, String>();
+	    sr.put(Constants.NEW_ROUTE_DEPARTURENODENAME, id);
+	    sr.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, id);
+	    sr.put(Constants.NEW_ROUTE_WEIGHT, "0");
+
+	    return sr;
+	}
+	Map<String, String> rm = routeParser.getRoute(id);
+	if (rm == null)
+	    return null;
+
+	rm.put(Constants.NEW_ROUTE_DEPARTURENODENAME, StAXNodeParser.getStAXNodeParser().getNameForID(id));
+	rm.put(Constants.NEW_ROUTE_DESTINATIONNODENAME,
+		StAXNodeParser.getStAXNodeParser().getNameForID(rm.get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
+
+	switch (calculateMethod) {
+	case Constants.NEW_ROUTE_DISTANCE:
+	    rm.put(Constants.NEW_ROUTE_WEIGHT, rm.get(Constants.NEW_ROUTE_DISTANCE));
+	    break;
+	case Constants.NEW_ROUTE_DURATION:
+	    rm.put(Constants.NEW_ROUTE_WEIGHT, rm.get(Constants.NEW_ROUTE_DURATION));
+	    break;
+	default:
+	    System.err.println("Unknown calculating method!");
+	}
+
+	return rm;
     }
 }
