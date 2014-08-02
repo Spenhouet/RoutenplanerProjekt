@@ -19,7 +19,7 @@ public class DomStAXMapRouteParser {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	try {
 	    GraphDataStreamReader routeSR = new GraphDataStreamReader(
-		    factory.createXMLStreamReader(new FileInputStream(Constants.XML_GRAPHDATA)));
+		    factory.createXMLStreamReader(new FileInputStream(Constants.XML_ROUTES)));
 
 	    routes = new HashMap<String, Map<String, String>>();
 
