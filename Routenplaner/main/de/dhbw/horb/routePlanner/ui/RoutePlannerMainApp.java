@@ -9,9 +9,11 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import de.dhbw.horb.routePlanner.Constants;
@@ -228,7 +230,8 @@ public class RoutePlannerMainApp extends Application {
 	    rootLayout = (BorderPane) loader.load();
 
 	    // Show the scene containing the root layout.
-	    Scene scene = new Scene(rootLayout);
+	    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+	    Scene scene = new Scene(rootLayout, screenBounds.getWidth(), screenBounds.getHeight());
 	    primaryStage.setTitle("Routenplaner");
 	    primaryStage.setScene(scene);
 	    primaryStage.initStyle(StageStyle.DECORATED);
