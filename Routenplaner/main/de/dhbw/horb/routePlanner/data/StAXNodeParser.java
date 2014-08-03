@@ -37,7 +37,10 @@ public class StAXNodeParser {
 	Map<String, List<String>> nodeMap = new HashMap<String, List<String>>();
 
 	while (nodeParser.hasNext()) {
-	    nodeMap.putAll(nodeParser.getNextNode());
+	    Map<String, List<String>> nm = nodeParser.getNextNode();
+	    if (nm == null || nm.isEmpty())
+		continue;
+	    nodeMap.putAll(nm);
 	}
 
 	nodeParser.close();
@@ -176,21 +179,15 @@ public class StAXNodeParser {
     }
 
     private Map<String, List<String>> getNode() {
+	Map<String, List<String>> nm = new HashMap<String, List<String>>();
 	final String name = getName();
 	final List<String> ids = getNodeIDs();
 
-	if (name == null || ids == null || ids.isEmpty())
+	if (name == null || ids == null || name.isEmpty() || ids.isEmpty())
 	    return null;
 
-	return new HashMap<String, List<String>>() {
-	    /**
-	     * 
-	     */
-	    private static final long serialVersionUID = 4796732336645483971L;
-	    {
-		put(name, ids);
-	    }
-	};
+	nm.put(name, ids);
+	return nm;
     }
 
     public Boolean hasNext() {

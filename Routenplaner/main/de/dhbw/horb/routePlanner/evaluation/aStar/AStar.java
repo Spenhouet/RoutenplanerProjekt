@@ -21,8 +21,9 @@ public class AStar {
     }
 
     private DomStAXMapRouteParser routeParser;
-    private List<Map<String, String>> openEdge;
+    private Map<String, List<String>> nodeMap;
 
+    private List<Map<String, String>> openEdge;
     private List<Map<String, String>> closedEdge;
     private String departure;
     private String destination;
@@ -33,6 +34,7 @@ public class AStar {
 	openEdge = new LinkedList<Map<String, String>>();
 	closedEdge = new LinkedList<Map<String, String>>();
 	routeParser = new DomStAXMapRouteParser();
+	nodeMap = StAXNodeParser.getNodeMap(); //TODO nodeMap verwenden!!!
 	this.departure = departure;
 	this.destination = destination;
     }
