@@ -98,7 +98,16 @@ public class AStar {
 	return null;
     }
 
-    private void addNighboarToList(String nameORid) {
+    private void findDestination() {
+	Map<String, String> mp = getSmallestEdge();
+	openEdge.remove(mp);
+	closedEdge.add(mp);
+	addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+	if (!openEdge.isEmpty())
+	    findDestination();
+    }
+
+    private void addNeighbourToOpenList(String nameORid) {
 	List<String> ids = StAXNodeParser.getStAXNodeParser().getIDsForName(nameORid);
 
 	for (String id : ids) {
@@ -142,15 +151,6 @@ public class AStar {
 
 	    openEdge.add(edge);
 	}
-    }
-
-    private void findDestination() {
-	Map<String, String> mp = getSmallestEdge();
-	openEdge.remove(mp);
-	closedEdge.add(mp);
-	addNighboarToList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
-	if (!openEdge.isEmpty())
-	    findDestination();
     }
 
     private Map<String, String> getSmallestEdge() {
