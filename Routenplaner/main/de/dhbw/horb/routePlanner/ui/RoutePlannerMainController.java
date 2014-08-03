@@ -103,6 +103,8 @@ public class RoutePlannerMainController {
     @FXML
     void infoButtonClicked(ActionEvent event) {
 
+	routePlannerMainApp.executeStartupTask();
+
     }
 
     @FXML
