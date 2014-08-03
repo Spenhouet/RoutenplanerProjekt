@@ -13,8 +13,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import de.dhbw.horb.routePlanner.Constants;
-import de.dhbw.horb.routePlanner.graphData.NodeMap;
-import de.dhbw.horb.routePlanner.graphData.Route;
 
 public class JDomGraphDataCreator {
 
@@ -75,7 +73,7 @@ public class JDomGraphDataCreator {
 	    Element rootNewRoute = xmlDocRoutes.getRootElement();
 
 	    Element newRoute = new Element(Constants.NEW_ROUTE);
-	    // FIXME /2 nur für Test
+	    // FIXME Sebastian: /2 nur für Test
 	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODEID, rm.getDepartureNodeID()));
 	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, ((Double) (rm.getDistance() / 2))
 		    .toString()));

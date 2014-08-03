@@ -8,6 +8,7 @@ import de.dhbw.horb.routePlanner.Constants;
 
 public class GraphDataStreamReader extends StreamReaderDelegate {
 
+    //TODO Sebastian: Überprüfen welche verwendet
     public GraphDataStreamReader(XMLStreamReader streamReader) throws XMLStreamException {
 	super(streamReader);
     }
