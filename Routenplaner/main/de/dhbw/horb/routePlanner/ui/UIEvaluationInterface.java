@@ -7,7 +7,6 @@ import java.util.Map;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
-import de.dhbw.horb.routePlanner.data.StAXNodeParser;
 import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
 
 public class UIEvaluationInterface {
@@ -18,15 +17,6 @@ public class UIEvaluationInterface {
 
 	    @Override
 	    public void run() {
-		//		DELETE only test
-		System.out.println("Start: " + departure + "  Destination: " + destination);
-
-		List<String> departureIDs = StAXNodeParser.getStAXNodeParser().getIDsForName(departure);
-		List<String> destinationIDs = StAXNodeParser.getStAXNodeParser().getIDsForName(destination);
-
-		//		DELETE only test
-		System.out.println("Departure ID: " + departureIDs + "  Destination ID: " + destinationIDs);
-
 		String evaluationMethod;
 		evaluationMethod = "AStern";
 
@@ -62,6 +52,11 @@ public class UIEvaluationInterface {
      */
     public static void printRoute(List<Map<String, String>> route) {
 	//	TODO Simon: Routen in selbigem Format übergeben.
+
+	if (route == null || route.isEmpty()) {
+	    System.err.println("Keine Route gefunden");
+	    return;
+	}
 
 	DecimalFormat f = new DecimalFormat("#0.00");
 
