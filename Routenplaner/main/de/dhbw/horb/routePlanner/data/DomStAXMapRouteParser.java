@@ -40,8 +40,8 @@ public class DomStAXMapRouteParser {
 
 		    if (key.equals(Constants.NEW_ROUTE_DEPARTURENODEID))
 			departureNodeID = value;
-		    else
-			values.put(key, value);
+
+		    values.put(key, value);
 		}
 
 		if (departureNodeID == null || values == null)

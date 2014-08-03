@@ -34,7 +34,7 @@ public class AStar {
 	openEdge = new LinkedList<Map<String, String>>();
 	closedEdge = new LinkedList<Map<String, String>>();
 	routeParser = new DomStAXMapRouteParser();
-	nodeMap = StAXNodeParser.getNodeMap(); //TODO nodeMap verwenden!!!
+	nodeMap = StAXNodeParser.getNodeMap();
 	this.departure = departure;
 	this.destination = destination;
     }
@@ -66,7 +66,6 @@ public class AStar {
 		    nodes = getWays(newDestination);
 		    nodes.add(mp);
 		} else {
-		    //		    nodes.add(newDestination);
 		    nodes.add(mp);
 		    return nodes;
 		}
@@ -79,7 +78,7 @@ public class AStar {
     }
 
     private Double getWeightBack(String departure, String destination) {
-	Double w = 0.0;
+	Double w = null;
 	Map<String, String> mp = getEdge(closedEdge, destination);
 
 	if (mp != null) {
@@ -94,10 +93,7 @@ public class AStar {
 		    return Double.valueOf(newWeight);
 	    }
 	}
-
-	if (w != 0L)
-	    return w;
-	return null;
+	return w;
     }
 
     private void findDestination() {
@@ -110,7 +106,7 @@ public class AStar {
     }
 
     private void addNeighbourToOpenList(String nameORid) {
-	List<String> ids = StAXNodeParser.getStAXNodeParser().getIDsForName(nameORid);
+	List<String> ids = nodeMap.get(nameORid);
 
 	for (String id : ids) {
 
@@ -148,9 +144,7 @@ public class AStar {
 			continue;
 		    openEdge.remove(mp);
 		}
-
 	    }
-
 	    openEdge.add(edge);
 	}
     }
@@ -196,10 +190,9 @@ public class AStar {
 	Map<String, String> rm = routeParser.getRoute(id);
 	if (rm == null)
 	    return null;
-
-	rm.put(Constants.NEW_ROUTE_DEPARTURENODENAME, StAXNodeParser.getStAXNodeParser().getNameForID(id));
+	rm.put(Constants.NEW_ROUTE_DEPARTURENODENAME, nodeMap.get(id).get(0));
 	rm.put(Constants.NEW_ROUTE_DESTINATIONNODENAME,
-		StAXNodeParser.getStAXNodeParser().getNameForID(rm.get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
+		nodeMap.get(rm.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0));
 
 	switch (calculateMethod) {
 	case Constants.NEW_ROUTE_DISTANCE:
