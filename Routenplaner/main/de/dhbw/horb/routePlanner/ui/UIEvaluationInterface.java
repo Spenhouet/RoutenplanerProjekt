@@ -54,6 +54,7 @@ public class UIEvaluationInterface {
 	//	TODO Simon: Routen in selbigem Format übergeben.
 
 	if (route == null || route.isEmpty()) {
+	    //TODO Robin: Fehler ausgeben da keine Route gefunden werden konnte.
 	    System.err.println("Keine Route gefunden");
 	    return;
 	}
