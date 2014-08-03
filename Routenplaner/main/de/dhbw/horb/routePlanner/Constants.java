@@ -19,6 +19,11 @@ public interface Constants {
     public final static String XML_NODES = PROGRAM_HOME + System.getProperty("file.separator") + "nodes.xml";
     public final static String XML_ROUTES = PROGRAM_HOME + System.getProperty("file.separator") + "routes.xml";
 
+    public final static String EVALUATION_METHOD_ASTAR = "AStern";
+    public final static String EVALUATION_METHOD_DIJKSTRA = "Dijkstra";
+    public final static String EVALUATION_CALCULATION_DURATION = "Dauer";
+    public final static String EVALUATION_CALCULATION_DISTANCE = "Strecke";
+
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
     public final static String NODE_LATITUDE = "lat";

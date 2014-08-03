@@ -3,7 +3,9 @@ package de.dhbw.horb.routePlanner.data;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -12,6 +14,14 @@ import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXNodeParser {
+
+    private GraphDataStreamReader graphSR;
+
+    private StAXNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
+
+	XMLInputFactory factory = XMLInputFactory.newInstance();
+	graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+    }
 
     public static StAXNodeParser getStAXNodeParser() {
 	try {
@@ -22,12 +32,19 @@ public class StAXNodeParser {
 	}
     }
 
-    private GraphDataStreamReader graphSR;
+    public static Map<String, List<String>> getNodeMap() {
+	StAXNodeParser nodeParser = getStAXNodeParser();
+	Map<String, List<String>> nodeMap = new HashMap<String, List<String>>();
 
-    private StAXNodeParser(String xmlFile) throws FileNotFoundException, XMLStreamException {
+	while (nodeParser.hasNext()) {
+	    Map<String, List<String>> nm = nodeParser.getNextNode();
+	    if (nm == null || nm.isEmpty())
+		continue;
+	    nodeMap.putAll(nm);
+	}
 
-	XMLInputFactory factory = XMLInputFactory.newInstance();
-	graphSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(xmlFile)));
+	nodeParser.close();
+	return nodeMap;
     }
 
     public List<String> containsName(String name) {
@@ -38,7 +55,7 @@ public class StAXNodeParser {
 	    while (graphSR.nextStartElement()) {
 		if (!graphSR.isNode())
 		    continue;
-		String v = graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
+		String v = getName();
 
 		if (v.toLowerCase().contains(name.toLowerCase()))
 		    names.add(v);
@@ -55,6 +72,73 @@ public class StAXNodeParser {
 
 	close();
 	return names;
+    }
+
+    public String getNameForID(String id) {
+	if (id == null)
+	    return null;
+
+	while (hasNext()) {
+
+	    try {
+		if (!graphSR.nextStartElement() || !graphSR.isNode())
+		    continue;
+
+		List<String> nodes = getNodeIDs();
+
+		if (nodes == null || !nodes.contains(id))
+		    continue;
+
+		close();
+		return getName();
+	    } catch (XMLStreamException e) {
+		e.printStackTrace();
+	    }
+	}
+	close();
+	return null;
+    }
+
+    public List<String> getIDsForName(String name) {
+	if (name == null)
+	    return null;
+
+	while (hasNext()) {
+
+	    try {
+		if (graphSR.nextStartElement() && graphSR.isNode() && name.equals(getName())) {
+		    List<String> nodes = getNodeIDs();
+		    if (nodes != null) {
+			close();
+			return nodes;
+		    }
+		}
+	    } catch (XMLStreamException e) {
+		e.printStackTrace();
+	    }
+	}
+	close();
+	return null;
+    }
+
+    public List<String> getNeighbours(String id) {
+	while (hasNext()) {
+
+	    List<String> nodes = getNextNodeIDs();
+	    if (nodes != null && nodes.contains(id)) {
+		nodes.remove(id);
+		close();
+		return nodes;
+	    }
+	}
+	close();
+	return null;
+    }
+
+    public String getName() {
+	if (graphSR.isNode())
+	    return graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
+	return null;
     }
 
     public List<String> getNextNodeIDs() {
@@ -83,6 +167,29 @@ public class StAXNodeParser {
 	return null;
     }
 
+    public Map<String, List<String>> getNextNode() {
+	try {
+	    if (graphSR.nextStartElement()) {
+		return getNode();
+	    }
+	} catch (XMLStreamException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    private Map<String, List<String>> getNode() {
+	Map<String, List<String>> nm = new HashMap<String, List<String>>();
+	final String name = getName();
+	final List<String> ids = getNodeIDs();
+
+	if (name == null || ids == null || name.isEmpty() || ids.isEmpty())
+	    return null;
+
+	nm.put(name, ids);
+	return nm;
+    }
+
     public Boolean hasNext() {
 
 	try {
@@ -99,67 +206,5 @@ public class StAXNodeParser {
 	} catch (XMLStreamException e) {
 	    e.printStackTrace();
 	}
-    }
-
-    public String getNameForID(String id) {
-	if (id == null)
-	    return null;
-
-	while (hasNext()) {
-
-	    try {
-		if (!graphSR.nextStartElement() || !graphSR.isNode())
-		    continue;
-
-		List<String> nodes = getNodeIDs();
-
-		if (nodes == null || !nodes.contains(id))
-		    continue;
-
-		close();
-		return graphSR.getAttributeValue(Constants.NEW_NODE_NAME);
-	    } catch (XMLStreamException e) {
-		e.printStackTrace();
-	    }
-	}
-	close();
-	return null;
-    }
-
-    public List<String> getIDsForName(String name) {
-	if (name == null)
-	    return null;
-
-	while (hasNext()) {
-
-	    try {
-		if (graphSR.nextStartElement() && graphSR.isNode()
-			&& name.equals(graphSR.getAttributeValue(Constants.NEW_NODE_NAME))) {
-		    List<String> nodes = getNodeIDs();
-		    if (nodes != null) {
-			close();
-			return nodes;
-		    }
-		}
-	    } catch (XMLStreamException e) {
-		e.printStackTrace();
-	    }
-	}
-	close();
-	return null;
-    }
-
-    public List<String> getNeighbours(String id) {
-	while (hasNext()) {
-
-	    List<String> nodes = getNextNodeIDs();
-	    if (nodes != null && nodes.contains(id)) {
-		nodes.remove(id);
-		close();
-		return nodes;
-	    }
-	}
-	close();
-	return null;
     }
 }
