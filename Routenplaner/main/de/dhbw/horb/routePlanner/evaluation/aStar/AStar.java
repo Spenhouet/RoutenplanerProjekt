@@ -21,8 +21,9 @@ public class AStar {
     }
 
     private DomStAXMapRouteParser routeParser;
-    private List<Map<String, String>> openEdge;
+    private Map<String, List<String>> nodeMap;
 
+    private List<Map<String, String>> openEdge;
     private List<Map<String, String>> closedEdge;
     private String departure;
     private String destination;
@@ -33,6 +34,7 @@ public class AStar {
 	openEdge = new LinkedList<Map<String, String>>();
 	closedEdge = new LinkedList<Map<String, String>>();
 	routeParser = new DomStAXMapRouteParser();
+	nodeMap = StAXNodeParser.getNodeMap(); //TODO nodeMap verwenden!!!
 	this.departure = departure;
 	this.destination = destination;
     }
@@ -98,7 +100,16 @@ public class AStar {
 	return null;
     }
 
-    private void addNighboarToList(String nameORid) {
+    private void findDestination() {
+	Map<String, String> mp = getSmallestEdge();
+	openEdge.remove(mp);
+	closedEdge.add(mp);
+	addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+	if (!openEdge.isEmpty())
+	    findDestination();
+    }
+
+    private void addNeighbourToOpenList(String nameORid) {
 	List<String> ids = StAXNodeParser.getStAXNodeParser().getIDsForName(nameORid);
 
 	for (String id : ids) {
@@ -142,15 +153,6 @@ public class AStar {
 
 	    openEdge.add(edge);
 	}
-    }
-
-    private void findDestination() {
-	Map<String, String> mp = getSmallestEdge();
-	openEdge.remove(mp);
-	closedEdge.add(mp);
-	addNighboarToList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
-	if (!openEdge.isEmpty())
-	    findDestination();
     }
 
     private Map<String, String> getSmallestEdge() {
