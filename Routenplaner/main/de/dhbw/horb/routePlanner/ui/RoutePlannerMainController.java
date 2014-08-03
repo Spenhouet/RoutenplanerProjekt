@@ -97,6 +97,7 @@ public class RoutePlannerMainController {
 	    Dialogs.create().title("Keine Berechnung möglich!")
 		    .message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 	}
+
     }
 
     @FXML
@@ -198,6 +199,18 @@ public class RoutePlannerMainController {
 	result_nodes = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
 
 	return result_nodes;
+
+    }
+
+    public void disableCalculateRouteButton() {
+
+	calculateRouteButton.setDisable(true);
+
+    }
+
+    public void enableCalculateRouteButton() {
+
+	calculateRouteButton.setDisable(false);
 
     }
 }
