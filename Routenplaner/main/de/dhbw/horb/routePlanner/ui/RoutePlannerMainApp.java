@@ -36,13 +36,19 @@ public class RoutePlannerMainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 	this.primaryStage = primaryStage;
-	this.primaryStage.setTitle("Routenplaner");
+
+	executeStartupTask();
+
+    }
+
+    public void executeStartupTask() {
+
+	primaryStage.close();
 
 	initSplashLayout();
-
 	showSplash();
 
-	final Stage finalStage = primaryStage;
+	final RoutePlannerMainApp owner = this;
 	task = new Task<Integer>() {
 	    @Override
 	    protected Integer call() throws Exception {
@@ -157,7 +163,7 @@ public class RoutePlannerMainApp extends Application {
 	task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 	    @Override
 	    public void handle(WorkerStateEvent event) {
-		finalStage.close();
+		owner.primaryStage.close();
 		initRootLayout();
 		showMainWindow();
 	    }
@@ -166,7 +172,7 @@ public class RoutePlannerMainApp extends Application {
 	task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
 	    @Override
 	    public void handle(WorkerStateEvent event) {
-		finalStage.close();
+		owner.primaryStage.close();
 	    }
 	});
 
@@ -176,11 +182,12 @@ public class RoutePlannerMainApp extends Application {
 	Thread th = new Thread(task);
 	th.setDaemon(true);
 	th.start();
-
     }
 
     public void initSplashLayout() {
 	try {
+	    primaryStage = new Stage();
+
 	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
@@ -223,6 +230,7 @@ public class RoutePlannerMainApp extends Application {
     public void initRootLayout() {
 	try {
 	    primaryStage = new Stage();
+	    primaryStage.setTitle("Routenplaner");
 
 	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
