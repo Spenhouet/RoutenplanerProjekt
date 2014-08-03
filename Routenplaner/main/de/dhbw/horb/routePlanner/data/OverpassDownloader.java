@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 import de.dhbw.horb.routePlanner.Constants;
 
 public class OverpassDownloader {
-    // TODO Eintrag in GUI Menü
 
     public void downloadGraphData(String area) throws IOException, ParserConfigurationException, SAXException {
 

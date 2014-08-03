@@ -41,6 +41,16 @@ public class StAXNodeParser {
 	    if (nm == null || nm.isEmpty())
 		continue;
 	    nodeMap.putAll(nm);
+
+	    Map.Entry<String, List<String>> entry = nm.entrySet().iterator().next();
+
+	    String name = entry.getKey();
+	    List<String> ids = entry.getValue();
+	    if (name == null || ids == null || name.isEmpty() || ids.isEmpty())
+		continue;
+	    for (String id : ids) {
+		nodeMap.put(id, SupportMethods.commaStrToStrList(name));
+	    }
 	}
 
 	nodeParser.close();

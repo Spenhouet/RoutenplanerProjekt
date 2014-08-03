@@ -9,7 +9,7 @@ import org.junit.Test;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.DomStAXMapGraphDataNodesParser;
 import de.dhbw.horb.routePlanner.data.DomStAXMapGraphDataWaysParser;
-import de.dhbw.horb.routePlanner.graphData.Route;
+import de.dhbw.horb.routePlanner.data.Route;
 
 /**
  * Test der Routen Klasse.
