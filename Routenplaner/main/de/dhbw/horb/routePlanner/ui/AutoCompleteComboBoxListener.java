@@ -13,8 +13,8 @@ import de.dhbw.horb.routePlanner.data.StAXNodeParser;
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     private ComboBox<String> comboBox;
-    private StringBuilder sb; // DELETE wenn nicht gebraucht
-    private ObservableList<String> data; // DELETE wenn nicht gebraucht
+    private StringBuilder sb; // DELETE Robin: wenn nicht gebraucht
+    private ObservableList<String> data; // DELETE Robin: wenn nicht gebraucht
     private boolean moveCaretToPos = false;
     private int caretPos;
 
@@ -56,18 +56,15 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 	    caretPos = comboBox.getEditor().getCaretPosition();
 	}
 
-	if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT
-		|| event.isControlDown() || event.getCode() == KeyCode.HOME
-		|| event.getCode() == KeyCode.END
-		|| event.getCode() == KeyCode.TAB) {
+	if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT || event.isControlDown()
+		|| event.getCode() == KeyCode.HOME || event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB) {
 	    return;
 	}
 
 	ObservableList<String> list = FXCollections.observableArrayList();
 
 	List<String> names;
-	String input = AutoCompleteComboBoxListener.this.comboBox.getEditor()
-		.getText().toLowerCase();
+	String input = AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase();
 
 	names = StAXNodeParser.getStAXNodeParser().containsName(input);
 
