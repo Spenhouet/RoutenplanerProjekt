@@ -60,5 +60,4 @@ public interface Constants {
     public final static String NEW_ROUTE_DESTINATIONNODEID = "destinationNodeID";
     public final static String NEW_ROUTE_DEPARTURENODENAME = "departureNodeName";
     public final static String NEW_ROUTE_DESTINATIONNODENAME = "destinationNodeName";
-    public final static String NEW_ROUTE_WEIGHT = "weight";
 }

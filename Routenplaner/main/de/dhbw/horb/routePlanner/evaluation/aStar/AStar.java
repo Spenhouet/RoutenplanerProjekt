@@ -133,12 +133,7 @@ public class AStar {
 		continue;
 
 	    if (openEdgesPredecessor.containsKey(destinationNodeName)) {
-		Double newWeight = null;
-
-		if (edge.get(Constants.NEW_ROUTE_WEIGHT) != null
-			&& SupportMethods.isNumeric(edge.get(Constants.NEW_ROUTE_WEIGHT)))
-		    newWeight = Double.valueOf(edge.get(Constants.NEW_ROUTE_WEIGHT));
-
+		Double newWeight = getWeight(edge);
 		Double oldWeight = openEdgesWeight.get(destinationNodeName);
 
 		if (newWeight != null && oldWeight != null) {
@@ -157,11 +152,7 @@ public class AStar {
 	}
     }
 
-    private void addEdge(ListType t, Map<String, String> edge) {
-	if (edge == null || edge.isEmpty())
-	    return;
-	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
-
+    private Double getWeight(Map<String, String> edge) {
 	String w;
 	switch (calculateMethod) {
 	case Constants.NEW_ROUTE_DISTANCE:
@@ -173,10 +164,17 @@ public class AStar {
 	default:
 	    w = edge.get(Constants.NEW_ROUTE_DURATION);
 	}
-
 	if (!SupportMethods.isNumeric(w))
+	    return null;
+	return Double.valueOf(w);
+    }
+
+    private void addEdge(ListType t, Map<String, String> edge) {
+	if (edge == null || edge.isEmpty())
 	    return;
-	Double weight = Double.valueOf(w);
+	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
+
+	Double weight = getWeight(edge);
 
 	if (weight == null || destinationName == null)
 	    return;
