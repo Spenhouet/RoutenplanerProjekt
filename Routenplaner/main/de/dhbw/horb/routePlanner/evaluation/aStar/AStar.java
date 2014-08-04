@@ -17,14 +17,6 @@ public class AStar {
 	open, closed
     }
 
-    public static void main(String[] args) {
-	String departure = "Bispingen";
-	String destination = "Kreuz Kamp-Lintfort";
-
-	AStar a = new AStar(departure, destination);
-	a.calculateWay(Constants.NEW_ROUTE_DISTANCE);
-    }
-
     private DomStAXMapRouteParser routeParser;
     private Map<String, List<String>> nodeMap;
 
