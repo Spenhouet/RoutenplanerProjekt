@@ -13,9 +13,14 @@ import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 public class AStar {
 
+    private enum ListType {
+	open, closed
+    }
+
     public static void main(String[] args) {
 	String departure = "Bispingen";
 	String destination = "Kreuz Kamp-Lintfort";
+
 	AStar a = new AStar(departure, destination);
 	a.calculateWay(Constants.NEW_ROUTE_DISTANCE);
     }
@@ -23,42 +28,46 @@ public class AStar {
     private DomStAXMapRouteParser routeParser;
     private Map<String, List<String>> nodeMap;
 
-    private List<Map<String, String>> openEdge;
-    private List<Map<String, String>> closedEdge;
+    private Map<String, String> openEdgesPredecessor;
+    private Map<String, Map<String, String>> openEdgesRoute;
+    private Map<String, Double> openEdgesWeight;
+    private Map<String, String> closedEdgesPredecessor;
+    private Map<String, Map<String, String>> closedEdgesRoute;
+    private Map<String, Double> closedEdgesWeight;
     private String departure;
     private String destination;
-
+    private String openEdgesSmallestFirst;
+    private String openEdgesSmallestSecond;
     private String calculateMethod;
 
     public AStar(String departure, String destination) {
-	openEdge = new LinkedList<Map<String, String>>();
-	closedEdge = new LinkedList<Map<String, String>>();
+	openEdgesPredecessor = new HashMap<String, String>();
+	openEdgesRoute = new HashMap<String, Map<String, String>>();
+	openEdgesWeight = new HashMap<String, Double>();
+	closedEdgesPredecessor = new HashMap<String, String>();
+	closedEdgesRoute = new HashMap<String, Map<String, String>>();
+	closedEdgesWeight = new HashMap<String, Double>();
 	routeParser = new DomStAXMapRouteParser();
 	nodeMap = StAXNodeParser.getNodeMap();
 	this.departure = departure;
 	this.destination = destination;
+	openEdgesSmallestFirst = null;
+	openEdgesSmallestSecond = null;
     }
 
     public void calculateWay(String calculateMethod) {
 	this.calculateMethod = calculateMethod;
-	if (calculateMethod == null
-		|| (!calculateMethod.equals(Constants.NEW_ROUTE_DISTANCE) && !calculateMethod
-			.equals(Constants.NEW_ROUTE_DURATION))) {
-	    System.err.println("Unknown calculating method!");
-	    return;
-	}
-
-	openEdge.add(createEdge(departure));
+	addNeighbourToOpenList(departure);
 	findDestination();
 	UIEvaluationInterface.printRoute(getWays(this.destination));
     }
 
     private List<Map<String, String>> getWays(String destination) {
 	List<Map<String, String>> nodes = new LinkedList<Map<String, String>>();
-	Map<String, String> mp = getEdge(closedEdge, destination);
+	Map<String, String> mp = closedEdgesRoute.get(destination);
 
 	if (mp != null) {
-	    String newDestination = mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME);
+	    String newDestination = closedEdgesPredecessor.get(destination);
 
 	    if (newDestination != null) {
 
@@ -79,132 +88,171 @@ public class AStar {
 
     private Double getWeightBack(String departure, String destination) {
 	Double w = null;
-	Map<String, String> mp = getEdge(closedEdge, destination);
+	String newDestination = closedEdgesPredecessor.get(destination);
+	Double newWeight = closedEdgesWeight.get(destination);
 
-	if (mp != null) {
-	    String newDestination = mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME);
-	    String newWeight = mp.get(Constants.NEW_ROUTE_WEIGHT);
+	if (newDestination != null && newWeight != null) {
 
-	    if (newDestination != null && newWeight != null && SupportMethods.isNumeric(newWeight)) {
-
-		if (!newDestination.equals(departure))
-		    w = getWeightBack(departure, newDestination) + Double.valueOf(newWeight);
-		else
-		    return Double.valueOf(newWeight);
-	    }
+	    if (!newDestination.equals(departure))
+		w = getWeightBack(departure, newDestination) + newWeight;
+	    else
+		return newWeight;
 	}
 	return w;
     }
 
     private void findDestination() {
-	Map<String, String> mp = getSmallestEdge();
-	openEdge.remove(mp);
-	closedEdge.add(mp);
-	addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
-	if (!openEdge.isEmpty())
+	if (openEdgesSmallestFirst != null) {
+	    Map<String, String> mp = openEdgesRoute.get(openEdgesSmallestFirst);
+
+	    removeEdge(ListType.open, mp);
+	    addEdge(ListType.closed, mp);
+	    addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+	} else {
+	    System.err.println("Fehler");
+	}
+
+	if (!openEdgesRoute.isEmpty())
 	    findDestination();
     }
 
-    private void addNeighbourToOpenList(String nameORid) {
-	List<String> ids = nodeMap.get(nameORid);
-
+    private void addNeighbourToOpenList(String name) {
+	List<String> ids = nodeMap.get(name);
 	for (String id : ids) {
 
-	    Map<String, String> edge = createEdge(id);
-
+	    Map<String, String> edge = routeParser.getRoute(id);
 	    if (edge == null)
 		continue;
 
-	    if (containsName(closedEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME)))
+	    String destinationNodeName = nodeMap.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0);
+
+	    edge.put(Constants.NEW_ROUTE_DEPARTURENODENAME, name);
+	    edge.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, destinationNodeName);
+
+	    if (closedEdgesPredecessor.containsKey(destinationNodeName))
 		continue;
 
-	    if (containsName(openEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME))) {
+	    if (openEdgesPredecessor.containsKey(destinationNodeName)) {
 		Double newWeight = null;
-		Double oldWeight = null;
 
 		if (edge.get(Constants.NEW_ROUTE_WEIGHT) != null
 			&& SupportMethods.isNumeric(edge.get(Constants.NEW_ROUTE_WEIGHT)))
 		    newWeight = Double.valueOf(edge.get(Constants.NEW_ROUTE_WEIGHT));
 
-		Map<String, String> mp = getEdge(openEdge, edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+		Double oldWeight = openEdgesWeight.get(destinationNodeName);
 
-		if (mp.get(Constants.NEW_ROUTE_WEIGHT) != null
-			&& SupportMethods.isNumeric(mp.get(Constants.NEW_ROUTE_WEIGHT)))
-		    oldWeight = Double.valueOf(mp.get(Constants.NEW_ROUTE_WEIGHT));
-
-		if (newWeight != null && mp != null && oldWeight != null) {
-		    Double wb = getWeightBack(mp.get(Constants.NEW_ROUTE_DEPARTURENODENAME),
-			    edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+		if (newWeight != null && oldWeight != null) {
+		    Double wb = getWeightBack(openEdgesPredecessor.get(destinationNodeName), destinationNodeName);
 
 		    if (wb == null)
 			continue;
 
 		    newWeight += wb;
-		    if (newWeight >= oldWeight)
+		    if (newWeight > oldWeight)
 			continue;
-		    openEdge.remove(mp);
+		    removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
 		}
 	    }
-	    openEdge.add(edge);
+	    addEdge(ListType.open, edge);
 	}
     }
 
-    private Map<String, String> getSmallestEdge() {
-	Double weight = null;
+    private void addEdge(ListType t, Map<String, String> edge) {
+	if (edge == null || edge.isEmpty())
+	    return;
+	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 
-	Map<String, String> rMp = null;
-	for (Map<String, String> mp : openEdge) {
-	    if (SupportMethods.isNumeric(mp.get(Constants.NEW_ROUTE_WEIGHT))) {
-		Double nw = Double.valueOf(mp.get(Constants.NEW_ROUTE_WEIGHT));
-		if (weight == null || nw < weight) {
-		    rMp = mp;
-		    weight = nw;
-		}
-	    }
-	}
-	return rMp;
-    }
-
-    private Boolean containsName(List<Map<String, String>> edge, String name) {
-	return getEdge(edge, name) != null;
-    }
-
-    private Map<String, String> getEdge(List<Map<String, String>> edge, String name) {
-	for (int i = (edge.size() - 1); i >= 0; i--) {
-	    if (edge.get(i).get(Constants.NEW_ROUTE_DESTINATIONNODENAME).equals(name))
-		return edge.get(i);
-	}
-	return null;
-    }
-
-    private Map<String, String> createEdge(String id) {
-
-	if (id != null && !id.isEmpty() && !SupportMethods.isNumeric(id)) {
-	    Map<String, String> sr = new HashMap<String, String>();
-	    sr.put(Constants.NEW_ROUTE_DEPARTURENODENAME, id);
-	    sr.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, id);
-	    sr.put(Constants.NEW_ROUTE_WEIGHT, "0");
-
-	    return sr;
-	}
-	Map<String, String> rm = routeParser.getRoute(id);
-	if (rm == null)
-	    return null;
-	rm.put(Constants.NEW_ROUTE_DEPARTURENODENAME, nodeMap.get(id).get(0));
-	rm.put(Constants.NEW_ROUTE_DESTINATIONNODENAME,
-		nodeMap.get(rm.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0));
-
+	String w;
 	switch (calculateMethod) {
 	case Constants.NEW_ROUTE_DISTANCE:
-	    rm.put(Constants.NEW_ROUTE_WEIGHT, rm.get(Constants.NEW_ROUTE_DISTANCE));
+	    w = edge.get(Constants.NEW_ROUTE_DISTANCE);
 	    break;
 	case Constants.NEW_ROUTE_DURATION:
-	    rm.put(Constants.NEW_ROUTE_WEIGHT, rm.get(Constants.NEW_ROUTE_DURATION));
+	    w = edge.get(Constants.NEW_ROUTE_DURATION);
 	    break;
 	default:
-	    System.err.println("Unknown calculating method!");
+	    w = edge.get(Constants.NEW_ROUTE_DURATION);
 	}
 
-	return rm;
+	if (!SupportMethods.isNumeric(w))
+	    return;
+	Double weight = Double.valueOf(w);
+
+	if (weight == null || destinationName == null)
+	    return;
+
+	switch (t) {
+	case open:
+	    openEdgesRoute.put(destinationName, edge);
+	    openEdgesPredecessor.put(destinationName, edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+	    openEdgesWeight.put(destinationName, weight);
+
+	    Double oldSmallest = openEdgesWeight.get(openEdgesSmallestFirst);
+	    if ((oldSmallest == null || weight <= oldSmallest) && !destinationName.equals(openEdgesSmallestFirst)) {
+		openEdgesSmallestSecond = openEdgesSmallestFirst;
+		openEdgesSmallestFirst = destinationName;
+	    }
+	    break;
+
+	case closed:
+	    closedEdgesRoute.put(destinationName, edge);
+	    closedEdgesPredecessor.put(destinationName, edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+	    closedEdgesWeight.put(destinationName, weight);
+	    break;
+
+	default:
+	    break;
+	}
+    }
+
+    private String getSmallest() {
+	String key = null;
+	Double value = null;
+
+	for (Map.Entry<String, Double> entry : openEdgesWeight.entrySet()) {
+	    if (value == null || entry.getValue() <= value) {
+		key = entry.getKey();
+		value = entry.getValue();
+	    }
+	}
+	return key;
+    }
+
+    private Map<String, String> removeEdge(ListType t, Map<String, String> edge) {
+	if (edge == null || edge.isEmpty())
+	    return null;
+	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
+
+	switch (t) {
+	case open:
+	    if (openEdgesRoute == null || openEdgesRoute.isEmpty() || !openEdgesRoute.containsKey(destinationName))
+		return null;
+
+	    openEdgesPredecessor.remove(destinationName);
+	    openEdgesWeight.remove(destinationName);
+
+	    if (destinationName.equals(openEdgesSmallestFirst)) {
+		if (openEdgesSmallestSecond == null)
+		    openEdgesSmallestFirst = getSmallest();
+		else {
+		    openEdgesSmallestFirst = openEdgesSmallestSecond;
+		    openEdgesSmallestSecond = null;
+		}
+	    }
+
+	    return openEdgesRoute.remove(destinationName);
+
+	case closed:
+	    if (closedEdgesRoute == null || closedEdgesRoute.isEmpty()
+		    || !closedEdgesRoute.containsKey(destinationName))
+		return null;
+
+	    closedEdgesPredecessor.remove(destinationName);
+	    closedEdgesWeight.remove(destinationName);
+	    return closedEdgesRoute.remove(destinationName);
+
+	default:
+	    return null;
+	}
     }
 }
