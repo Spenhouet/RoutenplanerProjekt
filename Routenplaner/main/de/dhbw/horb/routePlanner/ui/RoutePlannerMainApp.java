@@ -246,9 +246,6 @@ public class RoutePlannerMainApp extends Application {
 	    //scene.setFill(Color.TRANSPARENT);
 	    primaryStage.show();
 
-	    RoutePlannerRootController controller = loader.getController();
-	    controller.setRoutePlannerMainApp(this);
-
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
