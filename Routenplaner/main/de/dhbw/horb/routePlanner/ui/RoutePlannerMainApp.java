@@ -53,7 +53,7 @@ public class RoutePlannerMainApp extends Application {
 	    @Override
 	    protected Integer call() throws Exception {
 		int iterations;
-		updateMessage("Initialisiere...");
+		updateMessage(Constants.STARTUP_INITIALIZE);
 		for (iterations = 0; iterations < 5; iterations++) {
 		    if (isCancelled()) {
 			try {
@@ -61,14 +61,14 @@ public class RoutePlannerMainApp extends Application {
 			} catch (InterruptedException ex) {
 			    Thread.currentThread().interrupt();
 			}
-			updateMessage("Cancelled");
+			updateMessage(Constants.STARTUP_CANCEL);
 			break;
 		    }
 		    updateProgress(iterations, 4);
 		    switch (iterations) {
 		    case 0:
 			if (checkPrerequisites() == false) {
-			    updateMessage("Startbedingungen nicht erfüllt!");
+			    updateMessage(Constants.STARTUP_ERROR_PREREQUISITES);
 			    try {
 				Thread.sleep(5000);
 			    } catch (InterruptedException ex) {
@@ -77,19 +77,19 @@ public class RoutePlannerMainApp extends Application {
 			    this.cancel();
 			    break;
 			} else {
-			    updateMessage("Überprüfe Startvorraussetzungen...");
+			    updateMessage(Constants.STARTUP_CHECK_PREREQUISITES);
 			}
 			break;
 
 		    case 1:
 			if (checkGraphDataXML() == false) {
 			    try {
-				updateMessage("GraphDataXML wird erzeugt...");
+				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
 				String area = "Deutschland";
 				OverpassDownloader odl = new OverpassDownloader();
 				odl.downloadGraphData(area);
 			    } catch (Exception e) {
-				updateMessage("GraphDataXML konnte nicht erzeugt werden");
+				updateMessage(Constants.STARTUP_ERROR_XML_GRAPHDATA);
 				this.cancel();
 				break;
 			    }
@@ -99,18 +99,18 @@ public class RoutePlannerMainApp extends Application {
 			    } catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			    }
-			    updateMessage("Überprüfe GraphDataXML...");
+			    updateMessage(Constants.STARTUP_CHECK_XML_GRAPHDATA);
 			}
 			break;
 
 		    case 2:
 			if (checkNodeXML() == false) {
 			    try {
-				updateMessage("NodeXML/RouteXML wird erzeugt...");
+				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
 				JDomGraphDataCreator dom = new JDomGraphDataCreator();
 				dom.createNewXMLFiles();
 			    } catch (Exception e) {
-				updateMessage("NodeXML/RouteXML konnte nicht erzeugt werden");
+				updateMessage(Constants.STARTUP_ERROR_XML_NODES);
 				this.cancel();
 				break;
 			    }
@@ -120,18 +120,18 @@ public class RoutePlannerMainApp extends Application {
 			    } catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			    }
-			    updateMessage("Überprüfe NodeXML...");
+			    updateMessage(Constants.STARTUP_CHECK_XML_NODES);
 			}
 			break;
 
 		    case 3:
 			if (checkRouteXML() == false) {
 			    try {
-				updateMessage("RouteXML/NodeXML wird erzeugt...");
+				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
 				JDomGraphDataCreator dom = new JDomGraphDataCreator();
 				dom.createNewXMLFiles();
 			    } catch (Exception e) {
-				updateMessage("RouteXML/NodeXML konnte nicht erzeugt werden");
+				updateMessage(Constants.STARTUP_ERROR_XML_ROUTES);
 				this.cancel();
 				break;
 			    }
@@ -142,7 +142,7 @@ public class RoutePlannerMainApp extends Application {
 			    } catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			    }
-			    updateMessage("Überprüfe RouteXML...");
+			    updateMessage(Constants.STARTUP_CHECK_XML_ROUTES);
 			}
 			break;
 

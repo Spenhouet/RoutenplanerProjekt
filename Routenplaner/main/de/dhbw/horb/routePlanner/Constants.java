@@ -19,6 +19,20 @@ public interface Constants {
     public final static String XML_NODES = PROGRAM_HOME + System.getProperty("file.separator") + "nodes.xml";
     public final static String XML_ROUTES = PROGRAM_HOME + System.getProperty("file.separator") + "routes.xml";
 
+    public final static String STARTUP_INITIALIZE = "Initialisiere...";
+    public final static String STARTUP_CANCEL = "Abbrechen...";
+    public final static String STARTUP_CHECK_PREREQUISITES = "Überprüfe Startvorraussetzungen...";
+    public final static String STARTUP_CHECK_XML_GRAPHDATA = "Überprüfe GraphDataXML...";
+    public final static String STARTUP_CHECK_XML_NODES = "Überprüfe NodeXML...";
+    public final static String STARTUP_CHECK_XML_ROUTES = "Überprüfe RouteXML...";
+    public final static String STARTUP_ERROR_PREREQUISITES = "Startbedingungen nicht erfüllt!";
+    public final static String STARTUP_ERROR_XML_GRAPHDATA = "GraphDataXML konnte nicht erzeugt werden";
+    public final static String STARTUP_ERROR_XML_NODES = "NodeXML/RouteXML konnte nicht erzeugt werden";
+    public final static String STARTUP_ERROR_XML_ROUTES = "RouteXML/NodeXML konnte nicht erzeugt werden";
+    public final static String STARTUP_CREATE_XML_GRAPHDATA = "GraphDataXML wird heruntergeladen und erzeugt...";
+    public final static String STARTUP_CREATE_XML_NODES = "NodeXML/RouteXML wird heruntergeladen und erzeugt...";
+    public final static String STARTUP_CREATE_XML_ROUTES = "RouteXML/NodeXML wird heruntergeladen und erzeugt...";
+
     public final static String EVALUATION_METHOD_ASTAR = "AStern";
     public final static String EVALUATION_METHOD_DIJKSTRA = "Dijkstra";
     public final static String EVALUATION_CALCULATION_DURATION = "Dauer";

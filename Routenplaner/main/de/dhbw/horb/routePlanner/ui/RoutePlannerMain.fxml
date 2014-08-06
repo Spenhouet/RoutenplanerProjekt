@@ -25,15 +25,55 @@
                            <children>
                               <VBox layoutX="38.0" layoutY="52.0">
                                  <children>
-                                    <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
+                                    <Label text="Start und Ziel:" />
+                                    <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin></ComboBox>
                                     <ComboBox fx:id="targetComboBox" editable="true" layoutX="73.0" layoutY="181.0" promptText="Ziel">
                                        <VBox.margin>
                                           <Insets top="15.0" />
                                        </VBox.margin>
                                     </ComboBox>
-                                    <Button fx:id="calculateRouteButton" layoutX="95.0" layoutY="228.0" mnemonicParsing="false" onAction="#calculateRouteButtonClicked" text="Route berechnen">
+                                    <Label text="Berechnungsmethode:">
                                        <VBox.margin>
-                                          <Insets top="15.0" />
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <RadioButton fx:id="fastestRouteRadio" mnemonicParsing="false" text="Schnellste Route">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="calculationMethodToggleGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="shortestRouteRadio" mnemonicParsing="false" text="Kürzeste Route" toggleGroup="$calculationMethodToggleGroup">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </RadioButton>
+                                    <Label text="Berechnungsalgorithmus:">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <RadioButton fx:id="dijkstraRouteRadio" mnemonicParsing="false" text="Dijkstra">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="evaluationMethodToggleGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="aStarRouteRadio" mnemonicParsing="false" text="AStern" toggleGroup="$evaluationMethodToggleGroup">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </RadioButton>
+                                    <Button fx:id="calculateRouteButton" mnemonicParsing="false" onAction="#calculateRouteButtonClicked" text="Route berechnen">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
                                        </VBox.margin>
                                     </Button>
                                  </children>
@@ -51,6 +91,8 @@
                               <CheckBox layoutX="68.0" layoutY="81.0" mnemonicParsing="false" text="Nodes anzeigen in:" AnchorPane.leftAnchor="25.0" />
                               <ColorPicker layoutX="170.0" layoutY="46.0" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="46.0" />
                               <ColorPicker layoutX="200.0" layoutY="77.0" AnchorPane.leftAnchor="170.0" />
+                              <ComboBox fx:id="countryComboBox" layoutX="71.0" layoutY="164.0" prefWidth="180.0" promptText="Bitte ein Land auswählen" />
+                              <Label layoutX="25.0" layoutY="168.0" text="Land:" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -71,4 +113,3 @@
       </HBox>
    </children>
 </AnchorPane>
-

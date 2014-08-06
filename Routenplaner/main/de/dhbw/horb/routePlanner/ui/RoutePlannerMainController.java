@@ -13,8 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -32,6 +34,8 @@ public class RoutePlannerMainController {
     public String linkEnd = Constants.LINK_LINKEND;
     public String wayString = null;
     public String nodeString = null;
+    public String calculationMethod;
+    public String evaluationMethod;
 
     @FXML
     private WebView testWebView;
@@ -52,6 +56,9 @@ public class RoutePlannerMainController {
     private ComboBox<String> targetComboBox;
 
     @FXML
+    private ComboBox<String> countryComboBox;
+
+    @FXML
     private Button calculateRouteButton;
 
     @FXML
@@ -59,6 +66,24 @@ public class RoutePlannerMainController {
 
     @FXML
     private Tab calculatedRouteTab;
+
+    @FXML
+    private RadioButton fastestRouteRadio;
+
+    @FXML
+    private RadioButton shortestRouteRadio;
+
+    @FXML
+    private ToggleGroup calculationMethodToggleGroup;
+
+    @FXML
+    private RadioButton dijkstraRouteRadio;
+
+    @FXML
+    private RadioButton aStarRouteRadio;
+
+    @FXML
+    private ToggleGroup evaluationMethodToggleGroup;
 
     /**
      * The constructor. The constructor is called before the initialize()
@@ -85,22 +110,72 @@ public class RoutePlannerMainController {
 
 	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
 
-	    Tab calculatedRouteTab = new Tab();
-	    calculatedRouteTab.setText("Berechnete Route");
-	    Label label = new Label("Berechnete Route.....");
-	    calculatedRouteTab.setContent(label);
-	    tabPane.getTabs().add(calculatedRouteTab);
+	    if (calculationMethodToggleGroup.getSelectedToggle() == null) {
 
-	    //tabPane.getTabs().remove(calculatedRouteTab);
-	    UIEvaluationInterface.calculateRoute(start, end);
-	    webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+		Dialogs.create().title("Keine Berechnung möglich!")
+			.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
+
+	    } else {
+
+		if (evaluationMethodToggleGroup.getSelectedToggle() == null) {
+
+		    Dialogs.create().title("Keine Berechnung möglich!")
+			    .message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+
+		} else {
+
+		    Tab calculatedRouteTab = new Tab();
+		    calculatedRouteTab.setText("Berechnete Route");
+		    Label label = new Label("Berechnete Route.....");
+		    calculatedRouteTab.setContent(label);
+		    tabPane.getTabs().add(calculatedRouteTab);
+
+		    //tabPane.getTabs().remove(calculatedRouteTab);
+		    calculationMethod = null;
+		    getCalculationMethod();
+
+		    evaluationMethod = null;
+		    getEvaluationMethod();
+		    evaluationMethod = "AStern";
+
+		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod);
+		    webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+
+		}
+
+	    }
 
 	} else {
 
 	    Dialogs.create().title("Keine Berechnung möglich!")
 		    .message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+
 	}
 
+    }
+
+    private void getCalculationMethod() {
+	if (fastestRouteRadio.isSelected()) {
+	    calculationMethod = Constants.EVALUATION_CALCULATION_DURATION;
+	} else {
+	    if (shortestRouteRadio.isSelected()) {
+		calculationMethod = Constants.EVALUATION_CALCULATION_DISTANCE;
+	    } else {
+
+	    }
+	}
+    }
+
+    private void getEvaluationMethod() {
+	if (aStarRouteRadio.isSelected()) {
+	    evaluationMethod = Constants.EVALUATION_METHOD_ASTAR;
+	} else {
+	    if (dijkstraRouteRadio.isSelected()) {
+		evaluationMethod = Constants.EVALUATION_METHOD_DIJKSTRA;
+	    } else {
+
+	    }
+	}
     }
 
     @FXML
