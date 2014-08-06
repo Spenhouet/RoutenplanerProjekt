@@ -13,7 +13,8 @@ public class UIEvaluationInterface {
 
     public static LinkedList<String> allWayIDs;
 
-    public static void calculateRoute(final String departure, final String destination) {
+    public static void calculateRoute(final String departure, final String destination, final String calculationMethod,
+	    final String evaluationMethod) {
 
 	new Thread(new Runnable() {
 
@@ -21,6 +22,7 @@ public class UIEvaluationInterface {
 	    public void run() {
 		String evaluationMethod;
 		evaluationMethod = "AStern";
+		//TODO calculationMethod einbauen
 
 		switch (evaluationMethod) {
 		case "AStern":
