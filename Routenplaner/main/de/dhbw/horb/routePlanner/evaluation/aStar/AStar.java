@@ -28,8 +28,6 @@ public class AStar {
     private Map<String, Double> closedEdgesWeight;
     private String departure;
     private String destination;
-    private String openEdgesSmallestFirst;
-    private String openEdgesSmallestSecond;
     private String calculateMethod;
 
     public AStar(String departure, String destination) {
@@ -43,12 +41,13 @@ public class AStar {
 	nodeMap = StAXNodeParser.getNodeMap();
 	this.departure = departure;
 	this.destination = destination;
-	openEdgesSmallestFirst = null;
-	openEdgesSmallestSecond = null;
     }
 
     public void calculateWay(String calculateMethod) {
 	this.calculateMethod = calculateMethod;
+	closedEdgesPredecessor.put(departure, departure);
+	closedEdgesRoute.put(departure, null);
+	closedEdgesWeight.put(departure, 0.0);
 	addNeighbourToOpenList(departure);
 	findDestination();
 	UIEvaluationInterface.printRoute(getWays(this.destination));
@@ -78,7 +77,7 @@ public class AStar {
 	return null;
     }
 
-    private Double getWeightBack(String departure, String destination) {
+    private Double getWeightBack(String destination) {
 	Double w = null;
 	String newDestination = closedEdgesPredecessor.get(destination);
 	Double newWeight = closedEdgesWeight.get(destination);
@@ -86,7 +85,7 @@ public class AStar {
 	if (newDestination != null && newWeight != null) {
 
 	    if (!newDestination.equals(departure))
-		w = getWeightBack(departure, newDestination) + newWeight;
+		w = getWeightBack(newDestination) + newWeight;
 	    else
 		return newWeight;
 	}
@@ -94,18 +93,20 @@ public class AStar {
     }
 
     private void findDestination() {
-	if (openEdgesSmallestFirst != null) {
-	    Map<String, String> mp = openEdgesRoute.get(openEdgesSmallestFirst);
+	String smallest = getSmallest();
+	if (smallest != null) {
+	    Map<String, String> mp = openEdgesRoute.get(smallest);
 
 	    removeEdge(ListType.open, mp);
 	    addEdge(ListType.closed, mp);
 	    addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
-	} else {
-	    System.err.println("Fehler");
-	}
 
-	if (!openEdgesRoute.isEmpty())
-	    findDestination();
+	    if (!openEdgesRoute.isEmpty())
+		findDestination();
+
+	} else {
+	    System.err.println("smallest null Fehler");
+	}
     }
 
     private void addNeighbourToOpenList(String name) {
@@ -126,19 +127,21 @@ public class AStar {
 
 	    if (openEdgesPredecessor.containsKey(destinationNodeName)) {
 		Double newWeight = getWeight(edge);
+		Double newWeightBack = getWeightBack(edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+
+		if (newWeightBack == null || newWeight == null)
+		    continue;
+
 		Double oldWeight = openEdgesWeight.get(destinationNodeName);
+		Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(destinationNodeName));
 
-		if (newWeight != null && oldWeight != null) {
-		    Double wb = getWeightBack(openEdgesPredecessor.get(destinationNodeName), destinationNodeName);
+		if (oldWeightBack == null || oldWeight == null)
+		    System.err.println("OldWeight Fehler");
 
-		    if (wb == null)
-			continue;
+		if ((newWeight + newWeightBack) > (oldWeight + oldWeightBack))
+		    continue;
 
-		    newWeight += wb;
-		    if (newWeight > oldWeight)
-			continue;
-		    removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
-		}
+		removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
 	    }
 	    addEdge(ListType.open, edge);
 	}
@@ -176,12 +179,6 @@ public class AStar {
 	    openEdgesRoute.put(destinationName, edge);
 	    openEdgesPredecessor.put(destinationName, edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
 	    openEdgesWeight.put(destinationName, weight);
-
-	    Double oldSmallest = openEdgesWeight.get(openEdgesSmallestFirst);
-	    if ((oldSmallest == null || weight <= oldSmallest) && !destinationName.equals(openEdgesSmallestFirst)) {
-		openEdgesSmallestSecond = openEdgesSmallestFirst;
-		openEdgesSmallestFirst = destinationName;
-	    }
 	    break;
 
 	case closed:
@@ -200,9 +197,20 @@ public class AStar {
 	Double value = null;
 
 	for (Map.Entry<String, Double> entry : openEdgesWeight.entrySet()) {
-	    if (value == null || entry.getValue() <= value) {
-		key = entry.getKey();
-		value = entry.getValue();
+	    String iKey = entry.getKey();
+	    Double iValue = entry.getValue();
+
+	    if (iKey == null || iValue == null)
+		continue;
+
+	    Double wb = getWeightBack(openEdgesPredecessor.get(iKey));
+	    if (wb == null)
+		continue;
+	    Double newValue = wb + iValue;
+
+	    if (value == null || newValue <= value) {
+		key = iKey;
+		value = newValue;
 	    }
 	}
 	return key;
@@ -220,16 +228,6 @@ public class AStar {
 
 	    openEdgesPredecessor.remove(destinationName);
 	    openEdgesWeight.remove(destinationName);
-
-	    if (destinationName.equals(openEdgesSmallestFirst)) {
-		if (openEdgesSmallestSecond == null)
-		    openEdgesSmallestFirst = getSmallest();
-		else {
-		    openEdgesSmallestFirst = openEdgesSmallestSecond;
-		    openEdgesSmallestSecond = null;
-		}
-	    }
-
 	    return openEdgesRoute.remove(destinationName);
 
 	case closed:
