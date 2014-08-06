@@ -11,6 +11,8 @@ import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
 
 public class UIEvaluationInterface {
 
+    public static LinkedList<String> allWayIDs;
+
     public static void calculateRoute(final String departure, final String destination) {
 
 	new Thread(new Runnable() {
@@ -63,7 +65,7 @@ public class UIEvaluationInterface {
 
 	Double distance = 0.0;
 	Double duration = 0.0;
-	List<String> allWayIDs = new LinkedList<String>();
+	allWayIDs = new LinkedList<String>();
 	String departureNodeID = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODEID);
 	String destinationNodeID = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
 
@@ -96,5 +98,6 @@ public class UIEvaluationInterface {
 	System.out.println("Gesamte WayID Liste: " + allWayIDs);
 
 	//TODO Robin Methoden aufrufe hinzufügen
+
     }
 }

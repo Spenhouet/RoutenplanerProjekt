@@ -2,7 +2,7 @@ package de.dhbw.horb.routePlanner.ui;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,6 +30,8 @@ public class RoutePlannerMainController {
 
     public String linkStart = Constants.LINK_LINKSTART;
     public String linkEnd = Constants.LINK_LINKEND;
+    public String wayString = null;
+    public String nodeString = null;
 
     @FXML
     private WebView testWebView;
@@ -91,6 +93,7 @@ public class RoutePlannerMainController {
 
 	    //tabPane.getTabs().remove(calculatedRouteTab);
 	    UIEvaluationInterface.calculateRoute(start, end);
+	    webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
 
 	} else {
 
@@ -127,26 +130,36 @@ public class RoutePlannerMainController {
 	    public void changed(ObservableValue ov, State oldState, State newState) {
 
 		if (newState == Worker.State.SUCCEEDED) {
-		    String ways = null;
-		    try {
-			ways = generateLinkQuery_ways();
-		    } catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		    }
-		    String nodes = null;
-		    try {
-			nodes = generateLinkQuery_nodes();
-		    } catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		    }
+		    LinkedList<String> nodes = new LinkedList<>();
+		    nodes.add("30898199");
+		    nodes.add("30899103");
+		    generateLinkQueries(UIEvaluationInterface.allWayIDs, nodes);
 		    //DEBUG:
-		    //System.out.println("Ways: " + ways);
-		    //System.out.println("Nodes: " + nodes);
-		    webEngine.executeScript("init(\"" + ways + "\",\"" + nodes + "\")");
+		    //System.out.println("Ways: " + wayString);
+		    //System.out.println("Nodes: " + nodeString);
+		    webEngine.executeScript("init(\"" + wayString + "\",\"" + nodeString + "\")");
+		    wayString = null;
+		    nodeString = null;
+		    UIEvaluationInterface.allWayIDs = null;
 		}
 
 	    }
 	});
+    }
+
+    public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
+	try {
+	    wayString = generateLinkQuery_ways(ways);
+	    System.out.println(wayString);
+	} catch (UnsupportedEncodingException e) {
+	    e.printStackTrace();
+	}
+	try {
+	    String nodeString = generateLinkQuery_nodes(nodes);
+	    System.out.println(nodeString);
+	} catch (UnsupportedEncodingException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -154,19 +167,19 @@ public class RoutePlannerMainController {
      * @return Abfrage-Query Ways
      * @throws UnsupportedEncodingException
      */
-    private String generateLinkQuery_ways() throws UnsupportedEncodingException {
+    private String generateLinkQuery_ways(LinkedList<String> ways) throws UnsupportedEncodingException {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
 	String result_ways;
 
-	ArrayList<String> ways = new ArrayList<>();
-	ways.add("4811958");
-	ways.add("130792761");
-	ways.add("4811957");
-	ways.add("4811807");
-	ways.add("4811805");
-	ways.add("4811806");
-	ways.add("4811804");
+	//	ArrayList<String> ways = new ArrayList<>();
+	//	ways.add("4811958");
+	//	ways.add("130792761");
+	//	ways.add("4811957");
+	//	ways.add("4811807");
+	//	ways.add("4811805");
+	//	ways.add("4811806");
+	//	ways.add("4811804");
 
 	for (String string : ways) {
 	    completeLink += "way(" + string + ");";
@@ -183,16 +196,16 @@ public class RoutePlannerMainController {
      * @return Abfrage-Query Nodes
      * @throws UnsupportedEncodingException
      */
-    private String generateLinkQuery_nodes() throws UnsupportedEncodingException {
+    private String generateLinkQuery_nodes(LinkedList<String> nodes) throws UnsupportedEncodingException {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
 	String result_nodes;
 
 	completeLink = Constants.LINK_COMPLETELINK;
 
-	ArrayList<String> nodes = new ArrayList<>();
-	nodes.add("30898199");
-	nodes.add("30899103");
+	//	ArrayList<String> nodes = new ArrayList<>();
+	//	nodes.add("30898199");
+	//	nodes.add("30899103");
 
 	for (String string : nodes) {
 	    completeLink += "node(" + string + ");";
