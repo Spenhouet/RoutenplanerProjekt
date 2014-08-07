@@ -23,6 +23,7 @@ import javafx.scene.web.WebView;
 import org.controlsfx.dialog.Dialogs;
 
 import de.dhbw.horb.routePlanner.Constants;
+import de.dhbw.horb.routePlanner.data.SettingsManager;
 
 public class RoutePlannerMainController {
 
@@ -127,10 +128,10 @@ public class RoutePlannerMainController {
 
 		    //tabPane.getTabs().remove(calculatedRouteTab);
 		    calculationMethod = null;
-		    getCalculationMethod();
+		    calculationMethod = getCalculationMethod();
 
 		    evaluationMethod = null;
-		    getEvaluationMethod();
+		    evaluationMethod = getEvaluationMethod();
 		    evaluationMethod = "AStern";
 
 		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod);
@@ -149,28 +150,32 @@ public class RoutePlannerMainController {
 
     }
 
-    private void getCalculationMethod() {
+    private String getCalculationMethod() {
+	String result = null;
 	if (fastestRouteRadio.isSelected()) {
-	    calculationMethod = Constants.EVALUATION_CALCULATION_DURATION;
+	    result = Constants.EVALUATION_CALCULATION_DURATION;
 	} else {
 	    if (shortestRouteRadio.isSelected()) {
-		calculationMethod = Constants.EVALUATION_CALCULATION_DISTANCE;
+		result = Constants.EVALUATION_CALCULATION_DISTANCE;
 	    } else {
 
 	    }
 	}
+	return result;
     }
 
-    private void getEvaluationMethod() {
+    private String getEvaluationMethod() {
+	String result = null;
 	if (aStarRouteRadio.isSelected()) {
-	    evaluationMethod = Constants.EVALUATION_METHOD_ASTAR;
+	    result = Constants.EVALUATION_METHOD_ASTAR;
 	} else {
 	    if (dijkstraRouteRadio.isSelected()) {
-		evaluationMethod = Constants.EVALUATION_METHOD_DIJKSTRA;
+		result = Constants.EVALUATION_METHOD_DIJKSTRA;
 	    } else {
 
 	    }
 	}
+	return result;
     }
 
     @FXML
@@ -296,6 +301,13 @@ public class RoutePlannerMainController {
     public void enableCalculateRouteButton() {
 
 	calculateRouteButton.setDisable(false);
+
+    }
+
+    @FXML
+    void saveEvaluationMethod(ActionEvent event) {
+
+	SettingsManager.saveSetting("EvaluationMethod", "test");
 
     }
 }
