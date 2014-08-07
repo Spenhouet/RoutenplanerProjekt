@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.data.JDomGraphDataCreator;
 import de.dhbw.horb.routePlanner.data.OverpassDownloader;
+import de.dhbw.horb.routePlanner.data.XMLFileManager;
 
 public class RoutePlannerMainApp extends Application {
 
@@ -29,8 +30,12 @@ public class RoutePlannerMainApp extends Application {
     private AnchorPane splashAnchor;
     private Task<Integer> task;
     private StartupMainController startupController;
+    private XMLFileManager fileManager;
 
     public RoutePlannerMainApp() {
+
+	fileManager = new XMLFileManager();
+
     }
 
     @Override
@@ -186,6 +191,11 @@ public class RoutePlannerMainApp extends Application {
 
     public void initSplashLayout() {
 	try {
+	    try {
+		fileManager.releaseAllXML();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	    primaryStage = new Stage();
 
 	    // Load root layout from fxml file.
@@ -229,6 +239,12 @@ public class RoutePlannerMainApp extends Application {
     */
     public void initRootLayout() {
 	try {
+	    try {
+		fileManager.lockAllXML();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+
 	    primaryStage = new Stage();
 	    primaryStage.setTitle("Routenplaner");
 
