@@ -38,6 +38,10 @@ public interface Constants {
     public final static String EVALUATION_CALCULATION_DURATION = "Dauer";
     public final static String EVALUATION_CALCULATION_DISTANCE = "Strecke";
 
+    public final static String SETTINGS = "settings";
+    public final static String SETTINGS_KVSET = "kvSet";
+    public final static String SETTINGS_XML = PROGRAM_HOME + System.getProperty("file.separator") + "settings.xml";
+
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
     public final static String NODE_LATITUDE = "lat";
