@@ -87,7 +87,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 1:
-			if (checkGraphDataXML() == false) {
+			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
 				String area = "Deutschland";
@@ -109,7 +109,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 2:
-			if (checkNodeXML() == false) {
+			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
 				JDomGraphDataCreator dom = new JDomGraphDataCreator();
@@ -130,7 +130,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 3:
-			if (checkRouteXML() == false) {
+			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
 				JDomGraphDataCreator dom = new JDomGraphDataCreator();
@@ -239,11 +239,11 @@ public class RoutePlannerMainApp extends Application {
     */
     public void initRootLayout() {
 	try {
-	    try {
-		fileManager.lockAllXML();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    //	    try {
+	    //		fileManager.lockAllXML();
+	    //	    } catch (IOException e) {
+	    //		e.printStackTrace();
+	    //	    }
 
 	    primaryStage = new Stage();
 	    primaryStage.setTitle("Routenplaner");
@@ -319,50 +319,50 @@ public class RoutePlannerMainApp extends Application {
 
     }
 
-    private boolean checkNodeXML() {
-
-	boolean result = true;
-
-	try {
-	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES));
-	    result = file.exists();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	return result;
-
-    }
-
-    private boolean checkRouteXML() {
-
-	boolean result = true;
-
-	try {
-	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
-	    result = file.exists();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	return result;
-
-    }
-
-    private boolean checkGraphDataXML() {
-
-	boolean result = true;
-
-	try {
-	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA));
-	    result = file.exists();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	return result;
-
-    }
+    //    private boolean checkNodeXML() {
+    //
+    //	boolean result = true;
+    //
+    //	try {
+    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES));
+    //	    result = file.exists();
+    //	} catch (Exception e) {
+    //	    e.printStackTrace();
+    //	}
+    //
+    //	return result;
+    //
+    //    }
+    //
+    //    private boolean checkRouteXML() {
+    //
+    //	boolean result = true;
+    //
+    //	try {
+    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
+    //	    result = file.exists();
+    //	} catch (Exception e) {
+    //	    e.printStackTrace();
+    //	}
+    //
+    //	return result;
+    //
+    //    }
+    //
+    //    private boolean checkGraphDataXML() {
+    //
+    //	boolean result = true;
+    //
+    //	try {
+    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA));
+    //	    result = file.exists();
+    //	} catch (Exception e) {
+    //	    e.printStackTrace();
+    //	}
+    //
+    //	return result;
+    //
+    //    }
 
     /**
      * Returns the main stage.
