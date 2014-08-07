@@ -324,7 +324,7 @@ public class RoutePlannerMainApp extends Application {
 	boolean result = true;
 
 	try {
-	    File file = new File(Constants.XML_NODES);
+	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES));
 	    result = file.exists();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -339,7 +339,7 @@ public class RoutePlannerMainApp extends Application {
 	boolean result = true;
 
 	try {
-	    File file = new File(Constants.XML_ROUTES);
+	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
 	    result = file.exists();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -354,7 +354,7 @@ public class RoutePlannerMainApp extends Application {
 	boolean result = true;
 
 	try {
-	    File file = new File(Constants.XML_GRAPHDATA);
+	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA));
 	    result = file.exists();
 	} catch (Exception e) {
 	    e.printStackTrace();
