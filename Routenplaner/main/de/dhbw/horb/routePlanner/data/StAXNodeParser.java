@@ -25,7 +25,7 @@ public class StAXNodeParser {
 
     public static StAXNodeParser getStAXNodeParser() {
 	try {
-	    return new StAXNodeParser(Constants.XML_NODES);
+	    return new StAXNodeParser(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES));
 	} catch (XMLStreamException | FileNotFoundException e) {
 	    e.printStackTrace();
 	    return null;

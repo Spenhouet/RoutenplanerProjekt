@@ -23,7 +23,8 @@ public class OverpassDownloader {
 	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a; (way(area.a)[highway=\"motorway\"];>;"
 		+ "way(area.a)[highway=\"motorway_link\"];>;); out;";
 
-	saveInputStreamToFile(getDataFromOverpass(query), new File(Constants.XML_GRAPHDATA));
+	saveInputStreamToFile(getDataFromOverpass(query),
+		new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)));
     }
 
     private void saveInputStreamToFile(InputStream in, File file) {
