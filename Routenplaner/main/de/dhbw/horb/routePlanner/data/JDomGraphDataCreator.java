@@ -124,7 +124,7 @@ public class JDomGraphDataCreator {
 	String wayID = null;
 	if (ways.size() >= 1) {
 	    for (int i = 0; i < ways.size(); i++) {
-		if (wayMapDom.isLink(ways.get(i))) {
+		if (wayMapDom.isMotorway(ways.get(i))) {
 		    wayID = ways.remove(i);
 		    break;
 		}

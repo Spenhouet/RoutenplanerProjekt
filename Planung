@@ -3,21 +3,27 @@ Node und Route XML Parsen mit STAX cursor API:
   -belegt wenig Arbeitsspeicher
   -parsen on demand
   -kein großer Aufbau am Anfang
-  (oder speichern in eigener Datenstruktur)?
+  (oder speichern in eigener Datenstruktur)
   - Wenn nicht vorhanden -> erzeugen.
 
 Overpass Daten:
   -Parsen und in eigenen Datenstrukturen speichern.
   -Aus diesen zwei neue XML Dateien erzeugen
-  -Auf Befehl von GUI -> Lade Anzeige?
-  -Update beziehen? WGET?
-  -Mehr Länder downloaden?
+  -Auf Befehl von GUI -> Lade Anzeige
+  -Update beziehen
+  -Mehr Länder downloaden
+  -Daten mehrerer Länder parallel speichern und benutzen
 
 GUI:
   -Anzeige der Wege über Webview
-  -Neue XML Files auf Befehl erzeugen.
+  -Farbige Einstellung der Weg Anzeige
+  -Route als Liste mit Abbiegungen etc.
+  -Einstellungsmenü
+  -Vollbild
+  -Resize mit merken der letzten Größe?
   -Hilfe / Hinweise für Bedienelemente?
   -Mehrsprachige Stringauslagerung (Englisch/Deutsch)?
+  -Exception Handling über GUI Fehlermeldungen?
 
 Eingabe:
   -Erkennen von Knoten (Stadt) Eingabe
@@ -31,4 +37,5 @@ Wege berechnen:
   
   Algorithmen:
     -Dijkstra
+    -A* / AStar
     -?

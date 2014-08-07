@@ -96,6 +96,11 @@ public class DomStAXMapGraphDataWaysParser {
 	return wm.get(Constants.WAY_HIGHWAY).equals(Constants.WAY_MOTORWAY_LINK);
     }
 
+    public Boolean isMotorway(String id) {
+	Map<String, String> wm = ways.get(id);
+	return wm.get(Constants.WAY_HIGHWAY).equals(Constants.WAY_MOTORWAY);
+    }
+
     public String getNextNodeID(String wayID, String nodeID) {
 	Map<String, String> wm = ways.get(wayID);
 
