@@ -26,7 +26,7 @@ public class DomStAXMapGraphDataNodesParser {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	try {
 	    GraphDataStreamReader nodeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-		    Constants.XML_GRAPHDATA)));
+		    XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA))));
 
 	    node = new HashMap<String, Map<String, String>>();
 

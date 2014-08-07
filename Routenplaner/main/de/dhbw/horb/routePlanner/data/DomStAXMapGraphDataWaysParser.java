@@ -22,7 +22,7 @@ public class DomStAXMapGraphDataWaysParser {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	try {
 	    GraphDataStreamReader waySR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-		    Constants.XML_GRAPHDATA)));
+		    XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA))));
 
 	    ways = new HashMap<String, Map<String, String>>();
 
