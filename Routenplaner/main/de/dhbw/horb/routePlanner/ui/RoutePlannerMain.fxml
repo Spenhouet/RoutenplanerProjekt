@@ -40,7 +40,7 @@
                                           <Insets top="25.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <RadioButton fx:id="fastestRouteRadio" mnemonicParsing="false" onAction="#saveEvaluationMethod" text="Schnellste Route">
+                                    <RadioButton fx:id="fastestRouteRadio" mnemonicParsing="false" text="Schnellste Route">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>
@@ -48,7 +48,7 @@
                                           <ToggleGroup fx:id="calculationMethodToggleGroup" />
                                        </toggleGroup>
                                     </RadioButton>
-                                    <RadioButton fx:id="shortestRouteRadio" mnemonicParsing="false" onAction="#saveEvaluationMethod" text="Kürzeste Route" toggleGroup="$calculationMethodToggleGroup">
+                                    <RadioButton fx:id="shortestRouteRadio" mnemonicParsing="false" text="Kürzeste Route" toggleGroup="$calculationMethodToggleGroup">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>

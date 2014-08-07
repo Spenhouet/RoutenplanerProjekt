@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -220,6 +221,13 @@ public class RoutePlannerMainController {
 
 	    }
 	});
+	evaluationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+		if (evaluationMethodToggleGroup.getSelectedToggle() != null) {
+		    SettingsManager.saveSetting("EvaluationMethod", getEvaluationMethod());
+		}
+	    }
+	});
     }
 
     public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
@@ -304,10 +312,4 @@ public class RoutePlannerMainController {
 
     }
 
-    @FXML
-    void saveEvaluationMethod(ActionEvent event) {
-
-	SettingsManager.saveSetting("EvaluationMethod", "test");
-
-    }
 }
