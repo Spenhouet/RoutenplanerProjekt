@@ -88,7 +88,8 @@ public class JDomGraphDataCreator {
 	    rootNewRoute.addContent(newRoute);
 
 	    try {
-		outp.output(xmlDocRoutes, new FileOutputStream(Constants.XML_ROUTES));
+		outp.output(xmlDocRoutes,
+			new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)));
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
@@ -166,7 +167,7 @@ public class JDomGraphDataCreator {
 	}
 
 	try {
-	    outp.output(xmlDocNodes, new FileOutputStream(Constants.XML_NODES));
+	    outp.output(xmlDocNodes, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)));
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}

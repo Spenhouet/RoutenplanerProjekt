@@ -41,17 +41,18 @@ public class XMLFileManager {
     }
 
     public void lockRoutesXML() throws IOException {
-	routesXMLraf = new RandomAccessFile(new File(Constants.XML_ROUTES), "rw");
+	routesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)), "rw");
 	routesXMLLock = routesXMLraf.getChannel().lock();
     }
 
     public void lockNodesXML() throws IOException {
-	nodesXMLraf = new RandomAccessFile(new File(Constants.XML_NODES), "rw");
+	nodesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)), "rw");
 	nodesXMLLock = nodesXMLraf.getChannel().lock();
     }
 
     public void lockGraphDataXML() throws IOException {
-	graphDataXMLraf = new RandomAccessFile(new File(Constants.XML_GRAPHDATA), "rw");
+	graphDataXMLraf = new RandomAccessFile(
+		new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)), "rw");
 	graphDataXMLLock = graphDataXMLraf.getChannel().lock();
     }
 
