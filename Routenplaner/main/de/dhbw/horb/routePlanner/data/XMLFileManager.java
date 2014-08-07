@@ -20,53 +20,15 @@ public class XMLFileManager {
 
     }
 
-    //    public static void main(String[] args) throws Exception {
-    //
-    //	XMLFileManager fm = new XMLFileManager();
-    //
-    //	System.out.println("Alle existieren: " + fm.allXMLExists());
-    //
-    //	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
-    //	fm.lockAllXML();
-    //	System.out.println("Alle sind gesperrt: " + fm.allXMLLocked());
-    //	fm.releaseAllXML();
-    //	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
-    //    }
+    public static Boolean fileExists(String filePath) {
+	if (filePath == null || filePath.isEmpty())
+	    return false;
 
-    public Boolean graphDataXMLExists() {
-	File graphDataXML = new File(Constants.XML_GRAPHDATA);
-	if (graphDataXML.exists() && !graphDataXML.isDirectory()) {
+	File file = new File(filePath);
+	if (file != null && file.exists() && !file.isDirectory()) {
 	    return true;
 	}
 	return false;
-    }
-
-    public Boolean routesXMLExists() {
-	File routesXML = new File(Constants.XML_ROUTES);
-	if (routesXML.exists() && !routesXML.isDirectory()) {
-	    return true;
-	}
-
-	return false;
-    }
-
-    public Boolean nodesXMLExists() {
-	File nodesXML = new File(Constants.XML_NODES);
-	if (nodesXML.exists() && !nodesXML.isDirectory()) {
-	    return true;
-	}
-
-	return false;
-    }
-
-    public Boolean routesAndNodeXMLExists() {
-
-	return (routesXMLExists() && nodesXMLExists());
-    }
-
-    public Boolean allXMLExists() {
-
-	return (graphDataXMLExists() && routesAndNodeXMLExists());
     }
 
     public void lockRoutesXML() throws IOException {
@@ -121,29 +83,6 @@ public class XMLFileManager {
     public void releaseAllXML() throws IOException {
 	releaseGraphDataXML();
 	releaseRoutesAndNodesXML();
-    }
-
-    public Boolean routesXMLLocked() {
-	File routesXML = new File(Constants.XML_ROUTES);
-	return !routesXML.canWrite();
-    }
-
-    public Boolean nodesXMLLocked() {
-	File nodesXML = new File(Constants.XML_NODES);
-	return !nodesXML.canWrite();
-    }
-
-    public Boolean graphDataXMLLocked() {
-	File graphDataXML = new File(Constants.XML_GRAPHDATA);
-	return !graphDataXML.canWrite();
-    }
-
-    public Boolean routesAndNodesXMLLocked() {
-	return (routesXMLLocked() && nodesXMLLocked());
-    }
-
-    public Boolean allXMLLocked() {
-	return (graphDataXMLLocked() && routesAndNodesXMLLocked());
     }
 
     @Override
