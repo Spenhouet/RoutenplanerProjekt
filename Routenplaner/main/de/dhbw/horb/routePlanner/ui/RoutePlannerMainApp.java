@@ -253,9 +253,14 @@ public class RoutePlannerMainApp extends Application {
 	    loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_ROOT));
 	    rootLayout = (BorderPane) loader.load();
 
-	    // Show the scene containing the root layout.
 	    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-	    Scene scene = new Scene(rootLayout, screenBounds.getWidth(), screenBounds.getHeight());
+	    primaryStage.setX(screenBounds.getMinX());
+	    primaryStage.setY(screenBounds.getMinY());
+	    primaryStage.setWidth(screenBounds.getWidth());
+	    primaryStage.setHeight(screenBounds.getHeight());
+
+	    // Show the scene containing the root layout.
+	    Scene scene = new Scene(rootLayout);
 	    primaryStage.setTitle("Routenplaner");
 	    primaryStage.setScene(scene);
 	    primaryStage.initStyle(StageStyle.DECORATED);
