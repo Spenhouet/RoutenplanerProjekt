@@ -36,8 +36,10 @@ public class SettingsManager {
 		return defaultValue;
 	    return settingsMap.get(key);
 
-	} catch (FileNotFoundException | XMLStreamException e1) {
+	} catch (XMLStreamException e1) {
 	    e1.printStackTrace();
+	    return defaultValue;
+	} catch (FileNotFoundException e) {
 	    return defaultValue;
 	}
     }

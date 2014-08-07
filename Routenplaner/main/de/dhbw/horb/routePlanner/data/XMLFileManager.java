@@ -31,6 +31,15 @@ public class XMLFileManager {
 	return false;
     }
 
+    public static String getExtendedXMLFileName(String filePath) {
+	if (filePath == null || filePath.isEmpty())
+	    return null;
+
+	return new StringBuilder(filePath).insert(filePath.indexOf(".xml"),
+		("_" + SettingsManager.getValue(Constants.SETTINGS_COUNTRY, Constants.SETTINGS__DEFAULT_COUNTRY)))
+		.toString();
+    }
+
     public void lockRoutesXML() throws IOException {
 	routesXMLraf = new RandomAccessFile(new File(Constants.XML_ROUTES), "rw");
 	routesXMLLock = routesXMLraf.getChannel().lock();
