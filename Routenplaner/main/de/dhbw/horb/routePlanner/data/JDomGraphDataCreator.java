@@ -73,9 +73,12 @@ public class JDomGraphDataCreator {
 	    Element rootNewRoute = xmlDocRoutes.getRootElement();
 
 	    Element newRoute = new Element(Constants.NEW_ROUTE);
+	    // FIXME Sebastian: /2 nur für Test
 	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODEID, rm.getDepartureNodeID()));
-	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, rm.getDistance().toString()));
-	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION, rm.getDurationInSeconds().toString()));
+	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DISTANCE, ((Double) (rm.getDistance() / 2))
+		    .toString()));
+	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION, ((Long) (rm.getDurationInSeconds() / Long
+		    .valueOf(2))).toString()));
 	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DESTINATIONNODEID, rm.getDestinationNodeID()));
 	    newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, rm.getWayIDsAsCommaString()));
 	    String nr = rm.getNumber();
