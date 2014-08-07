@@ -94,12 +94,7 @@ public class RoutePlannerMainController {
 
     @FXML
     void testButtonClicked(ActionEvent event) {
-	webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
-    }
-
-    @FXML
-    void startComboBoxClicked(ActionEvent event) {
-
+	//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
     }
 
     @FXML

@@ -18,24 +18,20 @@ public class XMLFileManager {
 
     public XMLFileManager() {
 
-	try {
-	    allXMLExists();
-	} catch (Exception e) {
-	}
     }
 
-    public static void main(String[] args) throws Exception {
-
-	XMLFileManager fm = new XMLFileManager();
-
-	System.out.println("Alle existieren: " + fm.allXMLExists());
-
-	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
-	fm.lockAllXML();
-	System.out.println("Alle sind gesperrt: " + fm.allXMLLocked());
-	fm.releaseAllXML();
-	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
-    }
+    //    public static void main(String[] args) throws Exception {
+    //
+    //	XMLFileManager fm = new XMLFileManager();
+    //
+    //	System.out.println("Alle existieren: " + fm.allXMLExists());
+    //
+    //	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
+    //	fm.lockAllXML();
+    //	System.out.println("Alle sind gesperrt: " + fm.allXMLLocked());
+    //	fm.releaseAllXML();
+    //	System.out.println("Alle sind nicht gesperrt: " + !fm.allXMLLocked());
+    //    }
 
     public Boolean graphDataXMLExists() {
 	File graphDataXML = new File(Constants.XML_GRAPHDATA);
@@ -99,15 +95,22 @@ public class XMLFileManager {
     }
 
     public void releaseRoutesXML() throws IOException {
-	routesXMLLock.release();
+	if (routesXMLLock != null) {
+	    routesXMLLock.release();
+	}
     }
 
     public void releaseNodesXML() throws IOException {
-	nodesXMLLock.release();
+	if (nodesXMLLock != null) {
+	    nodesXMLLock.release();
+	}
     }
 
     public void releaseGraphDataXML() throws IOException {
-	graphDataXMLLock.release();
+	if (graphDataXMLLock != null) {
+	    graphDataXMLLock.release();
+	}
+
     }
 
     public void releaseRoutesAndNodesXML() throws IOException {
