@@ -24,6 +24,7 @@ import javafx.scene.web.WebView;
 import org.controlsfx.dialog.Dialogs;
 
 import de.dhbw.horb.routePlanner.Constants;
+import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.SettingsManager;
 
 public class RoutePlannerMainController {
@@ -203,7 +204,7 @@ public class RoutePlannerMainController {
 	webEngine = testWebView.getEngine();
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 	    @Override
-	    public void changed(ObservableValue ov, State oldState, State newState) {
+	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
 
 		if (newState == Worker.State.SUCCEEDED) {
 		    LinkedList<String> nodes = new LinkedList<>();
@@ -224,8 +225,22 @@ public class RoutePlannerMainController {
 	evaluationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 	    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 		if (evaluationMethodToggleGroup.getSelectedToggle() != null) {
-		    SettingsManager.saveSetting("EvaluationMethod", getEvaluationMethod());
+		    SettingsManager.saveSetting(Constants.SETTINGS_EVALUATION_METHOD, getEvaluationMethod());
 		}
+	    }
+	});
+	calculationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+		if (calculationMethodToggleGroup.getSelectedToggle() != null) {
+		    SettingsManager.saveSetting(Constants.SETTINGS_CALCULATION_METHOD, getCalculationMethod());
+		}
+	    }
+	});
+	countryComboBox.getItems().addAll(SupportMethods.commaStrToStrList(Constants.COUNTRY_VERIFIED));
+	countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
+	    @Override
+	    public void changed(ObservableValue ov, String t, String t1) {
+		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, countryComboBox.getValue());
 	    }
 	});
     }
@@ -255,15 +270,6 @@ public class RoutePlannerMainController {
 	String completeLink = Constants.LINK_COMPLETELINK;
 	String result_ways;
 
-	//	ArrayList<String> ways = new ArrayList<>();
-	//	ways.add("4811958");
-	//	ways.add("130792761");
-	//	ways.add("4811957");
-	//	ways.add("4811807");
-	//	ways.add("4811805");
-	//	ways.add("4811806");
-	//	ways.add("4811804");
-
 	for (String string : ways) {
 	    completeLink += "way(" + string + ");";
 	}
@@ -285,10 +291,6 @@ public class RoutePlannerMainController {
 	String result_nodes;
 
 	completeLink = Constants.LINK_COMPLETELINK;
-
-	//	ArrayList<String> nodes = new ArrayList<>();
-	//	nodes.add("30898199");
-	//	nodes.add("30899103");
 
 	for (String string : nodes) {
 	    completeLink += "node(" + string + ");";

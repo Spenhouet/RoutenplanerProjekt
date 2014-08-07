@@ -43,8 +43,10 @@ public interface Constants {
     public final static String SETTINGS = "settings";
     public final static String SETTINGS_KVSET = "kvSet";
     public final static String SETTINGS_XML = PROGRAM_HOME + System.getProperty("file.separator") + "settings.xml";
-    public final static String SETTINGS_COUNTRY = "country";
+    public final static String SETTINGS_COUNTRY = "Country";
     public final static String SETTINGS__DEFAULT_COUNTRY = "Deutschland";
+    public final static String SETTINGS_EVALUATION_METHOD = "Evaluation_Method";
+    public final static String SETTINGS_CALCULATION_METHOD = "Calculation_Method";
 
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
