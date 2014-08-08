@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.data.JDomGraphDataCreator;
 import de.dhbw.horb.routePlanner.data.OverpassDownloader;
+import de.dhbw.horb.routePlanner.data.SettingsManager;
 import de.dhbw.horb.routePlanner.data.XMLFileManager;
 
 public class RoutePlannerMainApp extends Application {
@@ -90,7 +91,7 @@ public class RoutePlannerMainApp extends Application {
 			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
-				String area = "Deutschland";
+				String area = SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland");
 				OverpassDownloader odl = new OverpassDownloader();
 				odl.downloadGraphData(area);
 			    } catch (Exception e) {
