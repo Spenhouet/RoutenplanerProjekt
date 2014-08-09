@@ -73,6 +73,7 @@ public class JDomGraphDataCreator {
     private static Map<String, Map<String, String>> nodes;
     private static Map<String, Map<String, String>> ways;
     private static Map<String, String> history;
+    private static Map<String, List<String>> nodeWaysLink;
     private static XMLOutputter outp;
     private static Element routesEl;
     private static Document xmlDocRoutes;
@@ -105,13 +106,10 @@ public class JDomGraphDataCreator {
 
 		    route.add(allInfos);
 		    recursRoute(route);
-		    route.remove(allInfos);
 		}
 	    }
 	}
     }
-
-    private static Map<String, List<String>> nodeWaysLink;
 
     private static void buildUpCache() {
 
