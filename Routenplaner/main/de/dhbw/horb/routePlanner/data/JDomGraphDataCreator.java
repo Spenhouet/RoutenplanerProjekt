@@ -169,6 +169,9 @@ public class JDomGraphDataCreator {
 	if (waysContain == null || waysContain.isEmpty()) {
 	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
 	    return;
+	} else if (waysContain.size() > 1) {
+
+	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
 	}
 	for (String wayID : waysContain) {
 	    Map<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
