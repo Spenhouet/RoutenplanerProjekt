@@ -144,7 +144,7 @@ public class JDomGraphDataCreator {
 	    return;
 
 	Map<String, String> nextNode = getNextNode(route.get(route.size() - 1));
-	if (nextNode == null)
+	if (nextNode == null || nextNode.isEmpty())
 	    return;
 
 	String nextNodeID = nextNode.get(Constants.NODE_ID_EX);
@@ -192,22 +192,22 @@ public class JDomGraphDataCreator {
     }
 
     private static Map<String, String> getAllInfos(String nodeID, String wayID) {
-	if (nodeID == null || wayID == null)
+	if (nodeID == null || wayID == null || nodeID.isEmpty() || wayID.isEmpty())
 	    return null;
-	Map<String, String> node = nodes.get(nodeID);
-	Map<String, String> way = ways.get(wayID);
+	Map<String, String> nodeInf = nodes.get(nodeID);
+	Map<String, String> wayInf = ways.get(wayID);
 
-	if (node == null || way == null)
+	if (nodeInf == null || wayInf == null || nodeInf.isEmpty() || wayInf.isEmpty())
 	    return null;
 
 	Map<String, String> allInfos = new HashMap<String, String>();
-	allInfos.putAll(node);
-	allInfos.putAll(way);
+	allInfos.putAll(nodeInf);
+	allInfos.putAll(wayInf);
 	allInfos.put(Constants.NODE_ID_EX, nodeID);
 	allInfos.put(Constants.WAY_ID_EX, wayID);
 	allInfos.remove(Constants.NODE_HIGHWAY);
-	allInfos.put(Constants.NODE_HIGHWAY_EX, node.get(Constants.NODE_HIGHWAY));
-	allInfos.put(Constants.WAY_HIGHWAY_EX, way.get(Constants.WAY_HIGHWAY));
+	allInfos.put(Constants.NODE_HIGHWAY_EX, nodeInf.get(Constants.NODE_HIGHWAY));
+	allInfos.put(Constants.WAY_HIGHWAY_EX, wayInf.get(Constants.WAY_HIGHWAY));
 	return allInfos;
     }
 
