@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -9,6 +10,6 @@
    <children>
       <ProgressBar fx:id="startupProgressBar" layoutX="100.0" layoutY="113.0" prefWidth="200.0" progress="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="130.0" />
       <ProgressIndicator fx:id="startupProgressIndicator" layoutX="165.0" layoutY="30.0" prefHeight="70.0" prefWidth="70.0" styleClass="progressIndicator" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="165.0" AnchorPane.topAnchor="30.0" />
-      <Label fx:id="startupLabel" alignment="CENTER" layoutX="50.0" layoutY="156.0" prefWidth="400.0" textAlignment="CENTER" AnchorPane.bottomAnchor="25.0" />
+      <Label fx:id="startupLabel" alignment="CENTER" layoutX="50.0" layoutY="156.0" prefWidth="400.0" styleClass="label-splash" textAlignment="CENTER" AnchorPane.bottomAnchor="25.0" />
    </children>
 </AnchorPane>

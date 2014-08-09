@@ -13,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
@@ -88,6 +90,15 @@ public class RoutePlannerMainController {
     @FXML
     private ToggleGroup evaluationMethodToggleGroup;
 
+    @FXML
+    private Label startLabel;
+
+    @FXML
+    private Label destinationLabel;
+
+    @FXML
+    private ListView<String> calculatedRouteListView;
+
     /**
      * The constructor. The constructor is called before the initialize()
      * method.
@@ -122,13 +133,8 @@ public class RoutePlannerMainController {
 
 		} else {
 
-		    Tab calculatedRouteTab = new Tab();
-		    calculatedRouteTab.setText("Berechnete Route");
-		    Label label = new Label("Berechnete Route.....");
-		    calculatedRouteTab.setContent(label);
-		    tabPane.getTabs().add(calculatedRouteTab);
-
 		    //tabPane.getTabs().remove(calculatedRouteTab);
+
 		    calculationMethod = null;
 		    calculationMethod = getCalculationMethod();
 
@@ -152,6 +158,10 @@ public class RoutePlannerMainController {
 
     }
 
+    /**
+     * Method to detect the selected CalculationMethod
+     * @return currently selected CalculationMethod as String
+     */
     private String getCalculationMethod() {
 	String result = null;
 	if (fastestRouteRadio.isSelected()) {
@@ -166,6 +176,10 @@ public class RoutePlannerMainController {
 	return result;
     }
 
+    /**
+     * Method to detect the selected EvaluationMethod
+     * @return currently selected EvaluationMethod as String
+     */
     private String getEvaluationMethod() {
 	String result = null;
 	if (aStarRouteRadio.isSelected()) {
@@ -201,6 +215,30 @@ public class RoutePlannerMainController {
 	this.routePlannerMainApp = routePlannerMainApp;
 	new AutoCompleteComboBoxListener<>(startComboBox);
 	new AutoCompleteComboBoxListener<>(targetComboBox);
+
+	//Settings eintragen
+	countryComboBox.setValue(SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland"));
+	switch (SettingsManager.getValue(Constants.SETTINGS_EVALUATION_METHOD, "Dijkstra")) {
+	case Constants.EVALUATION_METHOD_DIJKSTRA:
+	    evaluationMethodToggleGroup.selectToggle(dijkstraRouteRadio);
+	    break;
+	case Constants.EVALUATION_METHOD_ASTAR:
+	    evaluationMethodToggleGroup.selectToggle(aStarRouteRadio);
+	    break;
+	default:
+	    break;
+	}
+	switch (SettingsManager.getValue(Constants.SETTINGS_CALCULATION_METHOD, "Dauer")) {
+	case Constants.EVALUATION_CALCULATION_DURATION:
+	    calculationMethodToggleGroup.selectToggle(fastestRouteRadio);
+	    break;
+	case Constants.EVALUATION_CALCULATION_DISTANCE:
+	    calculationMethodToggleGroup.selectToggle(shortestRouteRadio);
+	    break;
+	default:
+	    break;
+	}
+
 	webEngine = testWebView.getEngine();
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 	    @Override
@@ -214,7 +252,17 @@ public class RoutePlannerMainController {
 		    //DEBUG:
 		    //System.out.println("Ways: " + wayString);
 		    //System.out.println("Nodes: " + nodeString);
+
 		    webEngine.executeScript("init(\"" + wayString + "\",\"" + nodeString + "\")");
+
+		    //TODO Liste aufbauen
+		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
+		    startLabel.setText(startComboBox.getValue());
+		    destinationLabel.setText(targetComboBox.getValue());
+		    calculatedRouteTab.getStyleClass().removeAll("hidden");
+		    SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+		    selectionModel.select(calculatedRouteTab);
+
 		    wayString = null;
 		    nodeString = null;
 		    UIEvaluationInterface.allWayIDs = null;
@@ -245,6 +293,11 @@ public class RoutePlannerMainController {
 	});
     }
 
+    /**
+     * Method to call generateLinkQuery_ways and generateLinkQuery_nodes
+     * @param ways LinkedList containig all wayIDs
+     * @param nodes LinkedList containing all nodeIDs
+     */
     public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
 	try {
 	    wayString = generateLinkQuery_ways(ways);
@@ -305,12 +358,18 @@ public class RoutePlannerMainController {
 
     }
 
+    /**
+     * Method to disable the "CalculateRoute"-Button
+     */
     public void disableCalculateRouteButton() {
 
 	calculateRouteButton.setDisable(true);
 
     }
 
+    /**
+     * Method to enable the "CalculateRoute"-Button
+     */
     public void enableCalculateRouteButton() {
 
 	calculateRouteButton.setDisable(false);

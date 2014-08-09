@@ -188,6 +188,10 @@ public class RoutePlannerMainApp extends Application {
 	th.start();
     }
 
+    /**
+     * Splash-Layout initialisieren, laden und anzeigen
+     * Alle XMLs releasen
+     */
     public void initSplashLayout() {
 	try {
 	    try {
@@ -206,7 +210,6 @@ public class RoutePlannerMainApp extends Application {
 	    Scene scene = new Scene(splashLayout);
 	    primaryStage.setScene(scene);
 	    primaryStage.initStyle(StageStyle.TRANSPARENT);
-	    //scene.setFill(Color.TRANSPARENT);
 	    primaryStage.show();
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -214,7 +217,8 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Eigentliches Splash anzeigen
+     * Controller zuweisen
      */
     public void showSplash() {
 	try {
@@ -292,6 +296,12 @@ public class RoutePlannerMainApp extends Application {
 	}
     }
 
+    /**
+     * Check the programs prerequisites
+     * Check connection to the overpass-website
+     * Check, if the program-folder exists, and creates it if not
+     * @return true if program has access to the required website and if the program folder exists
+     */
     private boolean checkPrerequisites() {
 
 	boolean result = true;
@@ -317,51 +327,6 @@ public class RoutePlannerMainApp extends Application {
 	return result;
 
     }
-
-    //    private boolean checkNodeXML() {
-    //
-    //	boolean result = true;
-    //
-    //	try {
-    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES));
-    //	    result = file.exists();
-    //	} catch (Exception e) {
-    //	    e.printStackTrace();
-    //	}
-    //
-    //	return result;
-    //
-    //    }
-    //
-    //    private boolean checkRouteXML() {
-    //
-    //	boolean result = true;
-    //
-    //	try {
-    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
-    //	    result = file.exists();
-    //	} catch (Exception e) {
-    //	    e.printStackTrace();
-    //	}
-    //
-    //	return result;
-    //
-    //    }
-    //
-    //    private boolean checkGraphDataXML() {
-    //
-    //	boolean result = true;
-    //
-    //	try {
-    //	    File file = new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA));
-    //	    result = file.exists();
-    //	} catch (Exception e) {
-    //	    e.printStackTrace();
-    //	}
-    //
-    //	return result;
-    //
-    //    }
 
     /**
      * Returns the main stage.
