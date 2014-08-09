@@ -1,0 +1,14 @@
+.background {
+    -fx-background-image: url("img/splash-bg-image.jpg");
+}
+
+.label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-opacity: 0.6;
+}
+
+.progressIndicator {
+	-fx-progress-color: white;
+}

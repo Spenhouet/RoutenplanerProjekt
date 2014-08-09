@@ -5,6 +5,6 @@
 <?import javafx.scene.layout.BorderPane?>
 
 
-<BorderPane minHeight="200.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.horb.routePlanner.ui.RouteplannerStartup">
+<BorderPane minHeight="200.0" minWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.horb.routePlanner.ui.RouteplannerStartup">
 	<!-- TODO Add Nodes -->
 </BorderPane>
