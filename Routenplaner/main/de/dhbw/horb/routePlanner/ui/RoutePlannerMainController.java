@@ -239,7 +239,7 @@ public class RoutePlannerMainController {
 	countryComboBox.getItems().addAll(SupportMethods.commaStrToStrList(Constants.COUNTRY_VERIFIED));
 	countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
 	    @Override
-	    public void changed(ObservableValue ov, String t, String t1) {
+	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
 		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, countryComboBox.getValue());
 	    }
 	});
