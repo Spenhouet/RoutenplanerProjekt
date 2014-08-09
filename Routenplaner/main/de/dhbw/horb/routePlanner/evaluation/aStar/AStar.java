@@ -1,14 +1,16 @@
 package de.dhbw.horb.routePlanner.evaluation.aStar;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamException;
+
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
-import de.dhbw.horb.routePlanner.data.DomStAXMapRouteParser;
-import de.dhbw.horb.routePlanner.data.StAXNodeParser;
+import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 public class AStar {
@@ -17,7 +19,7 @@ public class AStar {
 	open, closed
     }
 
-    private DomStAXMapRouteParser routeParser;
+    private Map<String, Map<String, String>> routes;
     private Map<String, List<String>> nodeMap;
 
     private Map<String, String> openEdgesPredecessor;
@@ -37,8 +39,14 @@ public class AStar {
 	closedEdgesPredecessor = new HashMap<String, String>();
 	closedEdgesRoute = new HashMap<String, Map<String, String>>();
 	closedEdgesWeight = new HashMap<String, Double>();
-	routeParser = new DomStAXMapRouteParser();
-	nodeMap = StAXNodeParser.getNodeMap();
+	try {
+	    routes = StAXMapGraphDataParser.getRouteXMLMap();
+	    nodeMap = StAXMapGraphDataParser.getNodeXMLMap();
+	} catch (FileNotFoundException | XMLStreamException e) {
+	    // TODO Automatisch generierter Erfassungsblock
+	    e.printStackTrace();
+	}
+
 	this.departure = departure;
 	this.destination = destination;
     }
@@ -113,7 +121,7 @@ public class AStar {
 	List<String> ids = nodeMap.get(name);
 	for (String id : ids) {
 
-	    Map<String, String> edge = routeParser.getRoute(id);
+	    Map<String, String> edge = routes.get(id);
 	    if (edge == null)
 		continue;
 

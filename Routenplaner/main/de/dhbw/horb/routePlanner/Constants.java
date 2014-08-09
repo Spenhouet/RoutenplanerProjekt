@@ -50,20 +50,24 @@ public interface Constants {
 
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
+    public final static String NODE_ID_EX = "nodeID";
     public final static String NODE_LATITUDE = "lat";
     public final static String NODE_LONGITUDE = "lon";
     public final static String NODE_TAG = "tag";
     public final static String NODE_NAME = "name";
     public final static String NODE_HIGHWAY = "highway";
+    public final static String NODE_HIGHWAY_EX = "highwayNode";
     public final static String NODE_MOTORWAY_JUNCTION = "motorway_junction";
 
     public final static String WAY = "way";
     public final static String WAY_ID = "id";
+    public final static String WAY_ID_EX = "wayID";
     public final static String WAY_NODE = "nd";
     public final static String WAY_REF = "ref";
     public final static String WAY_TAG = "tag";
     public final static String WAY_MAXSPEED = "maxspeed";
     public final static String WAY_HIGHWAY = "highway";
+    public final static String WAY_HIGHWAY_EX = "highwayWay";
     public final static String WAY_MOTORWAY = "motorway";
     public final static String WAY_MOTORWAY_LINK = "motorway_link";
 
