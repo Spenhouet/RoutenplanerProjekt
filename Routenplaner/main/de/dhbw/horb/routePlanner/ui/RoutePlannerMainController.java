@@ -270,6 +270,9 @@ public class RoutePlannerMainController {
 	String completeLink = Constants.LINK_COMPLETELINK;
 	String result_ways;
 
+	if (ways == null || ways.isEmpty())
+	    return null;
+
 	for (String string : ways) {
 	    completeLink += "way(" + string + ");";
 	}

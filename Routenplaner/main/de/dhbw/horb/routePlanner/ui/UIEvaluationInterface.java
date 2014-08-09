@@ -91,7 +91,8 @@ public class UIEvaluationInterface {
 	System.out.println("Nach: " + route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODENAME)
 		+ " mit ID: " + destinationNodeID);
 	System.out.println(f.format(distance) + " km");
-	Double m = SupportMethods.secondsToMinutes(duration);
+	Long ms = SupportMethods.millisecondsToSeconds(duration).longValue();
+	Double m = SupportMethods.secondsToMinutes(ms.doubleValue());
 	int hours = (int) Math.floor(m / 60.0);
 	int minutes = (int) Math.floor(m % 60.0);
 	int seconds = (int) Math.floor(SupportMethods.minutesToSeconds(m % 1));
