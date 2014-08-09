@@ -1,6 +1,9 @@
 package de.dhbw.horb.routePlanner.ui;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +11,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import de.dhbw.horb.routePlanner.data.StAXNodeParser;
+
+import javax.xml.stream.XMLStreamException;
+
+import de.dhbw.horb.routePlanner.SupportMethods;
+import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
@@ -17,9 +24,17 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     private ObservableList<String> data; // DELETE Robin: wenn nicht gebraucht
     private boolean moveCaretToPos = false;
     private int caretPos;
+    private Map<String, List<String>> nodes = null;
 
     public AutoCompleteComboBoxListener(final ComboBox<String> comboBox) {
 	this.comboBox = comboBox;
+
+	try {
+	    nodes = StAXMapGraphDataParser.getNodeXMLMap();
+	} catch (FileNotFoundException | XMLStreamException e) {
+	    e.printStackTrace();
+	}
+
 	sb = new StringBuilder();
 	data = comboBox.getItems();
 
@@ -63,10 +78,27 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
 	ObservableList<String> list = FXCollections.observableArrayList();
 
-	List<String> names;
 	String input = AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase();
+	List<String> names = new ArrayList<String>();
 
-	names = StAXNodeParser.getStAXNodeParser().containsName(input);
+	if (nodes == null)
+	    return;
+
+	for (Map.Entry<String, List<String>> entry : nodes.entrySet()) {
+	    String key = entry.getKey();
+	    if (key == null)
+		continue;
+
+	    if (SupportMethods.isNumeric(key))
+		continue;
+
+	    if (key.toLowerCase().contains(input.toLowerCase()))
+		names.add(key);
+	}
+
+	if (names != null) {
+	    names = SupportMethods.sortListCompairedToEquality(names, input);
+	}
 
 	if (names == null)
 	    return;

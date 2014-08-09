@@ -113,8 +113,7 @@ public class RoutePlannerMainApp extends Application {
 			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
-				JDomGraphDataCreator dom = new JDomGraphDataCreator();
-				dom.createNewXMLFiles();
+				JDomGraphDataCreator.createNodeXML();
 			    } catch (Exception e) {
 				updateMessage(Constants.STARTUP_ERROR_XML_NODES);
 				this.cancel();
@@ -134,8 +133,7 @@ public class RoutePlannerMainApp extends Application {
 			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
-				JDomGraphDataCreator dom = new JDomGraphDataCreator();
-				dom.createNewXMLFiles();
+				JDomGraphDataCreator.createRouteXML();
 			    } catch (Exception e) {
 				updateMessage(Constants.STARTUP_ERROR_XML_ROUTES);
 				this.cancel();
