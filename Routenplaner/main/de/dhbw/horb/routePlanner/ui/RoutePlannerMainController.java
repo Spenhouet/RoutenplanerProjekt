@@ -1,7 +1,6 @@
 package de.dhbw.horb.routePlanner.ui;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.LinkedList;
 
 import javafx.beans.value.ChangeListener;
@@ -33,9 +32,7 @@ public class RoutePlannerMainController {
 
     // Reference to the main application.
     private RoutePlannerMainApp routePlannerMainApp;
-    private WebEngine webEngine;
-
-    public String linkStart = Constants.LINK_LINKSTART;
+    private WebEngine webEngine;;
     public String linkEnd = Constants.LINK_LINKEND;
     public String wayString = null;
     public String nodeString = null;
@@ -330,7 +327,7 @@ public class RoutePlannerMainController {
 	    completeLink += "way(" + string + ");";
 	}
 
-	result_ways = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
+	result_ways = completeLink + linkEnd;
 
 	return result_ways;
 
@@ -352,7 +349,7 @@ public class RoutePlannerMainController {
 	    completeLink += "node(" + string + ");";
 	}
 
-	result_nodes = linkStart + URLEncoder.encode(completeLink, "UTF-8") + linkEnd;
+	result_nodes = completeLink + linkEnd;
 
 	return result_nodes;
 

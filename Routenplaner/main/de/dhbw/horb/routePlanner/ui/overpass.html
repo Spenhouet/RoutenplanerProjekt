@@ -92,10 +92,8 @@
           };
       }
 
-      function init(data_url, data_url2){
-	  
-	  setStatusText("blablabla");
-	  
+      function init(ways, nodes){
+	  	  
           map = new OpenLayers.Map ("map", {
           controls:[
               new OpenLayers.Control.Navigation(),
@@ -130,8 +128,10 @@
           layer = new OpenLayers.Layer.Vector("Polygon", {
               strategies: [new OpenLayers.Strategy.Fixed()],
               protocol: new OpenLayers.Protocol.HTTP({
-                  url: data_url,
-                  format: osm_format
+                  url: 'http://overpass-api.de/api/interpreter',
+                  format: osm_format,
+				  readWithPOST: true,
+				  params: {data: ways}
               }),
               styleMap: styleMap,
               projection: new OpenLayers.Projection("EPSG:4326")
@@ -149,11 +149,13 @@
               fillOpacity: 0.5
           });
 		  
-		  layer2 = new OpenLayers.Layer.Vector("Polygon", {
+		  layer2 = new OpenLayers.Layer.Vector("Polygon2", {
               strategies: [new OpenLayers.Strategy.Fixed()],
               protocol: new OpenLayers.Protocol.HTTP({
-                  url: data_url2,
-                  format: osm_format
+                  url: 'http://overpass-api.de/api/interpreter',
+                  format: osm_format,
+				  readWithPOST: true,
+				  params: {data: nodes}
               }),
               styleMap: styleMap2,
               projection: new OpenLayers.Projection("EPSG:4326")

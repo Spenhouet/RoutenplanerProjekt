@@ -5,9 +5,8 @@ public interface Constants {
     public final static String FXML_ROOT = "RoutePlannerRoot.fxml";
     public final static String FXML_MAIN = "RoutePlannerMain.fxml";
 
-    public final static String LINK_LINKSTART = "http://overpass-api.de/api/interpreter?data=";
     public final static String LINK_COMPLETELINK = "((";
-    public final static String LINK_LINKEND = "%29%3B%3E%3B%29%3Bout%20body%3B%0A";
+    public final static String LINK_LINKEND = ");>;);out body;";
     public final static String LINK_LINKTARGET = "&target=ol_fixed";
 
     public final static String OVERPASS_API = "http://www.overpass-api.de/api/interpreter";
