@@ -87,7 +87,6 @@ public class JDomGraphDataCreator {
 
 	nodes = StAXMapGraphDataParser.getNodeMap();
 	ways = StAXMapGraphDataParser.getWayMap();
-	history = new HashMap<String, String>();
 	buildUpCache();
 
 	Map<String, List<String>> nodesXML = StAXMapGraphDataParser.getNodeXMLMap();
@@ -100,6 +99,7 @@ public class JDomGraphDataCreator {
 		    continue;
 		for (String wayID : waysCont) {
 		    List<Map<String, String>> route = new ArrayList<Map<String, String>>();
+		    history = new HashMap<String, String>();
 		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
@@ -171,7 +171,7 @@ public class JDomGraphDataCreator {
 	    return;
 	} else if (waysContain.size() > 1) {
 
-	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
+	    //	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
 	}
 	for (String wayID : waysContain) {
 	    Map<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
