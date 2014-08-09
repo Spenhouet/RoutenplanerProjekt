@@ -86,7 +86,7 @@ public class JDomGraphDataCreator {
 
 	nodes = StAXMapGraphDataParser.getNodeMap();
 	ways = StAXMapGraphDataParser.getWayMap();
-	//	history = new HashMap<String, String>();
+	history = new HashMap<String, String>();
 	buildUpCache();
 
 	Map<String, List<String>> nodesXML = StAXMapGraphDataParser.getNodeXMLMap();
@@ -102,9 +102,10 @@ public class JDomGraphDataCreator {
 		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
-		    //		    history.clear();
+
 		    route.add(allInfos);
 		    recursRoute(route);
+		    route.remove(allInfos);
 		}
 	    }
 	}
@@ -149,8 +150,8 @@ public class JDomGraphDataCreator {
 	    return;
 
 	String nextNodeID = nextNode.get(Constants.NODE_ID_EX);
-	//	if (history.containsKey(nextNodeID))
-	//	    return;
+	if (history.containsKey(nextNodeID))
+	    return;
 
 	if (Constants.NODE_MOTORWAY_JUNCTION.equals(nextNode.get(Constants.NODE_HIGHWAY_EX))) {
 	    String departureNodeID = route.get(0).get(Constants.NODE_ID_EX);
@@ -165,7 +166,7 @@ public class JDomGraphDataCreator {
 	    return;
 	}
 
-	//	history.put(nextNodeID, null);
+	history.put(nextNodeID, null);
 	List<String> waysContain = getWaysContainingID(nextNodeID);
 	if (waysContain == null || waysContain.isEmpty()) {
 	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
