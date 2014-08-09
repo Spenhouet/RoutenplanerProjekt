@@ -92,7 +92,7 @@
           };
       }
 
-      function init(ways, nodes){
+      function init(){
 	  	  
           map = new OpenLayers.Map ("map", {
           controls:[
@@ -114,63 +114,43 @@
           var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 
           map.setCenter (lonLat, zoom);
-
+		
+	  }
+		
+      function add_layer(name, params, color){
+		  
           //Initialise the vector layer using OpenLayers.Format.OSM -> layer
           var styleMap = new OpenLayers.StyleMap({
-              strokeColor: "blue",
+              strokeColor: color,
               strokeOpacity: 0.5,
               strokeWidth: 10,
               pointRadius: 10,
-              fillColor: "blue",
+              fillColor: color,
               fillOpacity: 0.25
           });
-
-          layer = new OpenLayers.Layer.Vector("Polygon", {
+		  
+			layer = new OpenLayers.Layer.Vector(name, {
               strategies: [new OpenLayers.Strategy.Fixed()],
               protocol: new OpenLayers.Protocol.HTTP({
                   url: 'http://overpass-api.de/api/interpreter',
                   format: osm_format,
 				  readWithPOST: true,
-				  params: {data: ways}
+				  params: {data: params}
               }),
               styleMap: styleMap,
               projection: new OpenLayers.Projection("EPSG:4326")
           });
-
+		  
           layer.events.register("featuresadded", layer, make_features_added_closure(map, layer));
-
-		  //Initialise the vector layer using OpenLayers.Format.OSM -> layer2
-          var styleMap2 = new OpenLayers.StyleMap({
-              strokeColor: "red",
-              strokeOpacity: 0.75,
-              strokeWidth: 6,
-              pointRadius: 10,
-              fillColor: "red",
-              fillOpacity: 0.5
-          });
 		  
-		  layer2 = new OpenLayers.Layer.Vector("Polygon2", {
-              strategies: [new OpenLayers.Strategy.Fixed()],
-              protocol: new OpenLayers.Protocol.HTTP({
-                  url: 'http://overpass-api.de/api/interpreter',
-                  format: osm_format,
-				  readWithPOST: true,
-				  params: {data: nodes}
-              }),
-              styleMap: styleMap2,
-              projection: new OpenLayers.Projection("EPSG:4326")
-          });
-
-          layer2.events.register("featuresadded", layer, make_features_added_closure(map, layer));
-
-		  
-          map.addLayers([layer,layer2]);
-          setStatusText("Suche ...");
+          map.addLayer(layer);
+		  		 
       }
+	  
   </script>
 </head>
 <body>
-  <div id="statusline" style="font-size:24pt; font-weight:bold; font-family:sans-serif; display: none;">No status set yet.</div>
+  <div id="statusline" style="font-size:24pt; font-weight:bold; font-family:sans-serif;display: none;">No status set yet.</div>
   <div id="map" class="smallmap"></div>
 
 </body>

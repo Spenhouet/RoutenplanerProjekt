@@ -245,12 +245,14 @@ public class RoutePlannerMainController {
 		    LinkedList<String> nodes = new LinkedList<>();
 		    nodes.add("30898199");
 		    nodes.add("30899103");
-		    generateLinkQueries(UIEvaluationInterface.allWayIDs, nodes);
+		    //generateLinkQueries(UIEvaluationInterface.allWayIDs, nodes);
 		    //DEBUG:
 		    //System.out.println("Ways: " + wayString);
 		    //System.out.println("Nodes: " + nodeString);
 
-		    webEngine.executeScript("init(\"" + wayString + "\",\"" + nodeString + "\")");
+		    webEngine.executeScript("init()");
+		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", "blue");
+		    generateLinkQuery(nodes, "node", "nodes", "red");
 
 		    //TODO Liste aufbauen
 		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
@@ -295,64 +297,53 @@ public class RoutePlannerMainController {
      * @param ways LinkedList containig all wayIDs
      * @param nodes LinkedList containing all nodeIDs
      */
-    public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
-	try {
-	    wayString = generateLinkQuery_ways(ways);
-	    System.out.println(wayString);
-	} catch (UnsupportedEncodingException e) {
-	    e.printStackTrace();
-	}
-	try {
-	    String nodeString = generateLinkQuery_nodes(nodes);
-	    System.out.println(nodeString);
-	} catch (UnsupportedEncodingException e) {
-	    e.printStackTrace();
-	}
-    }
+    //    public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
+    //	try {
+    //	    wayString = generateLinkQuery_ways(ways);
+    //	    System.out.println(wayString);
+    //	} catch (UnsupportedEncodingException e) {
+    //	    e.printStackTrace();
+    //	}
+    //	try {
+    //	    String nodeString = generateLinkQuery_nodes(nodes);
+    //	    System.out.println(nodeString);
+    //	} catch (UnsupportedEncodingException e) {
+    //	    e.printStackTrace();
+    //	}
+    //    }
 
     /**
      * 
      * @return Abfrage-Query Ways
      * @throws UnsupportedEncodingException
      */
-    private String generateLinkQuery_ways(LinkedList<String> ways) throws UnsupportedEncodingException {
+    private void generateLinkQuery(LinkedList<String> list, String method, String name, String color) {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
-	String result_ways;
 
-	if (ways == null || ways.isEmpty())
-	    return null;
+	if (list == null || list.isEmpty()) {
 
-	for (String string : ways) {
-	    completeLink += "way(" + string + ");";
+	} else {
+
+	    int x = 0;
+	    for (String string : list) {
+		completeLink += method + "(" + string + ");";
+		x++;
+		if (x > 99) {
+		    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '" + color
+			    + "')");
+		    System.out.println("regulär: " + completeLink + linkEnd);
+		    x = 0;
+		    completeLink = Constants.LINK_COMPLETELINK;
+		}
+	    }
+
+	    if (completeLink != Constants.LINK_COMPLETELINK) {
+		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '" + color + "')");
+		System.out.println("nicht leer: " + completeLink + linkEnd);
+	    }
+
 	}
-
-	result_ways = completeLink + linkEnd;
-
-	return result_ways;
-
-    }
-
-    /**
-     * 
-     * @return Abfrage-Query Nodes
-     * @throws UnsupportedEncodingException
-     */
-    private String generateLinkQuery_nodes(LinkedList<String> nodes) throws UnsupportedEncodingException {
-
-	String completeLink = Constants.LINK_COMPLETELINK;
-	String result_nodes;
-
-	completeLink = Constants.LINK_COMPLETELINK;
-
-	for (String string : nodes) {
-	    completeLink += "node(" + string + ");";
-	}
-
-	result_nodes = completeLink + linkEnd;
-
-	return result_nodes;
-
     }
 
     /**
