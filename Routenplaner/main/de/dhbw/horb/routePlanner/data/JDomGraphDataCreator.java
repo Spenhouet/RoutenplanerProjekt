@@ -302,6 +302,8 @@ public class JDomGraphDataCreator {
 
 	rootNewRouteEl.addContent(newRoute);
 
-	outp.output(xmlDocRoutes, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)));
+	FileOutputStream outFile = new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
+	outp.output(xmlDocRoutes, outFile);
+	outFile.close();
     }
 }
