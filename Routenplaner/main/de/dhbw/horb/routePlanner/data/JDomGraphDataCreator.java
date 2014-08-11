@@ -90,8 +90,6 @@ public class JDomGraphDataCreator {
 	ways = StAXMapGraphDataParser.getWayMap();
 	buildUpCache();
 
-	history = new HashMap<String, String>();
-
 	Map<String, List<String>> nodesXML = StAXMapGraphDataParser.getNodeXMLMap();
 	for (Map.Entry<String, List<String>> entry : nodesXML.entrySet()) {
 	    for (String nodeID : entry.getValue()) {
@@ -102,13 +100,14 @@ public class JDomGraphDataCreator {
 		    continue;
 		for (String wayID : waysCont) {
 		    List<Map<String, String>> route = new ArrayList<Map<String, String>>();
-
+		    List<String> idHistory = new ArrayList<String>();
 		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
 
 		    route.add(allInfos);
-		    recursRoute(route);
+		    idHistory.add(nodeID);
+		    recursRoute(route, idHistory);
 		}
 	    }
 	}
@@ -142,8 +141,9 @@ public class JDomGraphDataCreator {
 
     }
 
-    private static void recursRoute(List<Map<String, String>> route) throws FileNotFoundException, IOException {
-	if (route == null)
+    private static void recursRoute(List<Map<String, String>> route, List<String> idHistory)
+	    throws FileNotFoundException, IOException {
+	if (route == null || idHistory == null)
 	    return;
 
 	Map<String, String> nextNode = getNextNode(route.get(route.size() - 1));
@@ -151,41 +151,37 @@ public class JDomGraphDataCreator {
 	    return;
 
 	String nextNodeID = nextNode.get(Constants.NODE_ID_EX);
-	if (history.containsKey(nextNodeID))
+
+	if (idHistory.contains(nextNodeID))
 	    return;
 
 	if (Constants.NODE_MOTORWAY_JUNCTION.equals(nextNode.get(Constants.NODE_HIGHWAY_EX))) {
 	    String departureNodeID = route.get(0).get(Constants.NODE_ID_EX);
-	    String destinationNodeID = nextNode.get(Constants.NODE_ID_EX);
+	    String destinationNodeID = nextNodeID;
 
 	    if (departureNodeID == null || destinationNodeID == null || departureNodeID.equals(destinationNodeID))
 		return;
 
 	    route.add(nextNode);
 	    saveRoute(route);
-	    //	    history.clear();
-	    //	    history = new HashMap<String, String>();
 	    route.remove(nextNode);
 	    return;
 	}
 
 	List<String> waysContain = getWaysContainingID(nextNodeID);
 
-	history.put(nextNodeID, null);
-
 	if (waysContain == null || waysContain.isEmpty()) {
 	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
 	    return;
-	} else if (waysContain.size() > 1) {
-
-	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
 	}
 	for (String wayID : waysContain) {
 	    Map<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
 	    if (nextNodeAllInfos == null)
 		continue;
 	    route.add(nextNodeAllInfos);
-	    recursRoute(route);
+	    idHistory.add(nextNodeID);
+	    recursRoute(route, idHistory);
+	    idHistory.remove(nextNodeID);
 	    route.remove(nextNodeAllInfos);
 	}
     }
