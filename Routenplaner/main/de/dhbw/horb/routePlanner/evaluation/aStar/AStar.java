@@ -43,7 +43,6 @@ public class AStar {
 	    routes = StAXMapGraphDataParser.getRouteXMLMap();
 	    nodeMap = StAXMapGraphDataParser.getNodeXMLMap();
 	} catch (FileNotFoundException | XMLStreamException e) {
-	    // TODO Automatisch generierter Erfassungsblock
 	    e.printStackTrace();
 	}
 
@@ -52,6 +51,7 @@ public class AStar {
     }
 
     public void calculateWay(String calculateMethod) {
+	//IMPROVE Sebastian: auf NodeIDs umstellen
 	this.calculateMethod = calculateMethod;
 	closedEdgesPredecessor.put(departure, departure);
 	closedEdgesRoute.put(departure, null);

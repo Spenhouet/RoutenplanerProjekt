@@ -16,6 +16,25 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXMapGraphDataParser {
 
+    /**
+     * 
+     * @return Eine Map mit allen "nodes" aus graphData*.xml
+     * 
+     * <ul>
+     * <li><b>Key</b>: Node ID 
+     * <li><b>Value</b>: Eine weitere Map mit allen weiteren Infos:
+     * </ul>
+     * 
+     * <ul>
+     * <li><b>Key</b>: Constants.NODE_LATITUDE <b>Value</b>: latitude
+     * <li><b>Key</b>: Constants.NODE_LONGITUDE <b>Value</b>: longitude
+     * <li><b>Key</b>: Constants.NODE_HIGHWAY <b>Value</b>: highway Art (motorway_junktion)
+     * <li><b>Key</b>: Constants.NODE_NAME <b>Value</b>: Name des Knotens
+     * </ul>
+     * 
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
     public static Map<String, Map<String, String>> getNodeMap() throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -83,6 +102,25 @@ public class StAXMapGraphDataParser {
 	return nodes;
     }
 
+    /**
+     * 
+     * @return Eine Map mit allen "ways" aus graphData*.xml
+     *  
+     * <ul>
+     * <li><b>Key</b>: Way ID
+     * <li><b>Value</b>: Alle weiteren Information des Wegs in einer weiteren Map:
+     * </ul>
+     * 
+     * <ul>
+     * <li><b>Key</b>: Constants.WAY_HIGHWAY <b>Value</b>: Weg Art (motorway / motorway_link)
+     * <li><b>Key</b>: Constants.WAY_MAXSPEED <b>Value</b>: Maximalgeschwindigkeit in km/h (null, none, z.B.: "120")
+     * <li><b>Key</b>: Constants.WAY_REF <b>Value</b>: Autobahnnummer (A8)
+     * <li><b>Key</b>: Constants.WAY_NODE <b>Value</b>: Kommastring mit allen Knoten IDs die auf dem Weg liegen in richtiger Reihenfolge.
+     * </ul>
+     * 
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
     public static Map<String, Map<String, String>> getWayMap() throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -157,11 +195,28 @@ public class StAXMapGraphDataParser {
 	return ways;
     }
 
+    /**
+     * 
+     * @return Eine Map mit allen Beziehungen zwischen Kreuzungsnamen und den Node IDs.
+     * <p>
+     * Von Kreuzungsnamen zu Knoten IDs
+     * <ul>
+     * <li><b>Key</b>: Kreuzungsname 
+     * <li><b>Value</b>: Liste alle zugehörigen Knoten IDs
+     * </ul>
+     * <p>
+     * Von Knoten ID zu Kreuzungsname
+     * <ul>
+     * <li><b>Key</b>: Knoten ID
+     * <li><b>Value</b>: Liste mit einem Element: Dem zugehörigen Kreuzungsnamen
+     * </ul>
+     * 
+     * @throws XMLStreamException
+     * @throws FileNotFoundException
+     */
     public static Map<String, List<String>> getNodeXMLMap() throws XMLStreamException, FileNotFoundException {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	GraphDataStreamReader nodeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-	//SupportMethods.fileManager.getNodesFD())));
-
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES))));
 
 	Map<String, List<String>> nodeMap = new HashMap<String, List<String>>();
@@ -189,14 +244,35 @@ public class StAXMapGraphDataParser {
 	return nodeMap;
     }
 
+    /**
+     * 
+     * @return Eine Map mit allen Infos zu einer Route.
+     * 
+     * <ul>
+     * <li><b>Key</b>: Abfahrts Knoten ID
+     * <li><b>Value</b>: Alle weiteren Information der Route in einer Map.
+     * </ul>
+     * 
+     * <ul>
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DEPARTURENODEID <b>Value</b>: Abfahrt Knoten ID
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DEPARTURENODENAME <b>Value</b>: Abfahrt Knoten Name
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DESTINATIONNODEID <b>Value</b>: Ankunft Knoten ID
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DESTINATIONNODENAME <b>Value</b>: Ankunft Knoten Name
+     * <li><b>Key</b>: Constants.NEW_ROUTE_NUMBER <b>Value</b>: Autobahnnummer (A8)
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DISTANCE <b>Value</b>: Strecke in km
+     * <li><b>Key</b>: Constants.NEW_ROUTE_DURATION <b>Value</b>: Dauer in Millisekunden
+     * <li><b>Key</b>: Constants.NEW_ROUTE_WAYIDS <b>Value</b>: Alle auf der Strecke liegenden Weg IDs
+     * </ul>
+     * 
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
     public static Map<String, Map<String, String>> getRouteXMLMap() throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 
 	GraphDataStreamReader routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES))));
-
-	//TODO FileInputStream von XMLFileManager abhängig machen
 
 	Map<String, Map<String, String>> routes = new HashMap<String, Map<String, String>>();
 

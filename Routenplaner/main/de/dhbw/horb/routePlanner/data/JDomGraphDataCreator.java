@@ -21,17 +21,6 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class JDomGraphDataCreator {
 
-    public static void main(String[] args) {
-
-	try {
-	    createRouteXML();
-	} catch (XMLStreamException | IOException e) {
-	    // TODO Automatisch generierter Erfassungsblock
-	    e.printStackTrace();
-	}
-
-    }
-
     public static void createNodeXML() throws XMLStreamException, IOException {
 
 	Element nodes = new Element(Constants.NEW_NODE_S);
@@ -66,14 +55,14 @@ public class JDomGraphDataCreator {
 	    rootNewNodes.addContent(newNode);
 	}
 
-	XMLOutputter outp = new XMLOutputter();
+	outp = new XMLOutputter();
 	outp.setFormat(Format.getPrettyFormat());
 	outp.output(xmlDocNodes, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)));
+	outp = null;
     }
 
     private static Map<String, Map<String, String>> nodes;
     private static Map<String, Map<String, String>> ways;
-    private static Map<String, String> history;
     private static Map<String, List<String>> nodeWaysLink;
     private static XMLOutputter outp;
     private static Element routesEl;
@@ -111,9 +100,11 @@ public class JDomGraphDataCreator {
 		}
 	    }
 	}
+	outp = null;
     }
 
     private static void buildUpCache() {
+	//IMPROVE Sebastian: Performance verbessern
 
 	nodeWaysLink = new HashMap<String, List<String>>();
 
@@ -138,11 +129,11 @@ public class JDomGraphDataCreator {
 		}
 	    }
 	}
-
     }
 
     private static void recursRoute(List<Map<String, String>> route, List<String> idHistory)
 	    throws FileNotFoundException, IOException {
+	// INVESTIGATE Sebastian: Fehlende Strecken (Löcher?)
 	if (route == null || idHistory == null)
 	    return;
 
@@ -171,7 +162,7 @@ public class JDomGraphDataCreator {
 	List<String> waysContain = getWaysContainingID(nextNodeID);
 
 	if (waysContain == null || waysContain.isEmpty()) {
-	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
+	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE Sebastian: Ist das überhaupt ein Fehler?
 	    return;
 	}
 	for (String wayID : waysContain) {
@@ -217,23 +208,6 @@ public class JDomGraphDataCreator {
     private static List<String> getWaysContainingID(String nodeID) {
 	if (nodeID == null)
 	    return null;
-	//	List<String> wayIDs = new ArrayList<String>();
-	//	for (Map.Entry<String, Map<String, String>> entry : ways.entrySet()) {
-	//	    String wayID = entry.getKey();
-	//	    Map<String, String> wayInfos = entry.getValue();
-	//
-	//	    if (entry == null || wayID == null || wayInfos == null)
-	//		continue;
-	//
-	//	    List<String> nds = SupportMethods.commaStrToStrList(wayInfos.get(Constants.WAY_NODE));
-	//
-	//	    if (nds == null || nds.isEmpty() || !nds.contains(nodeID) || nds.indexOf(nodeID) == (nds.size() - 1))
-	//		continue;
-	//
-	//	    wayIDs.add(wayID);
-	//	}
-	//	return wayIDs;
-
 	return nodeWaysLink.get(nodeID);
     }
 
