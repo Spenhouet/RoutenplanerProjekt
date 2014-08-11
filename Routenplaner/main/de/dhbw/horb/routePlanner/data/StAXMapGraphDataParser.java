@@ -16,6 +16,19 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class StAXMapGraphDataParser {
 
+    /**
+     * 
+     * @return Eine Map mit allen "nodes" aus graphData*.xml
+     * Key: Node ID 
+     * Value: Eine weitere Map mit allen weiteren Infos. 
+     * - Key: Constants.NODE_LATITUDE Value: latitude
+     * - Key: Constants.NODE_LONGITUDE Value: longitude
+     * - Key: Constants.NODE_HIGHWAY Value: highway Art (motorway_junktion)
+     * - Key: Constants.NODE_NAME Value: Name des Knotens
+     * 
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
     public static Map<String, Map<String, String>> getNodeMap() throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -83,6 +96,19 @@ public class StAXMapGraphDataParser {
 	return nodes;
     }
 
+    /**
+     * 
+     * @return Eine Map mit allen "ways" aus graphData*.xml
+     * Key: Way ID
+     * Value: Alle weiteren Information des Wegs in einer weiteren Map:
+     * - Key: Constants.WAY_HIGHWAY
+     * - Key: Constants.WAY_MAXSPEED
+     * - Key: Constants.WAY_REF
+     * - Key: Constants.WAY_NODE
+     * 
+     * @throws FileNotFoundException
+     * @throws XMLStreamException
+     */
     public static Map<String, Map<String, String>> getWayMap() throws FileNotFoundException, XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -160,8 +186,6 @@ public class StAXMapGraphDataParser {
     public static Map<String, List<String>> getNodeXMLMap() throws XMLStreamException, FileNotFoundException {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	GraphDataStreamReader nodeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-	//SupportMethods.fileManager.getNodesFD())));
-
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES))));
 
 	Map<String, List<String>> nodeMap = new HashMap<String, List<String>>();
@@ -195,8 +219,6 @@ public class StAXMapGraphDataParser {
 
 	GraphDataStreamReader routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES))));
-
-	//TODO FileInputStream von XMLFileManager abhängig machen
 
 	Map<String, Map<String, String>> routes = new HashMap<String, Map<String, String>>();
 
