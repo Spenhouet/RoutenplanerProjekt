@@ -55,9 +55,10 @@ public class JDomGraphDataCreator {
 	    rootNewNodes.addContent(newNode);
 	}
 
-	XMLOutputter outp = new XMLOutputter();
+	outp = new XMLOutputter();
 	outp.setFormat(Format.getPrettyFormat());
 	outp.output(xmlDocNodes, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)));
+	outp = null;
     }
 
     private static Map<String, Map<String, String>> nodes;
@@ -99,6 +100,7 @@ public class JDomGraphDataCreator {
 		}
 	    }
 	}
+	outp = null;
     }
 
     private static void buildUpCache() {
@@ -127,7 +129,6 @@ public class JDomGraphDataCreator {
 		}
 	    }
 	}
-
     }
 
     private static void recursRoute(List<Map<String, String>> route, List<String> idHistory)
