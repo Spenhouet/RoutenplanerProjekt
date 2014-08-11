@@ -288,11 +288,11 @@ public class RoutePlannerMainApp extends Application {
 	    RoutePlannerMainController controller = loader.getController();
 	    controller.setRoutePlannerMainApp(this);
 
-	    try {
-		fileManager.lockAllXML();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    //	    try {
+	    //		fileManager.lockAllXML();
+	    //	    } catch (IOException e) {
+	    //		e.printStackTrace();
+	    //	    }
 
 	} catch (IOException e) {
 	    e.printStackTrace();
