@@ -32,7 +32,7 @@ public class RoutePlannerMainApp extends Application {
     private Task<Integer> task;
     private StartupMainController startupController;
     public XMLFileManager fileManager;
-    private boolean allXMLsExist;
+    public boolean allXMLsExist;
 
     public RoutePlannerMainApp() {
 

@@ -87,12 +87,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <CheckBox fx:id="showWaysCheckBox" layoutX="68.0" layoutY="50.0" mnemonicParsing="false" text="Ways anzeigen in:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="50.0" />
-                              <CheckBox fx:id="showNodesCheckBox" layoutX="68.0" layoutY="81.0" mnemonicParsing="false" text="Nodes anzeigen in:" AnchorPane.leftAnchor="25.0" />
-                              <ColorPicker layoutX="170.0" layoutY="46.0" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="46.0" />
-                              <ColorPicker layoutX="200.0" layoutY="77.0" AnchorPane.leftAnchor="170.0" />
+                              <ColorPicker fx:id="waysColorPicker" layoutX="170.0" layoutY="46.0" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="46.0" />
+                              <ColorPicker fx:id="nodesColorPicker" layoutX="200.0" layoutY="77.0" AnchorPane.leftAnchor="170.0" />
                               <ComboBox fx:id="countryComboBox" layoutX="71.0" layoutY="164.0" prefWidth="180.0" promptText="Bitte ein Land auswählen" />
                               <Label layoutX="25.0" layoutY="168.0" text="Land:" />
+                              <Label layoutX="28.0" layoutY="50.0" text="Farbe der Wege:" />
+                              <Label layoutX="28.0" layoutY="81.0" text="Farbe der Knoten:" />
                            </children>
                         </AnchorPane>
                      </content>

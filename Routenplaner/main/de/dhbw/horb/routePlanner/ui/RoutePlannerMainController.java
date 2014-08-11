@@ -7,9 +7,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -96,14 +98,20 @@ public class RoutePlannerMainController {
     @FXML
     private ListView<String> calculatedRouteListView;
 
-    @FXML
-    private CheckBox showWaysCheckBox;
-
-    @FXML
-    private CheckBox showNodesCheckBox;
+    //    @FXML
+    //    private CheckBox showWaysCheckBox;
+    //
+    //    @FXML
+    //    private CheckBox showNodesCheckBox;
 
     @FXML
     private Button updateDataButton;
+
+    @FXML
+    private ColorPicker waysColorPicker;
+
+    @FXML
+    private ColorPicker nodesColorPicker;
 
     /**
      * The constructor. The constructor is called before the initialize()
@@ -244,26 +252,12 @@ public class RoutePlannerMainController {
 	default:
 	    break;
 	}
-	switch (SettingsManager.getValue(Constants.SETTINGS_SHOW_WAYS, "true")) {
-	case "true":
-	    showWaysCheckBox.setSelected(true);
-	    break;
-	case "false":
-	    showWaysCheckBox.setSelected(false);
-	    break;
-	default:
-	    break;
-	}
-	switch (SettingsManager.getValue(Constants.SETTINGS_SHOW_NODES, "true")) {
-	case "true":
-	    showNodesCheckBox.setSelected(true);
-	    break;
-	case "false":
-	    showNodesCheckBox.setSelected(false);
-	    break;
-	default:
-	    break;
-	}
+	Color farbe_ways = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_WAYS,
+		Constants.SETTINGS_COLOR_WAYS_DEFAULT));
+	waysColorPicker.setValue(farbe_ways);
+	Color farbe_nodes = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
+		Constants.SETTINGS_COLOR_NODES_DEFAULT));
+	nodesColorPicker.setValue(farbe_nodes);
 
 	webEngine = testWebView.getEngine();
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -280,8 +274,10 @@ public class RoutePlannerMainController {
 		    //System.out.println("Nodes: " + nodeString);
 
 		    webEngine.executeScript("init()");
-		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", "blue");
-		    generateLinkQuery(nodes, "node", "nodes", "red");
+		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
+			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
+		    generateLinkQuery(nodes, "node", "nodes", SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
+			    Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    //TODO Liste aufbauen
 		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
@@ -319,47 +315,48 @@ public class RoutePlannerMainController {
 		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, countryComboBox.getValue());
 	    }
 	});
-	showWaysCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-	    public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-		SettingsManager.saveSetting(Constants.SETTINGS_SHOW_WAYS, new_val.toString());
-		String visibility = null;
-		if (new_val == true) {
-		    visibility = "block";
-		} else {
-		    visibility = "none";
-		}
-		webEngine.executeScript("change_visibility('way', '" + visibility + "')");
+	waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	    public void handle(ActionEvent arg0) {
+		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_WAYS, waysColorPicker.getValue().toString());
 	    }
 	});
-	showNodesCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-	    public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-		SettingsManager.saveSetting(Constants.SETTINGS_SHOW_NODES, new_val.toString());
-		String visibility = null;
-		if (new_val == true) {
-		    visibility = "block";
-		} else {
-		    visibility = "none";
-		}
-		//webEngine.executeScript("change_visibility('node', '" + visibility + "')");
+	nodesColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	    public void handle(ActionEvent arg0) {
+		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES, nodesColorPicker.getValue().toString());
 	    }
 	});
+
     }
 
-    private void generateLinkQuery(LinkedList<String> list, String method, String name, String color) {
-
-	String completeLink = Constants.LINK_COMPLETELINK;
+    private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
 
 	if (list == null || list.isEmpty()) {
 
 	} else {
+
+	    long colorInt = Long.parseLong(colorString.substring(2, 8), 16);
+	    long r = (colorInt & 0xFF0000) >> 16;
+	    long g = (colorInt & 0xFF00) >> 8;
+	    long b = (colorInt & 0xFF);
+
+	    StringBuffer rgbColorString = new StringBuffer();
+	    rgbColorString.append("rgb(");
+	    rgbColorString.append(r);
+	    rgbColorString.append(",");
+	    rgbColorString.append(g);
+	    rgbColorString.append(",");
+	    rgbColorString.append(b);
+	    rgbColorString.append(")");
+
+	    String completeLink = Constants.LINK_COMPLETELINK;
 
 	    int x = 0;
 	    for (String string : list) {
 		completeLink += method + "(" + string + ");";
 		x++;
 		if (x > 99) {
-		    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '" + color
-			    + "')");
+		    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
+			    + rgbColorString + "')");
 		    System.out.println("regulär: " + completeLink + linkEnd);
 		    x = 0;
 		    completeLink = Constants.LINK_COMPLETELINK;
@@ -367,7 +364,8 @@ public class RoutePlannerMainController {
 	    }
 
 	    if (completeLink != Constants.LINK_COMPLETELINK) {
-		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '" + color + "')");
+		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
+			+ rgbColorString + "')");
 		System.out.println("nicht leer: " + completeLink + linkEnd);
 	    }
 
@@ -395,9 +393,8 @@ public class RoutePlannerMainController {
     @FXML
     void updateDataButtonClicked(ActionEvent event) {
 
-	//	Thread th = new Thread(RoutePlannerMainApp.task);
-	//	th.setDaemon(true);
-	//	th.start();
+	routePlannerMainApp.allXMLsExist = false;
+	routePlannerMainApp.executeStartupTask();
 
     }
 
