@@ -52,6 +52,7 @@ public interface Constants {
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
     public final static String NODE_ID_EX = "nodeID";
+    public final static String NODE_REF = "ref";
     public final static String NODE_LATITUDE = "lat";
     public final static String NODE_LONGITUDE = "lon";
     public final static String NODE_TAG = "tag";

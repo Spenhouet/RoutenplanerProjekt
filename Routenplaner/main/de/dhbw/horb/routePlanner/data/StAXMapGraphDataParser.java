@@ -38,6 +38,7 @@ public class StAXMapGraphDataParser {
 	    String lon = nodeSR.getAttributeValue(Constants.NODE_LONGITUDE);
 	    String highway = null;
 	    String name = null;
+	    String ref = null;
 
 	    Boolean run = true;
 	    do {
@@ -53,6 +54,9 @@ public class StAXMapGraphDataParser {
 		if (name == null)
 		    name = nodeSR.getAttributeKV(Constants.NODE_NAME);
 
+		if (ref == null)
+		    ref = nodeSR.getAttributeKV(Constants.NODE_REF);
+
 	    } while (run);
 
 	    if (id == null || lat == null || lon == null)
@@ -64,6 +68,11 @@ public class StAXMapGraphDataParser {
 	    pos.put(Constants.NODE_LONGITUDE, lon);
 	    if (highway != null && name != null) {
 		pos.put(Constants.NODE_HIGHWAY, highway);
+
+		if (ref != null) {
+		    name = name + " (" + ref + ")";
+		}
+
 		pos.put(Constants.NODE_NAME, name);
 	    }
 

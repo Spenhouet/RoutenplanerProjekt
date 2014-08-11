@@ -46,7 +46,8 @@ public class JDomGraphDataCreator {
 
 	    String highway = nodeMap.get(Constants.NODE_HIGHWAY);
 	    String name = nodeMap.get(Constants.NODE_NAME);
-	    if (highway != null && highway.equals(Constants.NODE_MOTORWAY_JUNCTION)) {
+
+	    if (name != null && highway != null && highway.equals(Constants.NODE_MOTORWAY_JUNCTION)) {
 		if (nm.containsKey(name)) {
 		    nm.get(name).add(nodeID);
 		} else {
@@ -73,6 +74,7 @@ public class JDomGraphDataCreator {
     private static Map<String, Map<String, String>> nodes;
     private static Map<String, Map<String, String>> ways;
     private static Map<String, String> history;
+    private static Map<String, List<String>> nodeWaysLink;
     private static XMLOutputter outp;
     private static Element routesEl;
     private static Document xmlDocRoutes;
@@ -86,7 +88,6 @@ public class JDomGraphDataCreator {
 
 	nodes = StAXMapGraphDataParser.getNodeMap();
 	ways = StAXMapGraphDataParser.getWayMap();
-	history = new HashMap<String, String>();
 	buildUpCache();
 
 	Map<String, List<String>> nodesXML = StAXMapGraphDataParser.getNodeXMLMap();
@@ -99,18 +100,18 @@ public class JDomGraphDataCreator {
 		    continue;
 		for (String wayID : waysCont) {
 		    List<Map<String, String>> route = new ArrayList<Map<String, String>>();
+		    List<String> idHistory = new ArrayList<String>();
 		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
 
 		    route.add(allInfos);
-		    recursRoute(route);
+		    idHistory.add(nodeID);
+		    recursRoute(route, idHistory);
 		}
 	    }
 	}
     }
-
-    private static Map<String, List<String>> nodeWaysLink;
 
     private static void buildUpCache() {
 
@@ -140,21 +141,23 @@ public class JDomGraphDataCreator {
 
     }
 
-    private static void recursRoute(List<Map<String, String>> route) throws FileNotFoundException, IOException {
-	if (route == null)
+    private static void recursRoute(List<Map<String, String>> route, List<String> idHistory)
+	    throws FileNotFoundException, IOException {
+	if (route == null || idHistory == null)
 	    return;
 
 	Map<String, String> nextNode = getNextNode(route.get(route.size() - 1));
-	if (nextNode == null)
+	if (nextNode == null || nextNode.isEmpty())
 	    return;
 
 	String nextNodeID = nextNode.get(Constants.NODE_ID_EX);
-	if (history.containsKey(nextNodeID))
+
+	if (idHistory.contains(nextNodeID))
 	    return;
 
 	if (Constants.NODE_MOTORWAY_JUNCTION.equals(nextNode.get(Constants.NODE_HIGHWAY_EX))) {
 	    String departureNodeID = route.get(0).get(Constants.NODE_ID_EX);
-	    String destinationNodeID = nextNode.get(Constants.NODE_ID_EX);
+	    String destinationNodeID = nextNodeID;
 
 	    if (departureNodeID == null || destinationNodeID == null || departureNodeID.equals(destinationNodeID))
 		return;
@@ -165,8 +168,8 @@ public class JDomGraphDataCreator {
 	    return;
 	}
 
-	history.put(nextNodeID, null);
 	List<String> waysContain = getWaysContainingID(nextNodeID);
+
 	if (waysContain == null || waysContain.isEmpty()) {
 	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
 	    return;
@@ -176,7 +179,9 @@ public class JDomGraphDataCreator {
 	    if (nextNodeAllInfos == null)
 		continue;
 	    route.add(nextNodeAllInfos);
-	    recursRoute(route);
+	    idHistory.add(nextNodeID);
+	    recursRoute(route, idHistory);
+	    idHistory.remove(nextNodeID);
 	    route.remove(nextNodeAllInfos);
 	}
     }
@@ -190,22 +195,22 @@ public class JDomGraphDataCreator {
     }
 
     private static Map<String, String> getAllInfos(String nodeID, String wayID) {
-	if (nodeID == null || wayID == null)
+	if (nodeID == null || wayID == null || nodeID.isEmpty() || wayID.isEmpty())
 	    return null;
-	Map<String, String> node = nodes.get(nodeID);
-	Map<String, String> way = ways.get(wayID);
+	Map<String, String> nodeInf = nodes.get(nodeID);
+	Map<String, String> wayInf = ways.get(wayID);
 
-	if (node == null || way == null)
+	if (nodeInf == null || wayInf == null || nodeInf.isEmpty() || wayInf.isEmpty())
 	    return null;
 
 	Map<String, String> allInfos = new HashMap<String, String>();
-	allInfos.putAll(node);
-	allInfos.putAll(way);
+	allInfos.putAll(nodeInf);
+	allInfos.putAll(wayInf);
 	allInfos.put(Constants.NODE_ID_EX, nodeID);
 	allInfos.put(Constants.WAY_ID_EX, wayID);
 	allInfos.remove(Constants.NODE_HIGHWAY);
-	allInfos.put(Constants.NODE_HIGHWAY_EX, node.get(Constants.NODE_HIGHWAY));
-	allInfos.put(Constants.WAY_HIGHWAY_EX, way.get(Constants.WAY_HIGHWAY));
+	allInfos.put(Constants.NODE_HIGHWAY_EX, nodeInf.get(Constants.NODE_HIGHWAY));
+	allInfos.put(Constants.WAY_HIGHWAY_EX, wayInf.get(Constants.WAY_HIGHWAY));
 	return allInfos;
     }
 
@@ -229,8 +234,7 @@ public class JDomGraphDataCreator {
 	//	}
 	//	return wayIDs;
 
-	List<String> r = nodeWaysLink.get(nodeID);
-	return r;
+	return nodeWaysLink.get(nodeID);
     }
 
     private static void saveRoute(List<Map<String, String>> route) throws FileNotFoundException, IOException {
