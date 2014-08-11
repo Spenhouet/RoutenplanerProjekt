@@ -31,11 +31,13 @@ public class RoutePlannerMainApp extends Application {
     private AnchorPane splashAnchor;
     private Task<Integer> task;
     private StartupMainController startupController;
-    private XMLFileManager fileManager;
+    public XMLFileManager fileManager;
+    private boolean allXMLsExist;
 
     public RoutePlannerMainApp() {
 
 	fileManager = new XMLFileManager();
+	//SupportMethods.fileManager = fileManager;
 
     }
 
@@ -88,7 +90,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 1:
-			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
+			if (allXMLsExist == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
 				String area = SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland");
@@ -110,7 +112,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 2:
-			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false) {
+			if (allXMLsExist == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
 				JDomGraphDataCreator.createNodeXML();
@@ -130,7 +132,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 3:
-			if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
+			if (allXMLsExist == false) {
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
 				JDomGraphDataCreator.createRouteXML();
@@ -242,11 +244,6 @@ public class RoutePlannerMainApp extends Application {
     */
     public void initRootLayout() {
 	try {
-	    //	    try {
-	    //		fileManager.lockAllXML();
-	    //	    } catch (IOException e) {
-	    //		e.printStackTrace();
-	    //	    }
 
 	    primaryStage = new Stage();
 	    primaryStage.setTitle("Routenplaner");
@@ -291,6 +288,12 @@ public class RoutePlannerMainApp extends Application {
 	    RoutePlannerMainController controller = loader.getController();
 	    controller.setRoutePlannerMainApp(this);
 
+	    try {
+		fileManager.lockAllXML();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -322,6 +325,17 @@ public class RoutePlannerMainApp extends Application {
 	    }
 	} catch (Exception e) {
 	    result = false;
+	}
+
+	allXMLsExist = true;
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
+	    allXMLsExist = false;
+	}
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false) {
+	    allXMLsExist = false;
+	}
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
+	    allXMLsExist = false;
 	}
 
 	return result;

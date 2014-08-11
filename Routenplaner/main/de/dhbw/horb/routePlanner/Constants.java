@@ -13,7 +13,7 @@ public interface Constants {
 
     public final static String USER_HOME = System.getProperty("user.home");
     public final static String PROGRAM_HOME = USER_HOME + System.getProperty("file.separator")
-	    + "DHBW-Routenplaner 2014";
+	    + "DHBW-Routenplaner-2014";
     public final static String XML_GRAPHDATA = PROGRAM_HOME + System.getProperty("file.separator") + "graphData.xml";
     public final static String XML_NODES = PROGRAM_HOME + System.getProperty("file.separator") + "nodes.xml";
     public final static String XML_ROUTES = PROGRAM_HOME + System.getProperty("file.separator") + "routes.xml";
@@ -46,6 +46,8 @@ public interface Constants {
     public final static String SETTINGS__DEFAULT_COUNTRY = "Deutschland";
     public final static String SETTINGS_EVALUATION_METHOD = "Evaluation_Method";
     public final static String SETTINGS_CALCULATION_METHOD = "Calculation_Method";
+    public final static String SETTINGS_SHOW_WAYS = "Show_Ways";
+    public final static String SETTINGS_SHOW_NODES = "Show_Nodes";
 
     public final static String NODE = "node";
     public final static String NODE_ID = "id";

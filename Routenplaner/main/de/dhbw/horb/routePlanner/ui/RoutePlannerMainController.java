@@ -1,6 +1,5 @@
 package de.dhbw.horb.routePlanner.ui;
 
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 import javafx.beans.value.ChangeListener;
@@ -10,6 +9,7 @@ import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -95,6 +95,15 @@ public class RoutePlannerMainController {
 
     @FXML
     private ListView<String> calculatedRouteListView;
+
+    @FXML
+    private CheckBox showWaysCheckBox;
+
+    @FXML
+    private CheckBox showNodesCheckBox;
+
+    @FXML
+    private Button updateDataButton;
 
     /**
      * The constructor. The constructor is called before the initialize()
@@ -235,6 +244,26 @@ public class RoutePlannerMainController {
 	default:
 	    break;
 	}
+	switch (SettingsManager.getValue(Constants.SETTINGS_SHOW_WAYS, "true")) {
+	case "true":
+	    showWaysCheckBox.setSelected(true);
+	    break;
+	case "false":
+	    showWaysCheckBox.setSelected(false);
+	    break;
+	default:
+	    break;
+	}
+	switch (SettingsManager.getValue(Constants.SETTINGS_SHOW_NODES, "true")) {
+	case "true":
+	    showNodesCheckBox.setSelected(true);
+	    break;
+	case "false":
+	    showNodesCheckBox.setSelected(false);
+	    break;
+	default:
+	    break;
+	}
 
 	webEngine = testWebView.getEngine();
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
@@ -290,33 +319,32 @@ public class RoutePlannerMainController {
 		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, countryComboBox.getValue());
 	    }
 	});
+	showWaysCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	    public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+		SettingsManager.saveSetting(Constants.SETTINGS_SHOW_WAYS, new_val.toString());
+		String visibility = null;
+		if (new_val == true) {
+		    visibility = "block";
+		} else {
+		    visibility = "none";
+		}
+		webEngine.executeScript("change_visibility('way', '" + visibility + "')");
+	    }
+	});
+	showNodesCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	    public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+		SettingsManager.saveSetting(Constants.SETTINGS_SHOW_NODES, new_val.toString());
+		String visibility = null;
+		if (new_val == true) {
+		    visibility = "block";
+		} else {
+		    visibility = "none";
+		}
+		//webEngine.executeScript("change_visibility('node', '" + visibility + "')");
+	    }
+	});
     }
 
-    /**
-     * Method to call generateLinkQuery_ways and generateLinkQuery_nodes
-     * @param ways LinkedList containig all wayIDs
-     * @param nodes LinkedList containing all nodeIDs
-     */
-    //    public void generateLinkQueries(LinkedList<String> ways, LinkedList<String> nodes) {
-    //	try {
-    //	    wayString = generateLinkQuery_ways(ways);
-    //	    System.out.println(wayString);
-    //	} catch (UnsupportedEncodingException e) {
-    //	    e.printStackTrace();
-    //	}
-    //	try {
-    //	    String nodeString = generateLinkQuery_nodes(nodes);
-    //	    System.out.println(nodeString);
-    //	} catch (UnsupportedEncodingException e) {
-    //	    e.printStackTrace();
-    //	}
-    //    }
-
-    /**
-     * 
-     * @return Abfrage-Query Ways
-     * @throws UnsupportedEncodingException
-     */
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String color) {
 
 	String completeLink = Constants.LINK_COMPLETELINK;
@@ -361,6 +389,15 @@ public class RoutePlannerMainController {
     public void enableCalculateRouteButton() {
 
 	calculateRouteButton.setDisable(false);
+
+    }
+
+    @FXML
+    void updateDataButtonClicked(ActionEvent event) {
+
+	//	Thread th = new Thread(RoutePlannerMainApp.task);
+	//	th.setDaemon(true);
+	//	th.start();
 
     }
 

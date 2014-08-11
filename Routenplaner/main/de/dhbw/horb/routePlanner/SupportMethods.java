@@ -11,17 +11,16 @@ import java.util.StringTokenizer;
  */
 public class SupportMethods {
 
+    //public static XMLFileManager fileManager;
+
     /**
      * Berechnung der Dauer von einer Fahrt über eine bestimmte Strecke mit einer bestimmten Geschwindigkeit.
      * @param distance Die Länge der Strecke.
      * @param speed Die Geschwindigkeit.
      * @return Die Dauer in Millisekunden.
      */
-    public static Long fromDistanceAndSpeedToMilliseconds(Double distance,
-	    int speed) {
-	return secondsToMilliseconds(
-		minutesToSeconds(hoursToMinutes((distance / speed))))
-		.longValue();
+    public static Long fromDistanceAndSpeedToMilliseconds(Double distance, int speed) {
+	return secondsToMilliseconds(minutesToSeconds(hoursToMinutes((distance / speed)))).longValue();
     }
 
     /**
@@ -104,8 +103,7 @@ public class SupportMethods {
      * @param lon2 Längengrad des zweiten Punktes.
      * @return Die Entfernung der beiden Punkte zueinander in Kilometer.
      */
-    public static double fromLatLonToDistanceInKM(Double lat1, Double lon1,
-	    Double lat2, Double lon2) {
+    public static double fromLatLonToDistanceInKM(Double lat1, Double lon1, Double lat2, Double lon2) {
 
 	if (lat1 == null || lon1 == null || lat2 == null || lon2 == null)
 	    return 0.0;
@@ -116,9 +114,8 @@ public class SupportMethods {
 	double deltaPhi = degreesToRadians(lat2 - lat1);
 	double deltaLambda = degreesToRadians(lon2 - lon1);
 
-	double a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2)
-		+ Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2)
-		* Math.sin(deltaLambda / 2);
+	double a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2)
+		* Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
 	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 	return R * c;
@@ -184,8 +181,7 @@ public class SupportMethods {
      * @param str Der genannte Vergleichs String.
      * @return Die neu sortierte String Liste.
      */
-    public static List<String> sortListCompairedToEquality(List<String> list,
-	    String str) {
+    public static List<String> sortListCompairedToEquality(List<String> list, String str) {
 
 	if (list == null || str == null)
 	    return null;

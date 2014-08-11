@@ -151,6 +151,8 @@ public class StAXMapGraphDataParser {
     public static Map<String, List<String>> getNodeXMLMap() throws XMLStreamException, FileNotFoundException {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	GraphDataStreamReader nodeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
+	//SupportMethods.fileManager.getNodesFD())));
+
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES))));
 
 	Map<String, List<String>> nodeMap = new HashMap<String, List<String>>();
@@ -184,6 +186,8 @@ public class StAXMapGraphDataParser {
 
 	GraphDataStreamReader routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES))));
+
+	//TODO FileInputStream von XMLFileManager abhängig machen
 
 	Map<String, Map<String, String>> routes = new HashMap<String, Map<String, String>>();
 

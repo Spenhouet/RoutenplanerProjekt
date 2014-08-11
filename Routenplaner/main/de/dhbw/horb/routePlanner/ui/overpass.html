@@ -5,12 +5,14 @@
   <script src="OpenLayers.js"></script>
   <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
   <script src="http://overpass-api.de/overpass.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript">
 	  
 	  var lat = 53.86;
       var lon = 8.44;
       var zoom = 18;
 	  var map;
+	  var way_array = new Array();
 
       DetectBoundsOSMFormat = OpenLayers.Class(OpenLayers.Format.OSM, {
 
@@ -121,11 +123,11 @@
 		  
           //Initialise the vector layer using OpenLayers.Format.OSM -> layer
           var styleMap = new OpenLayers.StyleMap({
-              strokeColor: color,
+              strokeColor: "green",
               strokeOpacity: 0.5,
               strokeWidth: 10,
               pointRadius: 10,
-              fillColor: color,
+              fillColor: "green",
               fillOpacity: 0.25
           });
 		  
@@ -143,14 +145,35 @@
 		  
           layer.events.register("featuresadded", layer, make_features_added_closure(map, layer));
 		  
+		  if(name == 'way') {
+			way_array.push(layer.id);
+		  }
+		  
           map.addLayer(layer);
 		  		 
+				 
       }
+	  
+	  function change_visibility(type, visibility) {
+	    if (type == 'way') {
+			list = way_array;
+		} else{
+			list = node_array;
+		}
+		for (index = 0; index < list.length; ++index) {
+			try {
+				$('#' + list[index]).css("display", visibility);
+			}
+			catch(err) {
+				
+			}
+		}
+	  }
 	  
   </script>
 </head>
-<body>
-  <div id="statusline" style="font-size:24pt; font-weight:bold; font-family:sans-serif;display: none;">No status set yet.</div>
+<body">
+  <div id="statusline" style="font-size:24pt; font-weight:bold; font-family:sans-serif; display:none;">No status set yet.</div>
   <div id="map" class="smallmap"></div>
 
 </body>

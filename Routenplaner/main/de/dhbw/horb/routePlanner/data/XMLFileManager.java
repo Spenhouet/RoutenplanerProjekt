@@ -1,6 +1,7 @@
 package de.dhbw.horb.routePlanner.data;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
@@ -41,19 +42,52 @@ public class XMLFileManager {
     }
 
     public void lockRoutesXML() throws IOException {
-	//	routesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)), "rw");
-	//	routesXMLLock = routesXMLraf.getChannel().lock();
+	routesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)), "rw");
+	routesXMLLock = routesXMLraf.getChannel().lock();
     }
 
     public void lockNodesXML() throws IOException {
-	//	nodesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)), "rw");
-	//	nodesXMLLock = nodesXMLraf.getChannel().lock();
+	nodesXMLraf = new RandomAccessFile(new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)), "rw");
+	nodesXMLLock = nodesXMLraf.getChannel().lock();
     }
 
     public void lockGraphDataXML() throws IOException {
-	//	graphDataXMLraf = new RandomAccessFile(
-	//		new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)), "rw");
-	//	graphDataXMLLock = graphDataXMLraf.getChannel().lock();
+	graphDataXMLraf = new RandomAccessFile(
+		new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)), "rw");
+	graphDataXMLLock = graphDataXMLraf.getChannel().lock();
+    }
+
+    public FileDescriptor getRoutesFD() {
+	FileDescriptor Result = null;
+	try {
+	    Result = routesXMLraf.getFD();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return Result;
+    }
+
+    public FileDescriptor getNodesFD() {
+	FileDescriptor Result = null;
+	try {
+	    Result = nodesXMLraf.getFD();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return Result;
+    }
+
+    public FileDescriptor getGraphDataFD() {
+	FileDescriptor Result = null;
+	try {
+	    Result = graphDataXMLraf.getFD();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return Result;
     }
 
     public void lockRoutesAndNodesXML() throws IOException {
