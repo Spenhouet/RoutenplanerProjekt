@@ -46,7 +46,8 @@ public class JDomGraphDataCreator {
 
 	    String highway = nodeMap.get(Constants.NODE_HIGHWAY);
 	    String name = nodeMap.get(Constants.NODE_NAME);
-	    if (highway != null && highway.equals(Constants.NODE_MOTORWAY_JUNCTION)) {
+
+	    if (name != null && highway != null && highway.equals(Constants.NODE_MOTORWAY_JUNCTION)) {
 		if (nm.containsKey(name)) {
 		    nm.get(name).add(nodeID);
 		} else {
@@ -89,6 +90,8 @@ public class JDomGraphDataCreator {
 	ways = StAXMapGraphDataParser.getWayMap();
 	buildUpCache();
 
+	history = new HashMap<String, String>();
+
 	Map<String, List<String>> nodesXML = StAXMapGraphDataParser.getNodeXMLMap();
 	for (Map.Entry<String, List<String>> entry : nodesXML.entrySet()) {
 	    for (String nodeID : entry.getValue()) {
@@ -99,7 +102,7 @@ public class JDomGraphDataCreator {
 		    continue;
 		for (String wayID : waysCont) {
 		    List<Map<String, String>> route = new ArrayList<Map<String, String>>();
-		    history = new HashMap<String, String>();
+
 		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
@@ -160,18 +163,22 @@ public class JDomGraphDataCreator {
 
 	    route.add(nextNode);
 	    saveRoute(route);
+	    //	    history.clear();
+	    //	    history = new HashMap<String, String>();
 	    route.remove(nextNode);
 	    return;
 	}
 
-	history.put(nextNodeID, null);
 	List<String> waysContain = getWaysContainingID(nextNodeID);
+
+	history.put(nextNodeID, null);
+
 	if (waysContain == null || waysContain.isEmpty()) {
 	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE
 	    return;
 	} else if (waysContain.size() > 1) {
 
-	    //	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
+	    history.remove(nextNodeID); //INVESTIGATE Stackoverflow warum?
 	}
 	for (String wayID : waysContain) {
 	    Map<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
