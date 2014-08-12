@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -69,13 +70,12 @@ public class Dijkstra {
 
 	for (String id : initialNode.getIds()) {
 
-	    Map<String, String> test = routes.get(id);
+	    Map<String, String> map = routes.get(id);
+	    Set<String> keys = map.keySet();
 
-	    for (Map.Entry<String, String> entry : routes.get(id).entrySet()) {
+	    for (String singleKey : keys) {
 
-		entry.getKey();
-		entry.getValue();
-
+		map.get(singleKey);
 		//		if (duration()) {
 		//		    buildJunctionByDestination(entry.get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
 		//			    m.get(Constants.NEW_ROUTE_DURATION));
