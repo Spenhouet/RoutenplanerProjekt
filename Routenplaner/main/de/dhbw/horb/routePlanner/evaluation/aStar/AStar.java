@@ -111,9 +111,6 @@ public class AStar {
 
 	    if (!openEdgesRoute.isEmpty())
 		findDestination();
-
-	} else {
-	    System.err.println("smallest null Fehler");
 	}
     }
 
