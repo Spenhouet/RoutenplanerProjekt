@@ -1,8 +1,16 @@
 package de.dhbw.horb.routePlanner.evaluation.dijkstra;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.stream.XMLStreamException;
+
+import de.dhbw.horb.routePlanner.Constants;
+import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
 /**
  * Klasse Dijkstra
@@ -15,22 +23,79 @@ public class Dijkstra {
     private Junction startnode;
     private Junction endnode;
     private Junction nearestNode;
-    // TODO Kreuzungskosten als Eigenschaft von Junction -> nodePrice-List nicht gebraucht (?)
-    private List<Junction> nodePrice = new ArrayList<Junction>();
+    private Map<String, Map<String, String>> routes;
+    private Map<String, List<String>> nodeMap;
+    private Map<Junction, Integer> nodePrice = new HashMap<Junction, Integer>();
+
     private LinkedList<Junction> prioQue = new LinkedList<Junction>();
     private List<Junction> goneNodes = new ArrayList<Junction>();
     private List<Junction> cheapNeighbours = new ArrayList<Junction>();
     private List<Junction> currentNeighbours = new ArrayList<Junction>();
     private Paths paths;
     private boolean targetReached;
+    private String calcMethod;
 
-    public Dijkstra(List<String> startnode, List<String> endnode) {
+    public Dijkstra(String startnode, String endnode) {
 
-	this.startnode = new Junction(startnode);
-	this.endnode = new Junction(endnode);
+	try {
+	    nodeMap = StAXMapGraphDataParser.getNodeXMLMap();
+	    routes = StAXMapGraphDataParser.getRouteXMLMap();
+	} catch (FileNotFoundException | XMLStreamException e) {
+	    e.printStackTrace();
+	}
+	this.startnode = new Junction(startnode, nodeMap.get(startnode));
+	this.endnode = new Junction(endnode, nodeMap.get(endnode));
 	this.nearestNode = this.startnode;
 	paths = new Paths(this.startnode, this.endnode);
 	paths.add(new Way(this.startnode, this.endnode));
+    }
+
+    private Junction buildJunctionByDeparture(String departureNodeName) {
+	Junction j = new Junction(departureNodeName, nodeMap.get(departureNodeName));
+	j.setName(departureNodeName);
+	return j;
+    }
+
+    private Junction buildJunctionByDestination(String destinationNodeName, String cost) {
+	if (duration()) {
+	    Junction j = new Junction(destinationNodeName, nodeMap.get(destinationNodeName), Long.valueOf(cost));
+	} else if (distance()) {
+	    Junction j = new Junction(destinationNodeName, nodeMap.get(destinationNodeName), Double.valueOf(cost));
+	}
+	return null;
+    }
+
+    private Junction initializeCurrentNeighbours(Junction initialNode) {
+
+	for (String id : initialNode.getIds()) {
+
+	    Map<String, String> test = routes.get(id);
+
+	    for (Map.Entry<String, String> entry : routes.get(id).entrySet()) {
+
+		entry.getKey();
+		entry.getValue();
+
+		//		if (duration()) {
+		//		    buildJunctionByDestination(entry.get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
+		//			    m.get(Constants.NEW_ROUTE_DURATION));
+		//		} else if (distance()) {
+		//		    buildJunctionByDestination(entry.get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
+		//			    m.get(Constants.NEW_ROUTE_DISTANCE));
+		//		}
+
+		Junction neighbour = new Junction(routes.get(id).get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
+			nodeMap.get(routes.get(id).get(Constants.NEW_ROUTE_DESTINATIONNODENAME)));
+		neighbour.setDuration(Long.valueOf(routes.get(id).get(Constants.NEW_ROUTE_DURATION)));
+		neighbour.setDistance(Double.valueOf(routes.get(id).get(Constants.NEW_ROUTE_DISTANCE)));
+		currentNeighbours.add(neighbour);
+	    }
+
+	    //	    for (String id2 : nodeMap.get(routes.get(id).get(Constants.NEW_ROUTE_DESTINATIONNODENAME))) {
+	    //		System.out.println(id2);
+	    //	    }
+	}
+	return null;
     }
 
     /**
@@ -38,7 +103,9 @@ public class Dijkstra {
      *  - Solange Ziel nicht erreicht ist, werden neue Knotenpreise berechnet,
      *    Wege neu initialisiert und die Prioritätswarteschlange neusortiert
      */
-    public void calculateRoute() {
+    public void calculateRoute(String calcMethod) {
+
+	this.calcMethod = calcMethod;
 
 	while (!targetReached) {
 	    calcNewNodePrices(nearestNode);
@@ -60,23 +127,26 @@ public class Dijkstra {
      * @param initialNode Aktuelle Kreuzung
      */
     private void calcNewNodePrices(Junction initialNode) {
-	for (int i = 0; i < initialNode.getIds().size(); i++) {
-	    Junction focusedNeighbour = new Junction(currentNeighbours.get(i).getIds(), currentNeighbours.get(i)
-		    .getPrice());
 
-	    if (/*Abstand initialNode zu focusedNeighbour*/+initialNode.getPrice() < focusedNeighbour.getPrice()
-		    || focusedNeighbour.getPrice() == 0) {
+	//	numberOfNeighbours = 
+	initializeCurrentNeighbours(initialNode);
 
-		// Wenn es einen billigeren Weg zu einer bestimmten Kreuzung gibt sollen alle anderen Wege zu dieser Kreuzung gelöscht werden
-		if (focusedNeighbour.getPrice() != 0) {
-		    //		    deleteWay(focusedNeighbour);		    
-		}
-
-		/*Setze Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
-		if (!prioQue.contains(focusedNeighbour) && !isEqual(focusedNeighbour, startnode))
-		    cheapNeighbours.add(focusedNeighbour);
-	    }
-	}
+	//	for (int i = 0; i < numberOfNeighbours; i++) {
+	//	    Junction focusedNeighbour = currentNeighbours.get(i);
+	//
+	//	    if (/*Abstand initialNode zu focusedNeighbour*/+initialNode.getDuration() < focusedNeighbour.getDuration()
+	//		    || focusedNeighbour.getDuration() == 0) {
+	//
+	//		// Wenn es einen billigeren Weg zu einer bestimmten Kreuzung gibt sollen alle anderen Wege zu dieser Kreuzung gelöscht werden
+	//		if (focusedNeighbour.getDuration() != 0) {
+	//		    //		    deleteWay(focusedNeighbour);		    
+	//		}
+	//
+	//		/*Setze Knotenpreis mit Abstand von initialNode zu focusedNeighbour + initialNode.getPrice()*/
+	//		if (!prioQue.contains(focusedNeighbour) && !isEqual(focusedNeighbour, startnode))
+	//		    cheapNeighbours.add(focusedNeighbour);
+	//	    }
+	//	}
 	currentNeighbours.clear();
     }
 
@@ -113,7 +183,7 @@ public class Dijkstra {
 	for (int i = 0; i < prioQue.size(); i++) {
 	    Junction temp = prioQue.get(i);
 	    int j;
-	    for (j = i - 1; j >= 0 && temp.getPrice() < prioQue.get(j).getPrice(); j--) {
+	    for (j = i - 1; j >= 0 && temp.getDuration() < prioQue.get(j).getDuration(); j--) {
 		prioQue.set(j + 1, prioQue.get(j));
 	    }
 	    prioQue.set(j + 1, temp);
@@ -139,17 +209,12 @@ public class Dijkstra {
 	return false;
     }
 
-    /**
-     * @return Startknoten
-     */
-    public Junction getStartnode() {
-	return startnode;
+    private boolean duration() {
+	return calcMethod.equals(Constants.EVALUATION_CALCULATION_DURATION);
     }
 
-    /**
-     * @return Endknoten
-     */
-    public Junction getEndnode() {
-	return endnode;
+    private boolean distance() {
+	return calcMethod.equals(Constants.EVALUATION_CALCULATION_DISTANCE);
     }
+
 }

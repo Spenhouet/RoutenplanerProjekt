@@ -1,6 +1,5 @@
 package de.dhbw.horb.routePlanner.evaluation.dijkstra;
 
-
 public class Test {
 
     public static void main(String[] args) {
@@ -12,11 +11,11 @@ public class Test {
 	Junction j4 = new Junction();
 	Junction j5 = new Junction();
 
-	j1.setPrice(34);
-	j2.setPrice(124);
-	j3.setPrice(35);
-	j4.setPrice(23);
-	j5.setPrice(29);
+	j1.setDuration((long) 34);
+	j2.setDuration((long) 124);
+	j3.setDuration((long) 35);
+	j4.setDuration((long) 23);
+	j5.setDuration((long) 29);
 
 	testQue.add(j1);
 	testQue.add(j2);

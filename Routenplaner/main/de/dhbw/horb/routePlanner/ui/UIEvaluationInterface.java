@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
+import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 
 public class UIEvaluationInterface {
 
@@ -26,17 +27,21 @@ public class UIEvaluationInterface {
 	    @Override
 	    public void run() {
 		String evaluationMethod;
-		evaluationMethod = "AStern";
+		String calcMethod;
+
+		evaluationMethod = "Dijkstra";
 		//TODO calculationMethod einbauen
+		calcMethod = Constants.NEW_ROUTE_DISTANCE;
 
 		switch (evaluationMethod) {
-		case "AStern":
-		    AStar evaluation = new AStar(departure, destination);
-		    evaluation.calculateWay(Constants.NEW_ROUTE_DISTANCE);
+		case "EVALUATION_METHOD_ASTAR":
+		    AStar aStar = new AStar(departure, destination);
+		    aStar.calculateWay(calcMethod);
 		    break;
 
-		case "Dijkstra":
-		    //	TODO Simon: Aufruf von Dijkstra
+		case "EVALUATION_METHOD_DIJKSTRA":
+		    Dijkstra dijkstra = new Dijkstra(departure, destination);
+		    dijkstra.calculateRoute(calcMethod);
 		    break;
 		default:
 		    System.err.println("Unknown evaluation method.");
