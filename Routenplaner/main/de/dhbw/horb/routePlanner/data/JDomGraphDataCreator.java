@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,27 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class JDomGraphDataCreator {
 
-    public static void createNodeXML() throws XMLStreamException, IOException {
+    private static Map<String, Map<String, String>> nodes;
+    private static Map<String, Map<String, String>> ways;
+    private static Map<String, List<String>> nodeWaysLink;
+    private static XMLOutputter outp;
+    private static Element el;
+    private static Document xmlDoc;
+    private static Element rootNewEl;
 
-	Element nodes = new Element(Constants.NEW_NODE_S);
-	Document xmlDocNodes = new Document(nodes);
-	Element rootNewNodes = xmlDocNodes.getRootElement();
+    public static void main(String[] args) {
+	try {
+	    createRouteXML();
+	} catch (XMLStreamException | IOException e) {
+	    // TODO Automatisch generierter Erfassungsblock
+	    e.printStackTrace();
+	}
+    }
+
+    public static void createNodeXML() throws XMLStreamException, IOException {
+	el = new Element(Constants.NEW_NODE_S);
+	xmlDoc = new Document(el);
+	rootNewEl = xmlDoc.getRootElement();
 
 	Map<String, List<String>> nm = new HashMap<String, List<String>>();
 
@@ -52,28 +69,22 @@ public class JDomGraphDataCreator {
 	    newNode.setAttribute(new Attribute(Constants.NEW_NODE_NAME, entry.getKey()));
 	    newNode.setAttribute(new Attribute(Constants.NEW_NODE_IDS, SupportMethods.strListToCommaStr(entry
 		    .getValue())));
-	    rootNewNodes.addContent(newNode);
+	    rootNewEl.addContent(newNode);
 	}
 
 	outp = new XMLOutputter();
 	outp.setFormat(Format.getPrettyFormat());
-	outp.output(xmlDocNodes, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)));
+	outp.output(xmlDoc, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)));
 	outp = null;
+	rootNewEl = null;
+	xmlDoc = null;
+	el = null;
     }
 
-    private static Map<String, Map<String, String>> nodes;
-    private static Map<String, Map<String, String>> ways;
-    private static Map<String, List<String>> nodeWaysLink;
-    private static XMLOutputter outp;
-    private static Element routesEl;
-    private static Document xmlDocRoutes;
-
     public static void createRouteXML() throws XMLStreamException, IOException {
-	routesEl = new Element(Constants.NEW_ROUTE_S);
-	xmlDocRoutes = new Document(routesEl);
-
-	outp = new XMLOutputter();
-	outp.setFormat(Format.getPrettyFormat());
+	el = new Element(Constants.NEW_ROUTE_S);
+	xmlDoc = new Document(el);
+	rootNewEl = xmlDoc.getRootElement();
 
 	nodes = StAXMapGraphDataParser.getNodeMap();
 	ways = StAXMapGraphDataParser.getWayMap();
@@ -88,9 +99,9 @@ public class JDomGraphDataCreator {
 		if (waysCont == null || waysCont.isEmpty())
 		    continue;
 		for (String wayID : waysCont) {
-		    List<Map<String, String>> route = new ArrayList<Map<String, String>>();
-		    List<String> idHistory = new ArrayList<String>();
-		    Map<String, String> allInfos = getAllInfos(nodeID, wayID);
+		    List<HashMap<String, String>> route = new ArrayList<HashMap<String, String>>();
+		    HashSet<String> idHistory = new HashSet<String>();
+		    HashMap<String, String> allInfos = getAllInfos(nodeID, wayID);
 		    if (allInfos == null)
 			continue;
 
@@ -100,7 +111,14 @@ public class JDomGraphDataCreator {
 		}
 	    }
 	}
+
+	outp = new XMLOutputter();
+	outp.setFormat(Format.getPrettyFormat());
+	outp.output(xmlDoc, new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)));
 	outp = null;
+	rootNewEl = null;
+	xmlDoc = null;
+	el = null;
     }
 
     private static void buildUpCache() {
@@ -131,13 +149,13 @@ public class JDomGraphDataCreator {
 	}
     }
 
-    private static void recursRoute(List<Map<String, String>> route, List<String> idHistory)
+    private static void recursRoute(List<HashMap<String, String>> route, HashSet<String> idHistory)
 	    throws FileNotFoundException, IOException {
 	// INVESTIGATE Sebastian: Fehlende Strecken (Löcher?)
 	if (route == null || idHistory == null)
 	    return;
 
-	Map<String, String> nextNode = getNextNode(route.get(route.size() - 1));
+	HashMap<String, String> nextNode = getNextNode(route.get(route.size() - 1));
 	if (nextNode == null || nextNode.isEmpty())
 	    return;
 
@@ -166,7 +184,7 @@ public class JDomGraphDataCreator {
 	    return;
 	}
 	for (String wayID : waysContain) {
-	    Map<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
+	    HashMap<String, String> nextNodeAllInfos = getAllInfos(nextNodeID, wayID);
 	    if (nextNodeAllInfos == null)
 		continue;
 	    route.add(nextNodeAllInfos);
@@ -177,7 +195,7 @@ public class JDomGraphDataCreator {
 	}
     }
 
-    private static Map<String, String> getNextNode(Map<String, String> route) {
+    private static HashMap<String, String> getNextNode(HashMap<String, String> route) {
 	String lastNodeID = route.get(Constants.NODE_ID_EX);
 	List<String> nodeIDs = SupportMethods.commaStrToStrList(route.get(Constants.WAY_NODE));
 	String nextNodeID = nodeIDs.get(nodeIDs.indexOf(lastNodeID) + 1);
@@ -185,7 +203,7 @@ public class JDomGraphDataCreator {
 	return getAllInfos(nextNodeID, route.get(Constants.WAY_ID_EX));
     }
 
-    private static Map<String, String> getAllInfos(String nodeID, String wayID) {
+    private static HashMap<String, String> getAllInfos(String nodeID, String wayID) {
 	if (nodeID == null || wayID == null || nodeID.isEmpty() || wayID.isEmpty())
 	    return null;
 	Map<String, String> nodeInf = nodes.get(nodeID);
@@ -194,7 +212,7 @@ public class JDomGraphDataCreator {
 	if (nodeInf == null || wayInf == null || nodeInf.isEmpty() || wayInf.isEmpty())
 	    return null;
 
-	Map<String, String> allInfos = new HashMap<String, String>();
+	HashMap<String, String> allInfos = new HashMap<String, String>();
 	allInfos.putAll(nodeInf);
 	allInfos.putAll(wayInf);
 	allInfos.put(Constants.NODE_ID_EX, nodeID);
@@ -211,7 +229,7 @@ public class JDomGraphDataCreator {
 	return nodeWaysLink.get(nodeID);
     }
 
-    private static void saveRoute(List<Map<String, String>> route) throws FileNotFoundException, IOException {
+    private static void saveRoute(List<HashMap<String, String>> route) throws FileNotFoundException, IOException {
 	if (route == null || route.isEmpty())
 	    return;
 
@@ -265,8 +283,6 @@ public class JDomGraphDataCreator {
 	    }
 	}
 
-	Element rootNewRouteEl = xmlDocRoutes.getRootElement();
-
 	Element newRoute = new Element(Constants.NEW_ROUTE);
 	newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODEID, departureNodeID));
 	newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DEPARTURENODENAME, departureNodeName));
@@ -278,10 +294,6 @@ public class JDomGraphDataCreator {
 	newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_DURATION, duration.toString()));
 	newRoute.setAttribute(new Attribute(Constants.NEW_ROUTE_WAYIDS, SupportMethods.strListToCommaStr(wayIDs)));
 
-	rootNewRouteEl.addContent(newRoute);
-
-	FileOutputStream outFile = new FileOutputStream(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES));
-	outp.output(xmlDocRoutes, outFile);
-	outFile.close();
+	rootNewEl.addContent(newRoute);
     }
 }
