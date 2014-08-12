@@ -267,14 +267,15 @@ public class StAXMapGraphDataParser {
      * @throws FileNotFoundException
      * @throws XMLStreamException
      */
-    public static Map<String, Map<String, String>> getRouteXMLMap() throws FileNotFoundException, XMLStreamException {
+    public static Map<String, List<Map<String, String>>> getRouteXMLMap() throws FileNotFoundException,
+	    XMLStreamException {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 
 	GraphDataStreamReader routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
 		XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES))));
 
-	Map<String, Map<String, String>> routes = new HashMap<String, Map<String, String>>();
+	Map<String, List<Map<String, String>>> routes = new HashMap<String, List<Map<String, String>>>();
 
 	while (routeSR.hasNext()) {
 	    if (!routeSR.nextStartElement() || !routeSR.isRoute())
@@ -300,7 +301,15 @@ public class StAXMapGraphDataParser {
 	    if (departureNodeID == null || values == null)
 		continue;
 
-	    routes.put(departureNodeID, values);
+	    if (routes.containsKey(departureNodeID)) {
+		routes.get(departureNodeID).add(values);
+
+	    } else {
+
+		List<Map<String, String>> listRoute = new ArrayList<Map<String, String>>();
+		listRoute.add(values);
+		routes.put(departureNodeID, listRoute);
+	    }
 	}
 
 	routeSR.close();

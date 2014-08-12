@@ -26,22 +26,26 @@ public class UIEvaluationInterface {
 
 	    @Override
 	    public void run() {
-		String evaluationMethod;
-		String calcMethod;
 
-		evaluationMethod = "Dijkstra";
-		//TODO calculationMethod einbauen
-		calcMethod = Constants.NEW_ROUTE_DISTANCE;
+		if (departure == null || destination == null || calculationMethod == null || evaluationMethod == null) {
+		    return;
+		}
+
+		if (calculationMethod != Constants.EVALUATION_CALCULATION_DISTANCE
+			&& calculationMethod != Constants.EVALUATION_CALCULATION_DURATION) {
+		    System.err.println("Unknown calculation method.");
+		    return;
+		}
 
 		switch (evaluationMethod) {
-		case "EVALUATION_METHOD_ASTAR":
+		case Constants.EVALUATION_METHOD_ASTAR:
 		    AStar aStar = new AStar(departure, destination);
-		    aStar.calculateWay(calcMethod);
+		    aStar.calculateWay(calculationMethod);
 		    break;
 
-		case "EVALUATION_METHOD_DIJKSTRA":
+		case Constants.EVALUATION_METHOD_DIJKSTRA:
 		    Dijkstra dijkstra = new Dijkstra(departure, destination);
-		    dijkstra.calculateRoute(calcMethod);
+		    dijkstra.calculateRoute(calculationMethod);
 		    break;
 		default:
 		    System.err.println("Unknown evaluation method.");

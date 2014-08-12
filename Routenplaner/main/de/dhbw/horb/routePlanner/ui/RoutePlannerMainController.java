@@ -154,7 +154,6 @@ public class RoutePlannerMainController {
 
 		    evaluationMethod = null;
 		    evaluationMethod = getEvaluationMethod();
-		    evaluationMethod = "AStern";
 
 		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod);
 		    webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());

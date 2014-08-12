@@ -19,7 +19,7 @@ public class AStar {
 	open, closed
     }
 
-    private Map<String, Map<String, String>> routes;
+    private Map<String, List<Map<String, String>>> routes;
     private Map<String, List<String>> nodeMap;
 
     private Map<String, String> openEdgesPredecessor;
@@ -120,38 +120,42 @@ public class AStar {
     private void addNeighbourToOpenList(String name) {
 	List<String> ids = nodeMap.get(name);
 	for (String id : ids) {
-
-	    Map<String, String> edge = routes.get(id);
-	    if (edge == null)
+	    List<Map<String, String>> r = routes.get(id);
+	    if (r == null || r.isEmpty())
 		continue;
+	    for (Map<String, String> edge : r) {
 
-	    String destinationNodeName = nodeMap.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0);
-
-	    edge.put(Constants.NEW_ROUTE_DEPARTURENODENAME, name);
-	    edge.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, destinationNodeName);
-
-	    if (closedEdgesPredecessor.containsKey(destinationNodeName))
-		continue;
-
-	    if (openEdgesPredecessor.containsKey(destinationNodeName)) {
-		Double newWeight = getWeight(edge);
-		Double newWeightBack = getWeightBack(edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
-
-		if (newWeightBack == null || newWeight == null)
+		if (edge == null)
 		    continue;
 
-		Double oldWeight = openEdgesWeight.get(destinationNodeName);
-		Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(destinationNodeName));
+		String destinationNodeName = nodeMap.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0);
 
-		if (oldWeightBack == null || oldWeight == null)
-		    System.err.println("OldWeight Fehler");
+		edge.put(Constants.NEW_ROUTE_DEPARTURENODENAME, name);
+		edge.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, destinationNodeName);
 
-		if ((newWeight + newWeightBack) > (oldWeight + oldWeightBack))
+		if (closedEdgesPredecessor.containsKey(destinationNodeName))
 		    continue;
 
-		removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
+		if (openEdgesPredecessor.containsKey(destinationNodeName)) {
+		    Double newWeight = getWeight(edge);
+		    Double newWeightBack = getWeightBack(edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+
+		    if (newWeightBack == null || newWeight == null)
+			continue;
+
+		    Double oldWeight = openEdgesWeight.get(destinationNodeName);
+		    Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(destinationNodeName));
+
+		    if (oldWeightBack == null || oldWeight == null)
+			System.err.println("OldWeight Fehler");
+
+		    if ((newWeight + newWeightBack) > (oldWeight + oldWeightBack))
+			continue;
+
+		    removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
+		}
+		addEdge(ListType.open, edge);
 	    }
-	    addEdge(ListType.open, edge);
 	}
     }
 
