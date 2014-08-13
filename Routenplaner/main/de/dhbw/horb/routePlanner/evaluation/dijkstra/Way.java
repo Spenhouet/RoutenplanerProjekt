@@ -2,6 +2,7 @@ package de.dhbw.horb.routePlanner.evaluation.dijkstra;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Klasse Way
@@ -13,15 +14,17 @@ public class Way {
 
     private Long price = (long) 0;
     private List<String> nodes = new ArrayList<String>();
+    private List<Map<String, String>> edges = new ArrayList<Map<String, String>>();
 
     public Way(String startnode, String endnode) {
 	nodes.add(startnode);
     }
 
-    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice) {
+    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice, Map<String, String> edge) {
 	setPrice(gonePrice + newPrice);
 	addNodes(nodes);
 	this.nodes.add(newNode);
+	edges.add(edge);
     }
 
     /**
@@ -48,6 +51,10 @@ public class Way {
 
     public List<String> getNodes() {
 	return nodes;
+    }
+
+    public List<Map<String, String>> getEdges() {
+	return edges;
     }
 
 }
