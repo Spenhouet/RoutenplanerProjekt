@@ -67,6 +67,11 @@ public class AStar {
     }
 
     public void calculateWay(String calculateMethod) {
+	if (destinationIDs == null || departureIDs == null || destinationIDs.isEmpty() || departureIDs.isEmpty()) {
+	    System.err.println("No IDs for departure or destination.");
+	    return;
+	}
+
 	this.calculateMethod = calculateMethod;
 	for (String depID : departureIDs) {
 	    closedEdgesPredecessor.put(depID, depID);
@@ -80,14 +85,14 @@ public class AStar {
 	Double wCache = null;
 	for (String desID : destinationIDs) {
 	    Double w = getWeightBack(desID);
-	    if (wCache == null || (w != null && w < wCache)) {
+	    if (w != null && (wCache == null || w < wCache)) {
 		wCache = w;
 		destinationID = desID;
 	    }
 	}
 
 	if (destinationID == null) {
-	    System.err.println("AStar couldn'f find a way to destination.");
+	    System.err.println("AStar couldn't find a way to destination.");
 	    return;
 	}
 
@@ -149,8 +154,10 @@ public class AStar {
 
     private void addNeighbourToOpenList(String id) {
 	List<Map<String, String>> r = routes.get(id);
-	if (r == null || r.isEmpty())
+	if (r == null || r.isEmpty()) {
+	    System.err.println("Keine route für " + id + " " + nodeMap.get(id).get(0));
 	    return;
+	}
 	for (Map<String, String> edge : r) {
 
 	    if (edge == null)
