@@ -155,7 +155,7 @@ public class AStar {
     private void addNeighbourToOpenList(String id) {
 	List<Map<String, String>> r = routes.get(id);
 	if (r == null || r.isEmpty()) {
-	    System.err.println("Keine route für " + id + " " + nodeMap.get(id).get(0));
+	    //	    System.err.println("Keine route für " + id + " " + nodeMap.get(id).get(0));
 	    return;
 	}
 	for (Map<String, String> edge : r) {
