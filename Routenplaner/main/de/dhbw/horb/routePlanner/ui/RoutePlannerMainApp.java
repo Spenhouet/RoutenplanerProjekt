@@ -34,6 +34,7 @@ public class RoutePlannerMainApp extends Application {
     public XMLFileManager fileManager;
     public boolean allXMLsExist;
     public RoutePlannerMainController controller;
+    private String cause;
 
     public RoutePlannerMainApp() {
 
@@ -79,7 +80,17 @@ public class RoutePlannerMainApp extends Application {
 			if (checkPrerequisites() == false) {
 			    updateMessage(Constants.STARTUP_ERROR_PREREQUISITES);
 			    try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
+			    } catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			    }
+			    if (cause == "folder") {
+				updateMessage(Constants.STARTUP_ERROR_FOLDER);
+			    } else {
+				updateMessage(Constants.STARTUP_ERROR_INTERNET);
+			    }
+			    try {
+				Thread.sleep(3000);
 			    } catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			    }
@@ -314,6 +325,7 @@ public class RoutePlannerMainApp extends Application {
 	    InetAddress.getByName("overpass-api.de").isReachable(10000);
 	} catch (Exception e) {
 	    result = false;
+	    cause = "internet";
 	}
 
 	try {
@@ -326,6 +338,7 @@ public class RoutePlannerMainApp extends Application {
 	    }
 	} catch (Exception e) {
 	    result = false;
+	    cause = "folder";
 	}
 
 	return result;
