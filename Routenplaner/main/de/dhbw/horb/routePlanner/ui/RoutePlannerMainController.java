@@ -272,6 +272,7 @@ public class RoutePlannerMainController {
 		    //System.out.println("Ways: " + wayString);
 		    //System.out.println("Nodes: " + nodeString);
 
+		    //Script in Website ausführen
 		    webEngine.executeScript("init()");
 		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
