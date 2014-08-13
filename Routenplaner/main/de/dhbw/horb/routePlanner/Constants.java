@@ -94,4 +94,9 @@ public interface Constants {
     public final static String NEW_ROUTE_DESTINATIONNODEID = "destinationNodeID";
     public final static String NEW_ROUTE_DEPARTURENODENAME = "departureNodeName";
     public final static String NEW_ROUTE_DESTINATIONNODENAME = "destinationNodeName";
+
+    public final static String ROUTEPLANNER_INFO_STRING = "Dieses Java-Programm entstand im Rahmen der Vorlesung "
+	    + "\"Programmieren I + II\" an der DHBW Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, "
+	    + "Simon Stehle, Sebastian Penhouet und Robin Kinting";
+
 }
