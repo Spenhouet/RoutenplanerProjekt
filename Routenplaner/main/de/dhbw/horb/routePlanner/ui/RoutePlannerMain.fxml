@@ -78,7 +78,6 @@
                                     </Button>
                                  </children>
                               </VBox>
-                              <Button fx:id="testButton" layoutX="247.0" layoutY="590.0" mnemonicParsing="false" onAction="#testButtonClicked" text="Test" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="15.0" />
                            </children>
                         </AnchorPane>
                      </content>

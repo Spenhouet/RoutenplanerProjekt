@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import org.controlsfx.dialog.DialogStyle;
 import org.controlsfx.dialog.Dialogs;
 
 import de.dhbw.horb.routePlanner.Constants;
@@ -50,9 +51,6 @@ public class RoutePlannerMainController {
 
     @FXML
     private Button infoButton;
-
-    @FXML
-    private Button testButton;
 
     @FXML
     private ComboBox<String> startComboBox;
@@ -121,107 +119,80 @@ public class RoutePlannerMainController {
     private ColorPicker nodesColorPicker;
 
     /**
-     * The constructor. The constructor is called before the initialize()
-     * method.
+     * The constructor. The constructor is called before the initialize() method.
      */
-    public RoutePlannerMainController() {
-    }
-
-    @FXML
-    void testButtonClicked(ActionEvent event) {
-	//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
-    }
+    public RoutePlannerMainController() {}
 
     @FXML
     void calculateRouteButtonClicked(ActionEvent event) {
 
 	disableCalculateRouteButton();
 
-	String start = startComboBox.getValue();
-	String end = targetComboBox.getValue();
+	String start = this.startComboBox.getValue();
+	String end = this.targetComboBox.getValue();
 
-	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
+	if ((start != null) && (end != null) && !start.trim().isEmpty() && !end.trim().isEmpty()) {
 
-	    if (calculationMethodToggleGroup.getSelectedToggle() == null) {
-
+	    if (this.calculationMethodToggleGroup.getSelectedToggle() == null)
 		Dialogs.create().title("Keine Berechnung möglich!")
 			.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
+	    else if (this.evaluationMethodToggleGroup.getSelectedToggle() == null)
+		Dialogs.create().title("Keine Berechnung möglich!")
+			.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+	    else if (start == end)
+		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
+			.showError();
+	    else {
 
-	    } else {
+		//tabPane.getTabs().remove(calculatedRouteTab);
 
-		if (evaluationMethodToggleGroup.getSelectedToggle() == null) {
+		this.calculationMethod = null;
+		this.calculationMethod = getCalculationMethod();
 
-		    Dialogs.create().title("Keine Berechnung möglich!")
-			    .message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+		this.evaluationMethod = null;
+		this.evaluationMethod = getEvaluationMethod();
 
-		} else {
-
-		    if (start == end) {
-
-			Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
-				.showError();
-
-		    } else {
-
-			//tabPane.getTabs().remove(calculatedRouteTab);
-
-			calculationMethod = null;
-			calculationMethod = getCalculationMethod();
-
-			evaluationMethod = null;
-			evaluationMethod = getEvaluationMethod();
-
-			UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
-				routePlannerMainApp);
-			//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
-
-		    }
-
-		}
+		UIEvaluationInterface.calculateRoute(start, end, this.calculationMethod, this.evaluationMethod,
+			this.routePlannerMainApp);
+		//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
 
 	    }
 
-	} else {
-
-	    Dialogs.create().title("Keine Berechnung möglich!")
-		    .message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
-
-	}
+	} else Dialogs.create().title("Keine Berechnung möglich!")
+		.message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 
     }
 
     /**
      * Method to detect the selected CalculationMethod
+     *
      * @return currently selected CalculationMethod as String
      */
     private String getCalculationMethod() {
 	String result = null;
-	if (fastestRouteRadio.isSelected()) {
+	if (this.fastestRouteRadio.isSelected())
 	    result = Constants.EVALUATION_CALCULATION_DURATION;
-	} else {
-	    if (shortestRouteRadio.isSelected()) {
-		result = Constants.EVALUATION_CALCULATION_DISTANCE;
-	    } else {
+	else if (this.shortestRouteRadio.isSelected())
+	    result = Constants.EVALUATION_CALCULATION_DISTANCE;
+	else {
 
-	    }
 	}
 	return result;
     }
 
     /**
      * Method to detect the selected EvaluationMethod
+     *
      * @return currently selected EvaluationMethod as String
      */
     private String getEvaluationMethod() {
 	String result = null;
-	if (aStarRouteRadio.isSelected()) {
+	if (this.aStarRouteRadio.isSelected())
 	    result = Constants.EVALUATION_METHOD_ASTAR;
-	} else {
-	    if (dijkstraRouteRadio.isSelected()) {
-		result = Constants.EVALUATION_METHOD_DIJKSTRA;
-	    } else {
+	else if (this.dijkstraRouteRadio.isSelected())
+	    result = Constants.EVALUATION_METHOD_DIJKSTRA;
+	else {
 
-	    }
 	}
 	return result;
     }
@@ -229,75 +200,84 @@ public class RoutePlannerMainController {
     @FXML
     void infoButtonClicked(ActionEvent event) {
 
-	routePlannerMainApp.executeStartupTask();
+	Dialogs.create()
+	.message(
+		"Dieses Java-Programm entstand im Rahmen der Vorlesung \"Programmieren I + II\" an der DHBW "
+				+ "Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, Simon Stehle, "
+				+ "Sebastian Penhouet und Robin Kinting").style(DialogStyle.CROSS_PLATFORM_DARK)
+		.showInformation();
 
     }
 
     @FXML
     void closeButtonClicked(ActionEvent event) {
-	routePlannerMainApp.primaryStage.close();
+	this.routePlannerMainApp.primaryStage.close();
     }
 
     /**
      * Is called by the main application to give a reference back to itself.
-     * 
+     *
      * @param mainApp
      */
     public void setRoutePlannerMainApp(RoutePlannerMainApp routePlannerMainApp) {
 	this.routePlannerMainApp = routePlannerMainApp;
-	new AutoCompleteComboBoxListener<>(startComboBox);
-	new AutoCompleteComboBoxListener<>(targetComboBox);
+	new AutoCompleteComboBoxListener<>(this.startComboBox);
+	new AutoCompleteComboBoxListener<>(this.targetComboBox);
 
 	//Settings eintragen
-	countryComboBox.setValue(SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland"));
+	this.countryComboBox.setValue(SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland"));
 	switch (SettingsManager.getValue(Constants.SETTINGS_EVALUATION_METHOD, "Dijkstra")) {
 	case Constants.EVALUATION_METHOD_DIJKSTRA:
-	    evaluationMethodToggleGroup.selectToggle(dijkstraRouteRadio);
+	    this.evaluationMethodToggleGroup.selectToggle(this.dijkstraRouteRadio);
 	    break;
 	case Constants.EVALUATION_METHOD_ASTAR:
-	    evaluationMethodToggleGroup.selectToggle(aStarRouteRadio);
+	    this.evaluationMethodToggleGroup.selectToggle(this.aStarRouteRadio);
 	    break;
 	default:
 	    break;
 	}
 	switch (SettingsManager.getValue(Constants.SETTINGS_CALCULATION_METHOD, "Dauer")) {
 	case Constants.EVALUATION_CALCULATION_DURATION:
-	    calculationMethodToggleGroup.selectToggle(fastestRouteRadio);
+	    this.calculationMethodToggleGroup.selectToggle(this.fastestRouteRadio);
 	    break;
 	case Constants.EVALUATION_CALCULATION_DISTANCE:
-	    calculationMethodToggleGroup.selectToggle(shortestRouteRadio);
+	    this.calculationMethodToggleGroup.selectToggle(this.shortestRouteRadio);
 	    break;
 	default:
 	    break;
 	}
 	Color farbe_ways = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_WAYS,
 		Constants.SETTINGS_COLOR_WAYS_DEFAULT));
-	waysColorPicker.setValue(farbe_ways);
+	this.waysColorPicker.setValue(farbe_ways);
 	Color farbe_nodes = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
 		Constants.SETTINGS_COLOR_NODES_DEFAULT));
-	nodesColorPicker.setValue(farbe_nodes);
+	this.nodesColorPicker.setValue(farbe_nodes);
 
-	webEngine = testWebView.getEngine();
-	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+	this.webEngine = this.testWebView.getEngine();
+	this.webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 	    @Override
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
 		System.out.println("WebView State: " + newState.toString());
 		if (newState == Worker.State.SUCCEEDED) {
 
 		    //Script in Website ausführen
-		    webEngine.executeScript("init()");
+		    RoutePlannerMainController.this.webEngine.executeScript("init()");
 		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
 		    generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    //TODO Liste aufbauen
-		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
-		    startLabel.setText(startComboBox.getValue());
-		    destinationLabel.setText(targetComboBox.getValue());
+		    RoutePlannerMainController.this.calculatedRouteListView
+			    .setItems(UIEvaluationInterface.allDestinationNodeNames);
+		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
+			    .getValue());
+		    RoutePlannerMainController.this.destinationLabel
+			    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
 
 		    DecimalFormat f = new DecimalFormat("#0.00");
-		    distanceLabel.setText(f.format(UIEvaluationInterface.distance) + " km");
+		    RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
+			    + " km");
 
 		    Long ms = SupportMethods.millisecondsToSeconds(UIEvaluationInterface.duration).longValue();
 		    Double m = SupportMethods.secondsToMinutes(ms.doubleValue());
@@ -306,13 +286,14 @@ public class RoutePlannerMainController {
 		    int seconds = (int) Math.floor(SupportMethods.minutesToSeconds(m % 1));
 		    String routeDuration = String.format("%d Stunden %02d Minuten %02d Sekunden", hours, minutes,
 			    seconds);
-		    durationLabel.setText(routeDuration);
-		    calculatedRouteTab.getStyleClass().removeAll("hidden");
-		    SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-		    selectionModel.select(calculatedRouteTab);
+		    RoutePlannerMainController.this.durationLabel.setText(routeDuration);
+		    RoutePlannerMainController.this.calculatedRouteTab.getStyleClass().removeAll("hidden");
+		    SingleSelectionModel<Tab> selectionModel = RoutePlannerMainController.this.tabPane
+			    .getSelectionModel();
+		    selectionModel.select(RoutePlannerMainController.this.calculatedRouteTab);
 
-		    wayString = null;
-		    nodeString = null;
+		    RoutePlannerMainController.this.wayString = null;
+		    RoutePlannerMainController.this.nodeString = null;
 		    UIEvaluationInterface.allWayIDs = null;
 
 		    enableCalculateRouteButton();
@@ -320,35 +301,40 @@ public class RoutePlannerMainController {
 
 	    }
 	});
-	evaluationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	this.evaluationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	    @Override
 	    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-		if (evaluationMethodToggleGroup.getSelectedToggle() != null) {
+		if (RoutePlannerMainController.this.evaluationMethodToggleGroup.getSelectedToggle() != null)
 		    SettingsManager.saveSetting(Constants.SETTINGS_EVALUATION_METHOD, getEvaluationMethod());
-		}
 	    }
 	});
-	calculationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	this.calculationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	    @Override
 	    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-		if (calculationMethodToggleGroup.getSelectedToggle() != null) {
+		if (RoutePlannerMainController.this.calculationMethodToggleGroup.getSelectedToggle() != null)
 		    SettingsManager.saveSetting(Constants.SETTINGS_CALCULATION_METHOD, getCalculationMethod());
-		}
 	    }
 	});
-	countryComboBox.getItems().addAll(SupportMethods.commaStrToStrList(Constants.COUNTRY_VERIFIED));
-	countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
+	this.countryComboBox.getItems().addAll(SupportMethods.commaStrToStrList(Constants.COUNTRY_VERIFIED));
+	this.countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
 	    @Override
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
-		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, countryComboBox.getValue());
+		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
+			RoutePlannerMainController.this.countryComboBox.getValue());
 	    }
 	});
-	waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	this.waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	    @Override
 	    public void handle(ActionEvent arg0) {
-		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_WAYS, waysColorPicker.getValue().toString());
+		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_WAYS,
+			RoutePlannerMainController.this.waysColorPicker.getValue().toString());
 	    }
 	});
-	nodesColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	this.nodesColorPicker.setOnAction(new EventHandler<ActionEvent>() {
+	    @Override
 	    public void handle(ActionEvent arg0) {
-		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES, nodesColorPicker.getValue().toString());
+		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES,
+			RoutePlannerMainController.this.nodesColorPicker.getValue().toString());
 	    }
 	});
 	//webEngine.load(this.getClass().getResource("test.html").toExternalForm());
@@ -356,7 +342,7 @@ public class RoutePlannerMainController {
 
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
 
-	if (list == null || list.isEmpty()) {
+	if ((list == null) || list.isEmpty()) {
 
 	} else {
 
@@ -381,18 +367,18 @@ public class RoutePlannerMainController {
 		completeLink += method + "(" + string + ");";
 		x++;
 		if (x > 99) {
-		    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
+		    this.webEngine.executeScript("add_layer('" + name + "', '" + completeLink + this.linkEnd + "', '"
 			    + rgbColorString + "')");
-		    System.out.println("regulär: " + completeLink + linkEnd);
+		    System.out.println("regulär: " + completeLink + this.linkEnd);
 		    x = 0;
 		    completeLink = Constants.LINK_COMPLETELINK;
 		}
 	    }
 
 	    if (completeLink != Constants.LINK_COMPLETELINK) {
-		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
+		this.webEngine.executeScript("add_layer('" + name + "', '" + completeLink + this.linkEnd + "', '"
 			+ rgbColorString + "')");
-		System.out.println("nicht leer: " + completeLink + linkEnd);
+		System.out.println("nicht leer: " + completeLink + this.linkEnd);
 	    }
 
 	}
@@ -403,7 +389,7 @@ public class RoutePlannerMainController {
      */
     public void disableCalculateRouteButton() {
 
-	calculateRouteButton.setDisable(true);
+	this.calculateRouteButton.setDisable(true);
 
     }
 
@@ -412,19 +398,19 @@ public class RoutePlannerMainController {
      */
     public void enableCalculateRouteButton() {
 
-	calculateRouteButton.setDisable(false);
+	this.calculateRouteButton.setDisable(false);
 
     }
 
     @FXML
     void updateDataButtonClicked(ActionEvent event) {
 
-	routePlannerMainApp.allXMLsExist = false;
-	routePlannerMainApp.executeStartupTask();
+	this.routePlannerMainApp.allXMLsExist = false;
+	this.routePlannerMainApp.executeStartupTask();
 
     }
 
     public void loadOverpassHTML() {
-	webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+	this.webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
     }
 }
