@@ -20,8 +20,10 @@ import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     private ComboBox<String> comboBox;
-    private StringBuilder sb; // DELETE Robin: wenn nicht gebraucht
-    private ObservableList<String> data; // DELETE Robin: wenn nicht gebraucht
+    @SuppressWarnings("unused")
+    private StringBuilder sb;
+    @SuppressWarnings("unused")
+    private ObservableList<String> data;
     private boolean moveCaretToPos = false;
     private int caretPos;
     private Map<String, List<String>> nodes = null;
@@ -31,14 +33,14 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 	this.comboBox = comboBox;
 
 	try {
-	    nodes = StAXMapGraphDataParser.getNodeXMLMap();
-	    routes = StAXMapGraphDataParser.getRouteXMLMap();
+	    this.nodes = StAXMapGraphDataParser.getNodeXMLMap();
+	    this.routes = StAXMapGraphDataParser.getRouteXMLMap();
 	} catch (FileNotFoundException | XMLStreamException e) {
 	    e.printStackTrace();
 	}
 
-	sb = new StringBuilder();
-	data = comboBox.getItems();
+	this.sb = new StringBuilder();
+	this.data = comboBox.getItems();
 
 	this.comboBox.setEditable(true);
 	this.comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -55,96 +57,77 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
 
 	if (event.getCode() == KeyCode.UP) {
-	    caretPos = -1;
-	    moveCaret(comboBox.getEditor().getText().length());
+	    this.caretPos = -1;
+	    moveCaret(this.comboBox.getEditor().getText().length());
 	    return;
 	} else if (event.getCode() == KeyCode.DOWN) {
-	    if (!comboBox.isShowing()) {
-		comboBox.show();
-	    }
-	    caretPos = -1;
-	    moveCaret(comboBox.getEditor().getText().length());
+	    if (!this.comboBox.isShowing()) this.comboBox.show();
+	    this.caretPos = -1;
+	    moveCaret(this.comboBox.getEditor().getText().length());
 	    return;
 	} else if (event.getCode() == KeyCode.BACK_SPACE) {
-	    moveCaretToPos = true;
-	    caretPos = comboBox.getEditor().getCaretPosition();
+	    this.moveCaretToPos = true;
+	    this.caretPos = this.comboBox.getEditor().getCaretPosition();
 	} else if (event.getCode() == KeyCode.DELETE) {
-	    moveCaretToPos = true;
-	    caretPos = comboBox.getEditor().getCaretPosition();
+	    this.moveCaretToPos = true;
+	    this.caretPos = this.comboBox.getEditor().getCaretPosition();
 	}
 
-	if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT || event.isControlDown()
-		|| event.getCode() == KeyCode.HOME || event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB) {
-	    return;
-	}
+	if ((event.getCode() == KeyCode.RIGHT) || (event.getCode() == KeyCode.LEFT) || event.isControlDown()
+		|| (event.getCode() == KeyCode.HOME) || (event.getCode() == KeyCode.END)
+		|| (event.getCode() == KeyCode.TAB)) return;
 
 	ObservableList<String> list = FXCollections.observableArrayList();
 
 	String input = AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase();
 	List<String> names = new ArrayList<String>();
 
-	if (nodes == null)
-	    return;
+	if (this.nodes == null) return;
 
-	for (Map.Entry<String, List<String>> entry : nodes.entrySet()) {
+	for (Map.Entry<String, List<String>> entry : this.nodes.entrySet()) {
 	    String key = entry.getKey();
 	    List<String> value = entry.getValue();
 
-	    if (key == null || value == null)
-		continue;
+	    if ((key == null) || (value == null)) continue;
 
-	    if (SupportMethods.isNumeric(key))
-		continue;
+	    if (SupportMethods.isNumeric(key)) continue;
 
-	    List<String> s = nodes.get(key);
-	    if (s == null || s.isEmpty() || s.size() < 2)
-		continue;
+	    List<String> s = this.nodes.get(key);
+	    if ((s == null) || s.isEmpty() || (s.size() < 2)) continue;
 
 	    Boolean hasRoute = false;
 	    for (String id : value) {
-		if (id == null)
-		    continue;
+		if (id == null) continue;
 
-		if (routes.get(id) != null) {
+		if (this.routes.get(id) != null) {
 		    hasRoute = true;
 		    break;
 		}
 	    }
 
-	    if (hasRoute && key.toLowerCase().contains(input.toLowerCase()))
-		names.add(key);
+	    if (hasRoute && key.toLowerCase().contains(input.toLowerCase())) names.add(key);
 	}
 
-	if (names != null) {
-	    names = SupportMethods.sortListCompairedToEquality(names, input);
-	}
+	if (names != null) names = SupportMethods.sortListCompairedToEquality(names, input);
 
-	if (names == null)
-	    return;
+	if (names == null) return;
 
-	for (String name : names) {
+	for (String name : names)
 	    list.add(name);
-	}
 
-	String t = comboBox.getEditor().getText();
-	comboBox.setItems(list);
-	comboBox.getEditor().setText(t);
-	if (!moveCaretToPos) {
-	    caretPos = -1;
-	}
+	String t = this.comboBox.getEditor().getText();
+	this.comboBox.setItems(list);
+	this.comboBox.getEditor().setText(t);
+	if (!this.moveCaretToPos) this.caretPos = -1;
 	moveCaret(t.length());
-	if (!list.isEmpty()) {
-	    comboBox.show();
-	}
+	if (!list.isEmpty()) this.comboBox.show();
     }
 
     private void moveCaret(int textLength) {
-	if (caretPos == -1) {
-	    comboBox.getEditor().positionCaret(textLength);
-	} else {
-	    comboBox.getEditor().positionCaret(caretPos);
-	}
-	moveCaretToPos = false;
+	if (this.caretPos == -1)
+	    this.comboBox.getEditor().positionCaret(textLength);
+	else this.comboBox.getEditor().positionCaret(this.caretPos);
+	this.moveCaretToPos = false;
     }
 
 }

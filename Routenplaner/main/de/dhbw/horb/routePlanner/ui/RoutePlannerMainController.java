@@ -135,13 +135,13 @@ public class RoutePlannerMainController {
 
 	    if (this.calculationMethodToggleGroup.getSelectedToggle() == null)
 		Dialogs.create().title("Keine Berechnung möglich!")
-			.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
+		.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
 	    else if (this.evaluationMethodToggleGroup.getSelectedToggle() == null)
 		Dialogs.create().title("Keine Berechnung möglich!")
-			.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+		.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
 	    else if (start == end)
 		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
-			.showError();
+		.showError();
 	    else {
 
 		//tabPane.getTabs().remove(calculatedRouteTab);
@@ -159,7 +159,7 @@ public class RoutePlannerMainController {
 	    }
 
 	} else Dialogs.create().title("Keine Berechnung möglich!")
-		.message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+	.message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 
     }
 
@@ -201,11 +201,11 @@ public class RoutePlannerMainController {
     void infoButtonClicked(ActionEvent event) {
 
 	Dialogs.create()
-	.message(
-		"Dieses Java-Programm entstand im Rahmen der Vorlesung \"Programmieren I + II\" an der DHBW "
-				+ "Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, Simon Stehle, "
-				+ "Sebastian Penhouet und Robin Kinting").style(DialogStyle.CROSS_PLATFORM_DARK)
-		.showInformation();
+		.message(
+			"Dieses Java-Programm entstand im Rahmen der Vorlesung \"Programmieren I + II\" an der DHBW "
+			+ "Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, Simon Stehle, "
+			+ "Sebastian Penhouet und Robin Kinting").style(DialogStyle.CROSS_PLATFORM_DARK)
+			.showInformation();
 
     }
 
@@ -267,13 +267,13 @@ public class RoutePlannerMainController {
 		    generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
-		    //TODO Liste aufbauen
+		    //Liste aufbauen
 		    RoutePlannerMainController.this.calculatedRouteListView
-			    .setItems(UIEvaluationInterface.allDestinationNodeNames);
+		    .setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
 			    .getValue());
 		    RoutePlannerMainController.this.destinationLabel
-			    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
+		    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
 
 		    DecimalFormat f = new DecimalFormat("#0.00");
 		    RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
