@@ -1031,7 +1031,7 @@ OpenLayers.Pixel = OpenLayers.Class({
     },
     distanceTo: function(px) {
         return Math.sqrt(Math.pow(this.x - px.x, 2) +
-            Math.pow(this.y - px.y, 2));
+                         Math.pow(this.y - px.y, 2));
     },
     add: function(x, y) {
         if ((x == null) || (y == null)) {
@@ -1397,7 +1397,7 @@ OpenLayers.Util.distVincenty = function(p1, p2) {
         var sinLambda = Math.sin(lambda),
             cosLambda = Math.cos(lambda);
         var sinSigma = Math.sqrt((cosU2 * sinLambda) * (cosU2 * sinLambda) +
-            (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) * (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
+                                 (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) * (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
         if (sinSigma == 0) {
             return 0;
         }
@@ -1417,7 +1417,7 @@ OpenLayers.Util.distVincenty = function(p1, p2) {
     var A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
     var B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
     var deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) -
-        B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
+                                                           B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
     var s = b * A * (sigma - deltaSigma);
     var d = s.toFixed(3) / 1000;
     return d;
@@ -1450,7 +1450,7 @@ OpenLayers.Util.destinationVincenty = function(lonlat, brng, dist) {
         var sinSigma = Math.sin(sigma);
         var cosSigma = Math.cos(sigma);
         var deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) -
-            B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
+                                                               B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
         sigmaP = sigma;
         sigma = s / (b * A) + deltaSigma;
     }
@@ -2423,7 +2423,7 @@ OpenLayers.Format.WKT = OpenLayers.Class(OpenLayers.Format, {
             var array = [];
             for (var i = 0, len = multipoint.components.length; i < len; ++i) {
                 array.push('(' +
-                    this.extract.point.apply(this, [multipoint.components[i]]) + ')');
+                           this.extract.point.apply(this, [multipoint.components[i]]) + ')');
             }
             return array.join(',');
         },
@@ -2438,7 +2438,7 @@ OpenLayers.Format.WKT = OpenLayers.Class(OpenLayers.Format, {
             var array = [];
             for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
                 array.push('(' +
-                    this.extract.linestring.apply(this, [multilinestring.components[i]]) + ')');
+                           this.extract.linestring.apply(this, [multilinestring.components[i]]) + ')');
             }
             return array.join(',');
         },
@@ -2446,7 +2446,7 @@ OpenLayers.Format.WKT = OpenLayers.Class(OpenLayers.Format, {
             var array = [];
             for (var i = 0, len = polygon.components.length; i < len; ++i) {
                 array.push('(' +
-                    this.extract.linestring.apply(this, [polygon.components[i]]) + ')');
+                           this.extract.linestring.apply(this, [polygon.components[i]]) + ')');
             }
             return array.join(',');
         },
@@ -2454,7 +2454,7 @@ OpenLayers.Format.WKT = OpenLayers.Class(OpenLayers.Format, {
             var array = [];
             for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
                 array.push('(' +
-                    this.extract.polygon.apply(this, [multipolygon.components[i]]) + ')');
+                           this.extract.polygon.apply(this, [multipolygon.components[i]]) + ')');
             }
             return array.join(',');
         },
@@ -3914,19 +3914,19 @@ OpenLayers.Map = OpenLayers.Class({
                     lonlat = new OpenLayers.LonLat(maxCenter.lon, lonlat.lat);
                 } else if (extent.left < this.restrictedExtent.left) {
                     lonlat = lonlat.add(this.restrictedExtent.left -
-                        extent.left, 0);
+                                        extent.left, 0);
                 } else if (extent.right > this.restrictedExtent.right) {
                     lonlat = lonlat.add(this.restrictedExtent.right -
-                        extent.right, 0);
+                                        extent.right, 0);
                 }
                 if (extent.getHeight() > this.restrictedExtent.getHeight()) {
                     lonlat = new OpenLayers.LonLat(lonlat.lon, maxCenter.lat);
                 } else if (extent.bottom < this.restrictedExtent.bottom) {
                     lonlat = lonlat.add(0, this.restrictedExtent.bottom -
-                        extent.bottom);
+                                        extent.bottom);
                 } else if (extent.top > this.restrictedExtent.top) {
                     lonlat = lonlat.add(0, this.restrictedExtent.top -
-                        extent.top);
+                                        extent.top);
                 }
             }
         }
@@ -5663,7 +5663,7 @@ OpenLayers.Layer.Google = OpenLayers.Class(OpenLayers.Layer.EventPane, OpenLayer
             options.version = typeof GMap2 === "function" ? "2" : "3";
         }
         var mixin = OpenLayers.Layer.Google["v" +
-            options.version.replace(/\./g, "_")];
+                                            options.version.replace(/\./g, "_")];
         if (mixin) {
             OpenLayers.Util.applyDefaults(options, mixin);
         } else {
@@ -6540,7 +6540,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                     attributes: {
                         handle: options && options.handle,
                         typeName: (this.featureNS ? this.featurePrefix + ":" : "") +
-                            this.featureType
+                        this.featureType
                     }
                 });
                 if (this.featureNS) {
@@ -6600,7 +6600,7 @@ OpenLayers.Format.WFST.v1 = OpenLayers.Class(OpenLayers.Format.XML, {
                     attributes: {
                         handle: options && options.handle,
                         typeName: (this.featureNS ? this.featurePrefix + ":" : "") +
-                            this.featureType
+                        this.featureType
                     }
                 });
                 if (this.featureNS) {
@@ -7596,7 +7596,7 @@ OpenLayers.Geometry.segmentsIntersect = function(seg1, seg2, options) {
                         x = seg["x" + j];
                         y = seg["y" + j];
                         dist = Math.sqrt(Math.pow(x - intersection.x, 2) +
-                            Math.pow(y - intersection.y, 2));
+                                         Math.pow(y - intersection.y, 2));
                         if (dist < tolerance) {
                             intersection.x = x;
                             intersection.y = y;
@@ -8698,7 +8698,7 @@ OpenLayers.Geometry.LinearRing = OpenLayers.Class(OpenLayers.Geometry.LineString
                 p1 = ring.components[i];
                 p2 = ring.components[i + 1];
                 area += OpenLayers.Util.rad(p2.x - p1.x) * (2 + Math.sin(OpenLayers.Util.rad(p1.y)) +
-                    Math.sin(OpenLayers.Util.rad(p2.y)));
+                                                            Math.sin(OpenLayers.Util.rad(p2.y)));
             }
             area = area * 6378137.0 * 6378137.0 / 2.0;
         }
@@ -9246,11 +9246,11 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
         var geometry = feature.geometry;
         var geometryNode = this.buildGeometryNode(geometry);
         var geomContainer = this.createElementNS(this.featureNS, this.featurePrefix + ":" +
-            this.geometryName);
+                                                 this.geometryName);
         geomContainer.appendChild(geometryNode);
         var featureNode = this.createElementNS(this.gmlns, "gml:" + this.featureName);
         var featureContainer = this.createElementNS(this.featureNS, this.featurePrefix + ":" +
-            this.layerName);
+                                                    this.layerName);
         var fid = feature.fid || feature.id;
         featureContainer.setAttribute("fid", fid);
         featureContainer.appendChild(geomContainer);
@@ -9258,7 +9258,7 @@ OpenLayers.Format.GML = OpenLayers.Class(OpenLayers.Format.XML, {
             var attrText = this.createTextNode(feature.attributes[attr]);
             var nodename = attr.substring(attr.lastIndexOf(":") + 1);
             var attrContainer = this.createElementNS(this.featureNS, this.featurePrefix + ":" +
-                nodename);
+                                                     nodename);
             attrContainer.appendChild(attrText);
             featureContainer.appendChild(attrContainer);
         }
@@ -10587,7 +10587,7 @@ OpenLayers.Format.WFST.v1_1_0 = OpenLayers.Class(OpenLayers.Format.Filter.v1_1_0
                 var node = this.createElementNSPlus("wfs:Query", {
                     attributes: {
                         typeName: (prefix ? prefix + ":" : "") +
-                            options.featureType,
+                        options.featureType,
                         srsName: options.srsName
                     }
                 });
@@ -10692,7 +10692,7 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
             case "Geometry":
                 if (OpenLayers.Util.indexOf(["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "Box", "GeometryCollection"], obj.type) == -1) {
                     OpenLayers.Console.error("Unsupported geometry type: " +
-                        obj.type);
+                                             obj.type);
                 } else {
                     valid = true;
                 }
@@ -10705,7 +10705,7 @@ OpenLayers.Format.GeoJSON = OpenLayers.Class(OpenLayers.Format.JSON, {
                     valid = true;
                 } else {
                     OpenLayers.Console.error("Cannot convert types from " +
-                        obj.type + " to " + type);
+                                             obj.type + " to " + type);
                 }
         }
         return valid;
@@ -11774,9 +11774,9 @@ OpenLayers.Layer.Grid = OpenLayers.Class(OpenLayers.Layer.HTTPRequest, {
         var tileMapHeight = resolution * this.tileSize.h;
         var mapPoint = this.getLonLatFromViewPortPx(viewPortPx);
         var tileLeft = maxExtent.left + (tileMapWidth * Math.floor((mapPoint.lon -
-            maxExtent.left) / tileMapWidth));
+                                                                    maxExtent.left) / tileMapWidth));
         var tileBottom = maxExtent.bottom + (tileMapHeight * Math.floor((mapPoint.lat -
-            maxExtent.bottom) / tileMapHeight));
+                                                                         maxExtent.bottom) / tileMapHeight));
         return new OpenLayers.Bounds(tileLeft, tileBottom, tileLeft + tileMapWidth, tileBottom + tileMapHeight);
     },
     CLASS_NAME: "OpenLayers.Layer.Grid"
@@ -12272,12 +12272,12 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
                 var backgrnd = this.createElementNS("", "BACKGROUND");
                 propElem.appendChild(backgrnd);
                 backgrnd.setAttribute("color", props.background.color.r + "," +
-                    props.background.color.g + "," +
-                    props.background.color.b);
+                                      props.background.color.g + "," +
+                                      props.background.color.b);
                 if (props.background.transcolor !== null) {
                     backgrnd.setAttribute("transcolor", props.background.transcolor.r + "," +
-                        props.background.transcolor.g + "," +
-                        props.background.transcolor.b);
+                                          props.background.transcolor.g + "," +
+                                          props.background.transcolor.b);
                 }
             }
             if (props.layerlist != null && props.layerlist.length > 0) {
@@ -12576,7 +12576,7 @@ OpenLayers.Format.ArcXML = OpenLayers.Class(OpenLayers.Format.XML, {
         if (!(polygon instanceof OpenLayers.Geometry.Polygon)) {
             throw {
                 message: 'Cannot write polygon geometry to ArcXML with an ' +
-                    polygon.CLASS_NAME + ' object.',
+                polygon.CLASS_NAME + ' object.',
                 geometry: polygon
             };
         }
@@ -15643,7 +15643,7 @@ OpenLayers.Handler.Feature = OpenLayers.Class(OpenLayers.Handler, {
         if (key) {
             if (type == 'click' && this.up && this.down) {
                 var dpx = Math.sqrt(Math.pow(this.up.x - this.down.x, 2) +
-                    Math.pow(this.up.y - this.down.y, 2));
+                                    Math.pow(this.up.y - this.down.y, 2));
                 if (dpx <= this.clickTolerance) {
                     this.callback(key, args);
                 }
@@ -17147,8 +17147,8 @@ OpenLayers.Layer.XYZ = OpenLayers.Class(OpenLayers.Layer.Grid, {
         url = url || this.url;
         name = name || this.name;
         var newArguments = [name, url, {},
-            options
-        ];
+                            options
+                           ];
         OpenLayers.Layer.Grid.prototype.initialize.apply(this, newArguments);
     },
     clone: function(obj) {
@@ -17438,11 +17438,11 @@ OpenLayers.Layer.PointGrid = OpenLayers.Class(OpenLayers.Layer.Vector, {
     },
     CLASS_NAME: "OpenLayers.Layer.PointGrid"
 });
- OpenLayers.Handler.MouseWheel = OpenLayers.Class(OpenLayers.Handler, {
-     wheelListener: null,
-     mousePosition: null,
-     interval: 0,
-     delta: 0,
+OpenLayers.Handler.MouseWheel = OpenLayers.Class(OpenLayers.Handler, {
+    wheelListener: null,
+    mousePosition: null,
+    interval: 0,
+    delta: 0,
     cumulative: true,
     initialize: function(control, callbacks, options) {
         OpenLayers.Handler.prototype.initialize.apply(this, arguments);
@@ -18002,7 +18002,7 @@ OpenLayers.Format.WFST.v1_0_0 = OpenLayers.Class(OpenLayers.Format.Filter.v1_0_0
                 var node = this.createElementNSPlus("wfs:Query", {
                     attributes: {
                         typeName: (prefix ? prefix + ":" : "") +
-                            options.featureType
+                        options.featureType
                     }
                 });
                 if (options.srsNameInQuery && options.srsName) {
@@ -19434,8 +19434,8 @@ OpenLayers.Date = {
         if (arguments.length > 4)
             this._object.open(sMethod, sUrl, bAsync, sUser, sPassword);
         else
-        if (arguments.length > 3)
-            this._object.open(sMethod, sUrl, bAsync, sUser);
+            if (arguments.length > 3)
+                this._object.open(sMethod, sUrl, bAsync, sUser);
         else
             this._object.open(sMethod, sUrl, bAsync);
         this.readyState = cXMLHttpRequest.OPENED;
@@ -20078,7 +20078,7 @@ OpenLayers.Format.KML = OpenLayers.Class(OpenLayers.Format.XML, {
                         points[i] = new OpenLayers.Geometry.Point(coords[0], coords[1], coords[2]);
                     } else {
                         throw "Bad LineString point coordinates: " +
-                        pointList[i];
+                            pointList[i];
                     }
                 }
                 if (numPoints) {
@@ -20721,15 +20721,15 @@ OpenLayers.Popup = OpenLayers.Class({
         if (origTL.x < this.map.paddingForPopups.left) {
             newTL.x = this.map.paddingForPopups.left;
         } else
-        if ((origTL.x + this.size.w) > (mapSize.w - this.map.paddingForPopups.right)) {
-            newTL.x = mapSize.w - this.map.paddingForPopups.right - this.size.w;
-        }
+            if ((origTL.x + this.size.w) > (mapSize.w - this.map.paddingForPopups.right)) {
+                newTL.x = mapSize.w - this.map.paddingForPopups.right - this.size.w;
+            }
         if (origTL.y < this.map.paddingForPopups.top) {
             newTL.y = this.map.paddingForPopups.top;
         } else
-        if ((origTL.y + this.size.h) > (mapSize.h - this.map.paddingForPopups.bottom)) {
-            newTL.y = mapSize.h - this.map.paddingForPopups.bottom - this.size.h;
-        }
+            if ((origTL.y + this.size.h) > (mapSize.h - this.map.paddingForPopups.bottom)) {
+                newTL.y = mapSize.h - this.map.paddingForPopups.bottom - this.size.h;
+            }
         var dx = origTL.x - newTL.x;
         var dy = origTL.y - newTL.y;
         this.map.pan(dx, dy);
@@ -20910,7 +20910,7 @@ OpenLayers.Rico.Color.createFromHex = function(hexCode) {
         var hexCode = '#';
         for (var i = 1; i < 4; i++) {
             hexCode += (shortHexCode.charAt(i) +
-                shortHexCode.charAt(i));
+                        shortHexCode.charAt(i));
         }
     }
     if (hexCode.indexOf('#') == 0) {
@@ -21515,7 +21515,7 @@ OpenLayers.Protocol.WFS.v1 = OpenLayers.Class(OpenLayers.Protocol, {
         var deleteNode = this.format.createElementNSPlus("wfs:Delete", {
             attributes: {
                 typeName: (options.featureNS ? this.featurePrefix + ":" : "") +
-                    options.featureType
+                options.featureType
             }
         });
         if (options.featureNS) {
@@ -23517,7 +23517,7 @@ OpenLayers.Kinetic = OpenLayers.Class({
         }
         var time = new Date().getTime() - last.tick;
         var dist = Math.sqrt(Math.pow(xy.x - last.xy.x, 2) +
-            Math.pow(xy.y - last.xy.y, 2));
+                             Math.pow(xy.y - last.xy.y, 2));
         var speed = dist / time;
         if (speed == 0 || speed < this.threshold) {
             return;
@@ -25016,7 +25016,7 @@ OpenLayers.Renderer.SVG = OpenLayers.Class(OpenLayers.Renderer.Elements, {
                 rotation |= 0;
                 if (node.nodeName !== "svg") {
                     node.setAttributeNS(null, "transform", "rotate(" + rotation + " " + pos.x + " " +
-                        pos.y + ")");
+                                        pos.y + ")");
                 } else {
                     var metrics = this.symbolMetrics[src.id];
                     node.firstChild.setAttributeNS(null, "transform", "rotate(" + rotation + " " + metrics[1] + " " + metrics[2] + ")");
@@ -26086,8 +26086,8 @@ OpenLayers.Layer.TileCache = OpenLayers.Class(OpenLayers.Layer.Grid, {
     initialize: function(name, url, layername, options) {
         this.layername = layername;
         OpenLayers.Layer.Grid.prototype.initialize.apply(this, [name, url, {},
-            options
-        ]);
+                                                                options
+                                                               ]);
         this.extension = this.format.split('/')[1].toLowerCase();
         this.extension = (this.extension == 'jpg') ? 'jpeg' : this.extension;
     },
@@ -26559,8 +26559,8 @@ OpenLayers.Layer.XYZ = OpenLayers.Class(OpenLayers.Layer.Grid, {
         url = url || this.url;
         name = name || this.name;
         var newArguments = [name, url, {},
-            options
-        ];
+                            options
+                           ];
         OpenLayers.Layer.Grid.prototype.initialize.apply(this, newArguments);
     },
     clone: function(obj) {
@@ -26977,7 +26977,7 @@ OpenLayers.Handler.Click = OpenLayers.Class(OpenLayers.Handler, {
     },
     getTouchDistance: function(from, to) {
         return Math.sqrt(Math.pow(from.clientX - to.clientX, 2) +
-            Math.pow(from.clientY - to.clientY, 2));
+                         Math.pow(from.clientY - to.clientY, 2));
     },
     passesDblclickTolerance: function(evt) {
         var passes = true;
@@ -30044,7 +30044,7 @@ OpenLayers.Handler.Pinch = OpenLayers.Class(OpenLayers.Handler, {
         var t0 = touches[0];
         var t1 = touches[1];
         return Math.sqrt(Math.pow(t0.clientX - t1.clientX, 2) +
-            Math.pow(t0.clientY - t1.clientY, 2));
+                         Math.pow(t0.clientY - t1.clientY, 2));
     },
     getPinchData: function(evt) {
         var distance = this.getDistance(evt.touches);
@@ -30629,7 +30629,7 @@ OpenLayers.Handler.Hover = OpenLayers.Class(OpenLayers.Handler, {
         var passes = true;
         if (this.pixelTolerance && this.px) {
             var dpx = Math.sqrt(Math.pow(this.px.x - px.x, 2) +
-                Math.pow(this.px.y - px.y, 2));
+                                Math.pow(this.px.y - px.y, 2));
             if (dpx < this.pixelTolerance) {
                 passes = false;
             }
@@ -33356,7 +33356,7 @@ OpenLayers.Layer.Zoomify = OpenLayers.Class(OpenLayers.Layer.Grid, {
         this.tileCountUpToTier[0] = 0;
         for (var i = 1; i < this.numberOfTiers; i++) {
             this.tileCountUpToTier.push(this.tierSizeInTiles[i - 1].w * this.tierSizeInTiles[i - 1].h +
-                this.tileCountUpToTier[i - 1]);
+                                        this.tileCountUpToTier[i - 1]);
         }
     },
     destroy: function() {
