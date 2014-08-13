@@ -25,12 +25,14 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     private boolean moveCaretToPos = false;
     private int caretPos;
     private Map<String, List<String>> nodes = null;
+    private Map<String, List<Map<String, String>>> routes = null;
 
     public AutoCompleteComboBoxListener(final ComboBox<String> comboBox) {
 	this.comboBox = comboBox;
 
 	try {
 	    nodes = StAXMapGraphDataParser.getNodeXMLMap();
+	    routes = StAXMapGraphDataParser.getRouteXMLMap();
 	} catch (FileNotFoundException | XMLStreamException e) {
 	    e.printStackTrace();
 	}
@@ -86,13 +88,26 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
 	for (Map.Entry<String, List<String>> entry : nodes.entrySet()) {
 	    String key = entry.getKey();
-	    if (key == null)
+	    List<String> value = entry.getValue();
+
+	    if (key == null || value == null)
 		continue;
 
 	    if (SupportMethods.isNumeric(key))
 		continue;
 
-	    if (key.toLowerCase().contains(input.toLowerCase()))
+	    Boolean hasRoute = false;
+	    for (String id : value) {
+		if (id == null)
+		    continue;
+
+		if (routes.get(id) != null) {
+		    hasRoute = true;
+		    break;
+		}
+	    }
+
+	    if (hasRoute && key.toLowerCase().contains(input.toLowerCase()))
 		names.add(key);
 	}
 
