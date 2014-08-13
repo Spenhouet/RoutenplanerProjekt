@@ -96,6 +96,10 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 	    if (SupportMethods.isNumeric(key))
 		continue;
 
+	    List<String> s = nodes.get(key);
+	    if (s == null || s.isEmpty() || s.size() < 2)
+		continue;
+
 	    Boolean hasRoute = false;
 	    for (String id : value) {
 		if (id == null)
