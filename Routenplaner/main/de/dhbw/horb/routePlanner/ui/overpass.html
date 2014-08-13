@@ -154,22 +154,6 @@
 				 
       }
 	  
-	  function change_visibility(type, visibility) {
-	    if (type == 'way') {
-			list = way_array;
-		} else{
-			list = node_array;
-		}
-		for (index = 0; index < list.length; ++index) {
-			try {
-				$('#' + list[index]).css("display", visibility);
-			}
-			catch(err) {
-				
-			}
-		}
-	  }
-	  
   </script>
 </head>
 <body">
