@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -24,7 +23,7 @@ public class Dijkstra {
     private Junction startnode;
     private Junction endnode;
     private Junction nearestNode;
-    private Map<String, Map<String, String>> routes;
+    private Map<String, List<Map<String, String>>> routes;
     private Map<String, List<String>> nodeMap;
     private Map<Junction, Integer> nodePrice = new HashMap<Junction, Integer>();
 
@@ -70,12 +69,10 @@ public class Dijkstra {
 
 	for (String id : initialNode.getIds()) {
 
-	    Map<String, String> map = routes.get(id);
-	    Set<String> keys = map.keySet();
+	    List<Map<String, String>> maps = routes.get(id);
 
-	    for (String singleKey : keys) {
+	    for (Map<String, String> map : maps) {
 
-		map.get(singleKey);
 		//		if (duration()) {
 		//		    buildJunctionByDestination(entry.get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
 		//			    m.get(Constants.NEW_ROUTE_DURATION));
@@ -84,10 +81,10 @@ public class Dijkstra {
 		//			    m.get(Constants.NEW_ROUTE_DISTANCE));
 		//		}
 
-		Junction neighbour = new Junction(routes.get(id).get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
-			nodeMap.get(routes.get(id).get(Constants.NEW_ROUTE_DESTINATIONNODENAME)));
-		neighbour.setDuration(Long.valueOf(routes.get(id).get(Constants.NEW_ROUTE_DURATION)));
-		neighbour.setDistance(Double.valueOf(routes.get(id).get(Constants.NEW_ROUTE_DISTANCE)));
+		Junction neighbour = new Junction(map.get(Constants.NEW_ROUTE_DESTINATIONNODENAME), nodeMap.get(map
+			.get(Constants.NEW_ROUTE_DESTINATIONNODENAME)));
+		neighbour.setDuration(Long.valueOf(map.get(Constants.NEW_ROUTE_DURATION)));
+		neighbour.setDistance(Double.valueOf(map.get(Constants.NEW_ROUTE_DISTANCE)));
 		currentNeighbours.add(neighbour);
 	    }
 
