@@ -4,8 +4,8 @@ public class ControllerTest {
 
     public static void main(String[] args) {
 
-	String startnode = "Halle/Peißen (17)";
-	String endnode = "Günzburg (67)";
+	String startnode = "Berlin-Marzahn (3)";
+	String endnode = "Horb am Neckar (30)";
 	String calcMethod = "Dauer";
 
 	Dijkstra dijkstra = new Dijkstra(startnode, endnode);

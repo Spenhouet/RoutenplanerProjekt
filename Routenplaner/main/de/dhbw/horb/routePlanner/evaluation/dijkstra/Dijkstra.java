@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
+import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 /**
  * Klasse Dijkstra
@@ -37,7 +38,7 @@ public class Dijkstra {
     private Paths rightPaths;
     private boolean targetReached;
     private String calcMethod;
-    String test;
+    private String test;
 
     public Dijkstra(String startnode, String endnode) {
 
@@ -69,9 +70,11 @@ public class Dijkstra {
 
 	    if (prioQue.getFirst().equals(endnode)) {
 		targetReached = true;
-		System.out.print("Ziel erreicht");
+		System.out.println("Ziel erreicht");
 		pickRightWays();
-		rightPaths.initializeCheapestWay();
+		if (!rightPaths.isEmpty())
+		    rightPaths.initializeCheapestWay();
+		UIEvaluationInterface.printRoute(rightPaths.getCheapestWay().getEdges());
 	    }
 	}
     }
@@ -84,20 +87,14 @@ public class Dijkstra {
 
 	for (String focusedNeighbour : keys) {
 
-	    if (Long.valueOf(currentNeighbours.get(focusedNeighbour).get(Constants.EVALUATION_CALCULATION_DURATION))
-		    + nodeDuration.get(initialNode) < nodeDuration.get(focusedNeighbour)
+	    if (valueOfNeighbour(focusedNeighbour) + nodeDuration.get(initialNode) < nodeDuration.get(focusedNeighbour)
 		    || nodeDuration.get(focusedNeighbour) == 0) {
 
-		// Wenn es einen billigeren Weg zu einer bestimmten Kreuzung gibt sollen alle anderen Wege zu dieser Kreuzung gelöscht werden
 		if (nodeDuration.get(focusedNeighbour) != 0) {
 		    deleteWay(focusedNeighbour);
 		}
 
-		setNodeDuration(
-			focusedNeighbour,
-			Long.valueOf(currentNeighbours.get(focusedNeighbour).get(
-				Constants.EVALUATION_CALCULATION_DURATION))
-				+ nodeDuration.get(initialNode));
+		setNodeDuration(focusedNeighbour, valueOfNeighbour(focusedNeighbour) + nodeDuration.get(initialNode));
 
 		if (!prioQue.contains(focusedNeighbour) && !focusedNeighbour.equals(startnode))
 		    cheapNeighbours.add(focusedNeighbour);
@@ -113,14 +110,9 @@ public class Dijkstra {
 	int numberOfNewWays = 0;
 	Long duration = (long) 0;
 	List<String> goneNodes = null;
-	// Lösche Wege die nur wieder zurückgehen könnten um ans Ziel zu kommen
-	if (nearestNode != startnode && currentNeighbours.size() == 1 && nearestNode != endnode) {
-	    deleteWay(nearestNode);
-	    return;
-	}
 
 	for (int i = 0; i <= allPaths.size() - 1; i++) {
-	    if (allPaths.get(i).getLastNode() == nearestNode) {
+	    if (allPaths.get(i).getLastNode().equals(nearestNode)) {
 		duration = allPaths.get(i).getPrice();
 		goneNodes = allPaths.get(i).getNodes();
 		numberOfNewWays++;
@@ -128,7 +120,6 @@ public class Dijkstra {
 	    }
 	}
 	addNewWays(numberOfNewWays, goneNodes, duration);
-	// Füge gegangenen Knoten zu goneNodes hinzu
 	this.goneNodes.add(nearestNode);
 
 	currentNeighbours.clear();
@@ -147,18 +138,9 @@ public class Dijkstra {
 
 		    String neighbour = map.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 
-		    if (currentNeighbours.isEmpty()
-			    || Long.valueOf(currentNeighbours.get(neighbour).get(
-				    Constants.EVALUATION_CALCULATION_DURATION)) == null
-			    || Long.valueOf(currentNeighbours.get(neighbour).get(
-				    Constants.EVALUATION_CALCULATION_DURATION)) > Long.valueOf(map
-				    .get(Constants.NEW_ROUTE_DURATION))) {
+		    if (!currentNeighbours.containsKey(neighbour)
+			    || valueOfNeighbour(neighbour) > Long.valueOf(map.get(Constants.NEW_ROUTE_DURATION)))
 			currentNeighbours.put(neighbour, map);
-
-			//TESTWEISE:
-			Map<String, String> innereMap = currentNeighbours.get(neighbour);
-			test = innereMap.get(Constants.EVALUATION_CALCULATION_DURATION);
-		    }
 		}
 	    }
 	}
@@ -196,12 +178,9 @@ public class Dijkstra {
 	for (String focusedNeighbour : neighbours) {
 
 	    for (int i = 0; i < numberOfNewWays; i++) {
-		// Gehe nicht zum vorherigen Punkt zurück
 		if (!this.goneNodes.contains(focusedNeighbour)) {
-		    // Erweitere alle Wege die für nearestNode in Frage kommen
-		    allPaths.add(new Way(goneNodes, duration, focusedNeighbour, Long.valueOf(currentNeighbours.get(
-			    focusedNeighbour).get(Constants.EVALUATION_CALCULATION_DURATION)), currentNeighbours
-			    .get(focusedNeighbour)));
+		    allPaths.add(new Way(goneNodes, duration, focusedNeighbour, valueOfNeighbour(focusedNeighbour),
+			    currentNeighbours.get(focusedNeighbour)));
 		}
 
 	    }
@@ -217,6 +196,12 @@ public class Dijkstra {
 	    if (!SupportMethods.isNumeric(singleKey))
 		nodeDuration.put(singleKey, (long) 0);
 	}
+    }
+
+    private Long valueOfNeighbour(String initialNode) {
+	String valueString = currentNeighbours.get(initialNode).get(Constants.NEW_ROUTE_DURATION);
+	Long valueLong = Long.valueOf(valueString);
+	return valueLong;
     }
 
     public void printNodes() {
