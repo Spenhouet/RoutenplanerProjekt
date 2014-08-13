@@ -16,7 +16,7 @@ import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
 /**
  * Klasse Dijkstra
- * Berechnet kürzeste Route von Start zu  Zielknoten
+ * Berechnet kürzeste bzw schnellste Route von Start zu  Zielknoten
  * @author Simon
  *
  */
@@ -55,8 +55,12 @@ public class Dijkstra {
 	allPaths.add(new Way(startnode, endnode));
     }
 
+    /**
+     * Berechnet neue Nachbarpreise, initialisiert Wege und sortiert Abarbeitungsschlange der offenen Knoten
+     * @param calcMethod Algorithmus berechnet nach Strecke oder Dauer
+     * @return Liste mit einzelnen Wegen in Form von Maps
+     */
     public List<Map<String, String>> calculateRoute(String calcMethod) {
-	//TODO: startnode == endnode
 
 	this.calcMethod = calcMethod;
 
@@ -81,6 +85,10 @@ public class Dijkstra {
 	return null;
     }
 
+    /**
+     * Berechnet Preise (Dauer oder Strecke) zu einzelnen Nachbarn
+     * @param initialNode Ausgangsknoten von dem Nachbarn in Betracht gezogen werden
+     */
     private void calcNewNodePrices(String initialNode) {
 
 	initializeCurrentNeighbours(initialNode);
@@ -108,6 +116,9 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * Initialisiert Wege
+     */
     private void initializeRoute() {
 
 	int numberOfNewWays = 0;
@@ -130,6 +141,10 @@ public class Dijkstra {
 	currentNeighbours.clear();
     }
 
+    /**
+     * Initialisert aktuelle Nachbarn
+     * @param initialNode Ausgangsknoten von dem Nachbarn initialisiert werden
+     */
     private void initializeCurrentNeighbours(String initialNode) {
 
 	List<String> ids = nodeMap.get(initialNode);
@@ -153,6 +168,9 @@ public class Dijkstra {
 
     }
 
+    /**
+     * Sortiert Liste für noch abzuarbeitende Knoten nach deren Preis (Dauer oder Strecke)
+     */
     private void sortPrioQue() {
 
 	for (String cheapNeighbour : cheapNeighbours) {
@@ -165,6 +183,9 @@ public class Dijkstra {
 
     }
 
+    /**
+     * Sortieralgorithmus für Sortieren der Liste
+     */
     private void prioQueInsertionSort() {
 
 	for (int i = 0; i < prioQue.size(); i++) {
@@ -177,7 +198,15 @@ public class Dijkstra {
 	}
     }
 
-    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Double price, List<Map<String, String>> edges) {
+    /**
+     * 
+     * @param numberOfNewWays Anzahl der neuen Wege
+     * @param goneNodes Knoten, die bis dahin gegangen wurden
+     * @param price Preis (Dauer oder Strecke) bis dahin
+     * @param edges Strecken, die bis dahin gegangen wurden
+     */
+    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Double gonePrice,
+	    List<Map<String, String>> edges) {
 
 	Set<String> neighbours = currentNeighbours.keySet();
 
@@ -185,7 +214,7 @@ public class Dijkstra {
 
 	    for (int i = 0; i < numberOfNewWays; i++) {
 		if (!this.goneNodes.contains(focusedNeighbour)) {
-		    allPaths.add(new Way(goneNodes, price, focusedNeighbour, getValue(currentNeighbours
+		    allPaths.add(new Way(goneNodes, gonePrice, focusedNeighbour, getValue(currentNeighbours
 			    .get(focusedNeighbour)), edges, currentNeighbours.get(focusedNeighbour)));
 		}
 
@@ -193,6 +222,9 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * Initialisiert Hilfsmap für Preise der Knoten
+     */
     private void initializeNodePrice() {
 
 	Set<String> keys = nodeMap.keySet();
@@ -204,31 +236,40 @@ public class Dijkstra {
 	}
     }
 
-    private Double getValue(Map<String, String> map) {
+    /**
+     * Gibt Preis in Abhängigkeit von der Berechnungsmethode Dauer oder Strecke zurück
+     * @param map Kante, für die die Dauer oder die Strecke zurückgegeben wird
+     * @return Preis
+     */
+    private Double getValue(Map<String, String> edge) {
 	String valueString;
 	switch (calcMethod) {
-	case Constants.NEW_ROUTE_DISTANCE:
-	    valueString = map.get(Constants.NEW_ROUTE_DURATION);
-	    Double valueLong = Double.valueOf(valueString);
+	case Constants.EVALUATION_CALCULATION_DURATION:
+	    valueString = edge.get(Constants.NEW_ROUTE_DURATION);
 	    break;
-	case Constants.NEW_ROUTE_DURATION:
-	    valueString = map.get(Constants.NEW_ROUTE_DISTANCE);
+	case Constants.EVALUATION_CALCULATION_DISTANCE:
+	    valueString = edge.get(Constants.NEW_ROUTE_DISTANCE);
 	    break;
 	default:
-	    valueString = map.get(Constants.NEW_ROUTE_DURATION);
+	    valueString = edge.get(Constants.NEW_ROUTE_DURATION);
 	}
 	if (!SupportMethods.isNumeric(valueString))
 	    return null;
 	return Double.valueOf(valueString);
     }
 
-    public void printNodes() {
-	Way way = rightPaths.getCheapestWay();
-	for (String node : way.getNodes()) {
-	    System.out.println(node);
-	}
-    }
+    //    public void printNodes() {
+    //	Way way = rightPaths.getCheapestWay();
+    //	for (String node : way.getNodes()) {
+    //	    System.out.println(node);
+    //	}
+    //    }
+    //
 
+    /**
+     * Löscht alle Wege, die als letzten Knoten den Parameter als Knoten besitzen
+     * @param initialNode Knoten, nach dem gelöscht wird
+     */
     private void deleteWay(String initialNode) {
 	for (int i = 0; i <= allPaths.size() - 1; i++) {
 	    if (allPaths.get(i).getLastNode().equals(initialNode)) {
@@ -237,6 +278,9 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * Speichert alle Wege, die am richtigen Zielknoten angekommen sind
+     */
     private void pickRightWays() {
 	for (int i = 0; i <= allPaths.size() - 1; i++) {
 	    if (allPaths.get(i).getLastNode().equals(endnode))
@@ -244,16 +288,13 @@ public class Dijkstra {
 	}
     }
 
-    public void setNodeDuration(String name, Double duration) {
-	nodeDuration.put(name, duration);
-    }
-
-    private boolean duration() {
-	return calcMethod.equals(Constants.EVALUATION_CALCULATION_DURATION);
-    }
-
-    private boolean distance() {
-	return calcMethod.equals(Constants.EVALUATION_CALCULATION_DISTANCE);
+    /**
+     * Setzt den Preis für einen Knoten
+     * @param name Key, für den Preis gesetzt werden soll
+     * @param price Preis der gesetzt wird
+     */
+    public void setNodeDuration(String name, Double price) {
+	nodeDuration.put(name, price);
     }
 
 }
