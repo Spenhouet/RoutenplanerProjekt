@@ -55,7 +55,7 @@ public class UIEvaluationInterface {
 
 		case Constants.EVALUATION_METHOD_DIJKSTRA:
 		    Dijkstra dijkstra = new Dijkstra(departure, destination);
-		    //		    		    route = dijkstra.calculateRoute(calculationMethod);
+		    route = dijkstra.calculateRoute(calculationMethod);
 		    break;
 		default:
 		    System.err.println("Unknown evaluation method.");
