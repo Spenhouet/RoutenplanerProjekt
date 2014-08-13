@@ -25,6 +25,8 @@ public interface Constants {
     public final static String STARTUP_CHECK_XML_NODES = "Überprüfe NodeXML...";
     public final static String STARTUP_CHECK_XML_ROUTES = "Überprüfe RouteXML...";
     public final static String STARTUP_ERROR_PREREQUISITES = "Startbedingungen nicht erfüllt!";
+    public final static String STARTUP_ERROR_FOLDER = "Programm-Ordner konnte nicht erstellt werden!";
+    public final static String STARTUP_ERROR_INTERNET = "Es besteht keine Verbindung zu den Overpass-Servern!";
     public final static String STARTUP_ERROR_XML_GRAPHDATA = "GraphDataXML konnte nicht heruntergeladen werden";
     public final static String STARTUP_ERROR_XML_NODES = "NodeXML/RouteXML konnte nicht erzeugt werden";
     public final static String STARTUP_ERROR_XML_ROUTES = "RouteXML/NodeXML konnte nicht erzeugt werden";
