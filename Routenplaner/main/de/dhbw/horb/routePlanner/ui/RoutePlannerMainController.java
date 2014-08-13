@@ -128,6 +128,8 @@ public class RoutePlannerMainController {
     @FXML
     void calculateRouteButtonClicked(ActionEvent event) {
 
+	disableCalculateRouteButton();
+
 	String start = startComboBox.getValue();
 	String end = targetComboBox.getValue();
 
@@ -284,6 +286,8 @@ public class RoutePlannerMainController {
 		    wayString = null;
 		    nodeString = null;
 		    UIEvaluationInterface.allWayIDs = null;
+
+		    enableCalculateRouteButton();
 		}
 
 	    }
