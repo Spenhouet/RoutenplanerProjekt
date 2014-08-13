@@ -24,6 +24,8 @@ public class UIEvaluationInterface {
     public static LinkedList<String> DepDestIDs;
     public static ArrayList<String> allDestinationNodes;
     public static ObservableList<String> allDestinationNodeNames;
+    public static Double distance;
+    public static Double duration;
 
     //    public static RoutePlannerMainApp routePlannerMainApp;
 
@@ -138,8 +140,8 @@ public class UIEvaluationInterface {
 
 	DecimalFormat f = new DecimalFormat("#0.00");
 
-	Double distance = 0.0;
-	Double duration = 0.0;
+	distance = 0.0;
+	duration = 0.0;
 	allWayIDs = new LinkedList<String>();
 	allNodeIDs = new LinkedList<String>();
 	DepDestIDs = new LinkedList<String>();

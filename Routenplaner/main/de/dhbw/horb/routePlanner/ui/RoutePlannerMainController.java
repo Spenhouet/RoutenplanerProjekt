@@ -1,5 +1,6 @@
 package de.dhbw.horb.routePlanner.ui;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 import javafx.beans.value.ChangeListener;
@@ -94,6 +95,12 @@ public class RoutePlannerMainController {
 
     @FXML
     private Label destinationLabel;
+
+    @FXML
+    private Label distanceLabel;
+
+    @FXML
+    private Label durationLabel;
 
     @FXML
     private ListView<String> calculatedRouteListView;
@@ -279,6 +286,18 @@ public class RoutePlannerMainController {
 		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    startLabel.setText(startComboBox.getValue());
 		    destinationLabel.setText(targetComboBox.getValue());
+
+		    DecimalFormat f = new DecimalFormat("#0.00");
+		    distanceLabel.setText(f.format(UIEvaluationInterface.distance) + " km");
+
+		    Long ms = SupportMethods.millisecondsToSeconds(UIEvaluationInterface.duration).longValue();
+		    Double m = SupportMethods.secondsToMinutes(ms.doubleValue());
+		    int hours = (int) Math.floor(m / 60.0);
+		    int minutes = (int) Math.floor(m % 60.0);
+		    int seconds = (int) Math.floor(SupportMethods.minutesToSeconds(m % 1));
+		    String routeDuration = String.format("%d Stunden %02d Minuten %02d Sekunden", hours, minutes,
+			    seconds);
+		    durationLabel.setText(routeDuration);
 		    calculatedRouteTab.getStyleClass().removeAll("hidden");
 		    SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 		    selectionModel.select(calculatedRouteTab);
