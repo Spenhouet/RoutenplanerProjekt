@@ -33,8 +33,8 @@ import de.dhbw.horb.routePlanner.data.SettingsManager;
 public class RoutePlannerMainController {
 
     // Reference to the main application.
-    private RoutePlannerMainApp routePlannerMainApp;
-    private WebEngine webEngine;;
+    public RoutePlannerMainApp routePlannerMainApp;
+    public WebEngine webEngine;
     public String linkEnd = Constants.LINK_LINKEND;
     public String wayString = null;
     public String nodeString = null;
@@ -155,8 +155,9 @@ public class RoutePlannerMainController {
 		    evaluationMethod = null;
 		    evaluationMethod = getEvaluationMethod();
 
-		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod);
-		    webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
+			    routePlannerMainApp);
+		    //webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
 
 		}
 
@@ -262,15 +263,8 @@ public class RoutePlannerMainController {
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 	    @Override
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
-
+		System.out.println("WebView State: " + newState.toString());
 		if (newState == Worker.State.SUCCEEDED) {
-		    //		    LinkedList<String> nodes = new LinkedList<>();
-		    //		    nodes.add("30898199");
-		    //		    nodes.add("30899103");
-		    //generateLinkQueries(UIEvaluationInterface.allWayIDs, nodes);
-		    //DEBUG:
-		    //System.out.println("Ways: " + wayString);
-		    //System.out.println("Nodes: " + nodeString);
 
 		    //Script in Website ausführen
 		    webEngine.executeScript("init()");
@@ -325,7 +319,7 @@ public class RoutePlannerMainController {
 		SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES, nodesColorPicker.getValue().toString());
 	    }
 	});
-
+	//webEngine.load(this.getClass().getResource("test.html").toExternalForm());
     }
 
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
@@ -398,4 +392,7 @@ public class RoutePlannerMainController {
 
     }
 
+    public void loadOverpassHTML() {
+	webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+    }
 }

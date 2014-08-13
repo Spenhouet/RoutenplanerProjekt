@@ -33,11 +33,11 @@ public class RoutePlannerMainApp extends Application {
     private StartupMainController startupController;
     public XMLFileManager fileManager;
     public boolean allXMLsExist;
+    public RoutePlannerMainController controller;
 
     public RoutePlannerMainApp() {
 
 	fileManager = new XMLFileManager();
-	//SupportMethods.fileManager = fileManager;
 
     }
 
@@ -45,6 +45,7 @@ public class RoutePlannerMainApp extends Application {
     public void start(Stage primaryStage) {
 	this.primaryStage = primaryStage;
 
+	checkXMLs();
 	executeStartupTask();
 
     }
@@ -285,7 +286,7 @@ public class RoutePlannerMainApp extends Application {
 	    // Set person overview into the center of root layout.
 	    rootLayout.setCenter(MainWindow);
 
-	    RoutePlannerMainController controller = loader.getController();
+	    controller = loader.getController();
 	    controller.setRoutePlannerMainApp(this);
 
 	    //	    try {
@@ -327,6 +328,11 @@ public class RoutePlannerMainApp extends Application {
 	    result = false;
 	}
 
+	return result;
+
+    }
+
+    private void checkXMLs() {
 	allXMLsExist = true;
 	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
 	    allXMLsExist = false;
@@ -337,9 +343,6 @@ public class RoutePlannerMainApp extends Application {
 	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
 	    allXMLsExist = false;
 	}
-
-	return result;
-
     }
 
     /**
