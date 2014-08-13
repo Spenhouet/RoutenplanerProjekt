@@ -124,6 +124,7 @@ public class UIEvaluationInterface {
 			.message(
 				"Bei der Berechnung der Route ist ein Fehler aufgetreten. Es wurde keine Route gefunden.")
 			.showError();
+		mainApp.controller.enableCalculateRouteButton();
 	    }
 	});
 
