@@ -46,16 +46,16 @@ public class UIEvaluationInterface {
 		    System.err.println("Unknown calculation method.");
 		    return -2;
 		}
-
+		List<Map<String, String>> route;
 		switch (evaluationMethod) {
 		case Constants.EVALUATION_METHOD_ASTAR:
 		    AStar aStar = new AStar(departure, destination);
-		    aStar.calculateWay(calculationMethod);
+		    route = aStar.calculateWay(calculationMethod);
 		    break;
 
 		case Constants.EVALUATION_METHOD_DIJKSTRA:
 		    Dijkstra dijkstra = new Dijkstra(departure, destination);
-		    dijkstra.calculateRoute(calculationMethod);
+		    //		    route = dijkstra.calculateRoute(calculationMethod);
 		    break;
 		default:
 		    System.err.println("Unknown evaluation method.");
