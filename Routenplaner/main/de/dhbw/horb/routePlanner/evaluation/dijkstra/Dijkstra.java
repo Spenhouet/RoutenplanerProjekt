@@ -13,7 +13,6 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
-import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 /**
  * Klasse Dijkstra
@@ -56,7 +55,8 @@ public class Dijkstra {
 	allPaths.add(new Way(startnode, endnode));
     }
 
-    public void calculateRoute(String calcMethod) {
+    public List<Map<String, String>> calculateRoute(String calcMethod) {
+	//TODO: startnode == endnode
 
 	this.calcMethod = calcMethod;
 
@@ -69,13 +69,16 @@ public class Dijkstra {
 
 	    if (prioQue.getFirst().equals(endnode)) {
 		targetReached = true;
-		System.out.println("Ziel erreicht");
 		pickRightWays();
 		if (!rightPaths.isEmpty())
 		    rightPaths.initializeCheapestWay();
-		UIEvaluationInterface.printRoute(rightPaths.getCheapestWay().getEdges());
+		else if (rightPaths.isEmpty())
+		    return null;
+
+		return rightPaths.getCheapestWay().getEdges();
 	    }
 	}
+	return null;
     }
 
     private void calcNewNodePrices(String initialNode) {
