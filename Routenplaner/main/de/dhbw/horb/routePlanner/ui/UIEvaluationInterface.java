@@ -21,6 +21,7 @@ public class UIEvaluationInterface {
     private static Task<Integer> task;
     public static LinkedList<String> allWayIDs;
     public static LinkedList<String> allNodeIDs;
+    public static LinkedList<String> DepDestIDs;
     public static ArrayList<String> allDestinationNodes;
     public static ObservableList<String> allDestinationNodeNames;
 
@@ -141,9 +142,14 @@ public class UIEvaluationInterface {
 	Double duration = 0.0;
 	allWayIDs = new LinkedList<String>();
 	allNodeIDs = new LinkedList<String>();
+	DepDestIDs = new LinkedList<String>();
 	allDestinationNodes = new ArrayList<String>();
 	String departureNodeID = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODEID);
+	//String departureNodeName = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODENAME);
 	String destinationNodeID = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
+	//String destinationNodeName = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
+	DepDestIDs.add(departureNodeID);
+	DepDestIDs.add(destinationNodeID);
 
 	for (Map<String, String> way : route) {
 
@@ -179,6 +185,7 @@ public class UIEvaluationInterface {
 	System.out.println("Gesamte WayID Liste: " + allWayIDs);
 	System.out.println("Gesamte NodeID Liste: " + allNodeIDs);
 	System.out.println("Alle DestinationNodes: " + allDestinationNodes);
+	System.out.println("DepDest: " + DepDestIDs);
 	allDestinationNodeNames = FXCollections.observableArrayList(allDestinationNodes);
 
 	//TODO Robin Methoden aufrufe hinzufügen

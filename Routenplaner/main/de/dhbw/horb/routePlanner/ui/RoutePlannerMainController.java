@@ -272,7 +272,7 @@ public class RoutePlannerMainController {
 		    webEngine.executeScript("init()");
 		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
-		    generateLinkQuery(UIEvaluationInterface.allNodeIDs, "node", "nodes", SettingsManager.getValue(
+		    generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    //TODO Liste aufbauen
