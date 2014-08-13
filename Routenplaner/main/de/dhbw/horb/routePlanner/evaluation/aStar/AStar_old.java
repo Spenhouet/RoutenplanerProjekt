@@ -2,7 +2,6 @@ package de.dhbw.horb.routePlanner.evaluation.aStar;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
-public class AStar {
+public class AStar_old {
 
     private enum ListType {
 	open, closed
@@ -29,11 +28,11 @@ public class AStar {
     private Map<String, String> closedEdgesPredecessor;
     private Map<String, Map<String, String>> closedEdgesRoute;
     private Map<String, Double> closedEdgesWeight;
-    private HashSet<String> departureIDs;
-    private HashSet<String> destinationIDs;
+    private String departure;
+    private String destination;
     private String calculateMethod;
 
-    public AStar(String departure, String destination) {
+    public AStar_old(String departure, String destination) {
 	openEdgesPredecessor = new HashMap<String, String>();
 	openEdgesRoute = new HashMap<String, Map<String, String>>();
 	openEdgesWeight = new HashMap<String, Double>();
@@ -47,51 +46,19 @@ public class AStar {
 	    e.printStackTrace();
 	}
 
-	departureIDs = new HashSet<String>();
-	List<String> depIDs = nodeMap.get(departure);
-	if (depIDs == null || depIDs.isEmpty())
-	    return;
-
-	for (String id : depIDs) {
-	    departureIDs.add(id);
-	}
-
-	destinationIDs = new HashSet<String>();
-	List<String> desIDs = nodeMap.get(destination);
-	if (desIDs == null || desIDs.isEmpty())
-	    return;
-
-	for (String id : desIDs) {
-	    destinationIDs.add(id);
-	}
+	this.departure = departure;
+	this.destination = destination;
     }
 
     public void calculateWay(String calculateMethod) {
+	//IMPROVE Sebastian: auf NodeIDs umstellen
 	this.calculateMethod = calculateMethod;
-	for (String depID : departureIDs) {
-	    closedEdgesPredecessor.put(depID, depID);
-	    closedEdgesRoute.put(depID, null);
-	    closedEdgesWeight.put(depID, 0.0);
-	    addNeighbourToOpenList(depID);
-	}
+	closedEdgesPredecessor.put(departure, departure);
+	closedEdgesRoute.put(departure, null);
+	closedEdgesWeight.put(departure, 0.0);
+	addNeighbourToOpenList(departure);
 	findDestination();
-
-	String destinationID = null;
-	Double wCache = null;
-	for (String desID : destinationIDs) {
-	    Double w = getWeightBack(desID);
-	    if (wCache == null || (w != null && w < wCache)) {
-		wCache = w;
-		destinationID = desID;
-	    }
-	}
-
-	if (destinationID == null) {
-	    System.err.println("AStar couldn'f find a way to destination.");
-	    return;
-	}
-
-	UIEvaluationInterface.printRoute(getWays(destinationID));
+	UIEvaluationInterface.printRoute(getWays(this.destination));
     }
 
     private List<Map<String, String>> getWays(String destination) {
@@ -103,12 +70,12 @@ public class AStar {
 
 	    if (newDestination != null) {
 
-		if (departureIDs.contains(newDestination)) {
-		    nodes.add(mp);
-		    return nodes;
-		} else {
+		if (!newDestination.equals(departure)) {
 		    nodes = getWays(newDestination);
 		    nodes.add(mp);
+		} else {
+		    nodes.add(mp);
+		    return nodes;
 		}
 	    }
 	}
@@ -125,10 +92,10 @@ public class AStar {
 
 	if (newDestination != null && newWeight != null) {
 
-	    if (departureIDs.contains(newDestination))
+	    if (!newDestination.equals(departure))
+		w = getWeightBack(newDestination) + newWeight;
+	    else
 		return newWeight;
-
-	    w = getWeightBack(newDestination) + newWeight;
 	}
 	return w;
     }
@@ -140,45 +107,52 @@ public class AStar {
 
 	    removeEdge(ListType.open, mp);
 	    addEdge(ListType.closed, mp);
-	    addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODEID));
+	    addNeighbourToOpenList(mp.get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
 
 	    if (!openEdgesRoute.isEmpty())
 		findDestination();
 	}
     }
 
-    private void addNeighbourToOpenList(String id) {
-	List<Map<String, String>> r = routes.get(id);
-	if (r == null || r.isEmpty())
-	    return;
-	for (Map<String, String> edge : r) {
-
-	    if (edge == null)
+    private void addNeighbourToOpenList(String name) {
+	List<String> ids = nodeMap.get(name);
+	for (String id : ids) {
+	    List<Map<String, String>> r = routes.get(id);
+	    if (r == null || r.isEmpty())
 		continue;
+	    for (Map<String, String> edge : r) {
 
-	    if (closedEdgesPredecessor.containsKey(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)))
-		continue;
-
-	    if (openEdgesPredecessor.containsKey(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID))) {
-		Double newWeight = getWeight(edge);
-		Double newWeightBack = getWeightBack(edge.get(Constants.NEW_ROUTE_DEPARTURENODEID));
-
-		if (newWeightBack == null || newWeight == null)
+		if (edge == null)
 		    continue;
 
-		Double oldWeight = openEdgesWeight.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID));
-		Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(edge
-			.get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
+		String destinationNodeName = nodeMap.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)).get(0);
 
-		if (oldWeightBack == null || oldWeight == null)
-		    System.err.println("addNeighbourToOpenList() OldWeight Fehler");
+		edge.put(Constants.NEW_ROUTE_DEPARTURENODENAME, name);
+		edge.put(Constants.NEW_ROUTE_DESTINATIONNODENAME, destinationNodeName);
 
-		if ((newWeight + newWeightBack) > (oldWeight + oldWeightBack))
+		if (closedEdgesPredecessor.containsKey(destinationNodeName))
 		    continue;
 
-		removeEdge(ListType.open, openEdgesRoute.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
+		if (openEdgesPredecessor.containsKey(destinationNodeName)) {
+		    Double newWeight = getWeight(edge);
+		    Double newWeightBack = getWeightBack(edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+
+		    if (newWeightBack == null || newWeight == null)
+			continue;
+
+		    Double oldWeight = openEdgesWeight.get(destinationNodeName);
+		    Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(destinationNodeName));
+
+		    if (oldWeightBack == null || oldWeight == null)
+			System.err.println("OldWeight Fehler");
+
+		    if ((newWeight + newWeightBack) > (oldWeight + oldWeightBack))
+			continue;
+
+		    removeEdge(ListType.open, openEdgesRoute.get(destinationNodeName));
+		}
+		addEdge(ListType.open, edge);
 	    }
-	    addEdge(ListType.open, edge);
 	}
     }
 
@@ -202,24 +176,24 @@ public class AStar {
     private void addEdge(ListType t, Map<String, String> edge) {
 	if (edge == null || edge.isEmpty())
 	    return;
-	String destinationID = edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID);
+	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 
 	Double weight = getWeight(edge);
 
-	if (weight == null || destinationID == null)
+	if (weight == null || destinationName == null)
 	    return;
 
 	switch (t) {
 	case open:
-	    openEdgesRoute.put(destinationID, edge);
-	    openEdgesPredecessor.put(destinationID, edge.get(Constants.NEW_ROUTE_DEPARTURENODEID));
-	    openEdgesWeight.put(destinationID, weight);
+	    openEdgesRoute.put(destinationName, edge);
+	    openEdgesPredecessor.put(destinationName, edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+	    openEdgesWeight.put(destinationName, weight);
 	    break;
 
 	case closed:
-	    closedEdgesRoute.put(destinationID, edge);
-	    closedEdgesPredecessor.put(destinationID, edge.get(Constants.NEW_ROUTE_DEPARTURENODEID));
-	    closedEdgesWeight.put(destinationID, weight);
+	    closedEdgesRoute.put(destinationName, edge);
+	    closedEdgesPredecessor.put(destinationName, edge.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
+	    closedEdgesWeight.put(destinationName, weight);
 	    break;
 
 	default:
@@ -254,24 +228,25 @@ public class AStar {
     private Map<String, String> removeEdge(ListType t, Map<String, String> edge) {
 	if (edge == null || edge.isEmpty())
 	    return null;
-	String destinationID = edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID);
+	String destinationName = edge.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 
 	switch (t) {
 	case open:
-	    if (openEdgesRoute == null || openEdgesRoute.isEmpty() || !openEdgesRoute.containsKey(destinationID))
+	    if (openEdgesRoute == null || openEdgesRoute.isEmpty() || !openEdgesRoute.containsKey(destinationName))
 		return null;
 
-	    openEdgesPredecessor.remove(destinationID);
-	    openEdgesWeight.remove(destinationID);
-	    return openEdgesRoute.remove(destinationID);
+	    openEdgesPredecessor.remove(destinationName);
+	    openEdgesWeight.remove(destinationName);
+	    return openEdgesRoute.remove(destinationName);
 
 	case closed:
-	    if (closedEdgesRoute == null || closedEdgesRoute.isEmpty() || !closedEdgesRoute.containsKey(destinationID))
+	    if (closedEdgesRoute == null || closedEdgesRoute.isEmpty()
+		    || !closedEdgesRoute.containsKey(destinationName))
 		return null;
 
-	    closedEdgesPredecessor.remove(destinationID);
-	    closedEdgesWeight.remove(destinationID);
-	    return closedEdgesRoute.remove(destinationID);
+	    closedEdgesPredecessor.remove(destinationName);
+	    closedEdgesWeight.remove(destinationName);
+	    return closedEdgesRoute.remove(destinationName);
 
 	default:
 	    return null;
