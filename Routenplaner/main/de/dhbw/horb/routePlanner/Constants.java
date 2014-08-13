@@ -25,12 +25,12 @@ public interface Constants {
     public final static String STARTUP_CHECK_XML_NODES = "Überprüfe NodeXML...";
     public final static String STARTUP_CHECK_XML_ROUTES = "Überprüfe RouteXML...";
     public final static String STARTUP_ERROR_PREREQUISITES = "Startbedingungen nicht erfüllt!";
-    public final static String STARTUP_ERROR_XML_GRAPHDATA = "GraphDataXML konnte nicht erzeugt werden";
+    public final static String STARTUP_ERROR_XML_GRAPHDATA = "GraphDataXML konnte nicht heruntergeladen werden";
     public final static String STARTUP_ERROR_XML_NODES = "NodeXML/RouteXML konnte nicht erzeugt werden";
     public final static String STARTUP_ERROR_XML_ROUTES = "RouteXML/NodeXML konnte nicht erzeugt werden";
-    public final static String STARTUP_CREATE_XML_GRAPHDATA = "GraphDataXML wird heruntergeladen und erzeugt...";
-    public final static String STARTUP_CREATE_XML_NODES = "NodeXML/RouteXML wird heruntergeladen und erzeugt...";
-    public final static String STARTUP_CREATE_XML_ROUTES = "RouteXML/NodeXML wird heruntergeladen und erzeugt...";
+    public final static String STARTUP_CREATE_XML_GRAPHDATA = "GraphDataXML wird heruntergeladen...";
+    public final static String STARTUP_CREATE_XML_NODES = "NodeXML/RouteXML wird und erzeugt...";
+    public final static String STARTUP_CREATE_XML_ROUTES = "RouteXML/NodeXML wird und erzeugt...";
 
     public final static String EVALUATION_METHOD_ASTAR = "AStern";
     public final static String EVALUATION_METHOD_DIJKSTRA = "Dijkstra";

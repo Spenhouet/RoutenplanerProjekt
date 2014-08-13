@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
@@ -15,27 +18,30 @@ import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 
 public class UIEvaluationInterface {
 
+    private static Task<Integer> task;
     public static LinkedList<String> allWayIDs;
     public static LinkedList<String> allNodeIDs;
     public static ArrayList<String> allDestinationNodes;
     public static ObservableList<String> allDestinationNodeNames;
 
+    //    public static RoutePlannerMainApp routePlannerMainApp;
+
     public static void calculateRoute(final String departure, final String destination, final String calculationMethod,
-	    final String evaluationMethod) {
+	    final String evaluationMethod, final RoutePlannerMainApp mainApp) {
 
-	new Thread(new Runnable() {
+	//	routePlannerMainApp = mainApp;
 
+	task = new Task<Integer>() {
 	    @Override
-	    public void run() {
-
+	    protected Integer call() throws Exception {
 		if (departure == null || destination == null || calculationMethod == null || evaluationMethod == null) {
-		    return;
+		    return -1;
 		}
 
 		if (calculationMethod != Constants.EVALUATION_CALCULATION_DISTANCE
 			&& calculationMethod != Constants.EVALUATION_CALCULATION_DURATION) {
 		    System.err.println("Unknown calculation method.");
-		    return;
+		    return -2;
 		}
 
 		switch (evaluationMethod) {
@@ -51,8 +57,59 @@ public class UIEvaluationInterface {
 		default:
 		    System.err.println("Unknown evaluation method.");
 		}
+		return 0;
 	    }
-	}).start();
+	};
+
+	task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+	    @Override
+	    public void handle(WorkerStateEvent event) {
+		mainApp.controller.loadOverpassHTML();
+	    }
+	});
+
+	//	task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
+	//	    @Override
+	//	    public void handle(WorkerStateEvent event) {
+	//		
+	//	    }
+	//	});
+	//
+
+	Thread th = new Thread(task);
+	th.setDaemon(true);
+	th.start();
+
+	//	new Thread(new Runnable() {
+	//
+	//	    @Override
+	//	    public void run() {
+	//
+	//		if (departure == null || destination == null || calculationMethod == null || evaluationMethod == null) {
+	//		    return;
+	//		}
+	//
+	//		if (calculationMethod != Constants.EVALUATION_CALCULATION_DISTANCE
+	//			&& calculationMethod != Constants.EVALUATION_CALCULATION_DURATION) {
+	//		    System.err.println("Unknown calculation method.");
+	//		    return;
+	//		}
+	//
+	//		switch (evaluationMethod) {
+	//		case Constants.EVALUATION_METHOD_ASTAR:
+	//		    AStar aStar = new AStar(departure, destination);
+	//		    aStar.calculateWay(calculationMethod);
+	//		    break;
+	//
+	//		case Constants.EVALUATION_METHOD_DIJKSTRA:
+	//		    Dijkstra dijkstra = new Dijkstra(departure, destination);
+	//		    dijkstra.calculateRoute(calculationMethod);
+	//		    break;
+	//		default:
+	//		    System.err.println("Unknown evaluation method.");
+	//		}
+	//	    }
+	//	}).start();
 
     }
 
@@ -123,6 +180,7 @@ public class UIEvaluationInterface {
 	System.out.println("Gesamte NodeID Liste: " + allNodeIDs);
 	System.out.println("Alle DestinationNodes: " + allDestinationNodes);
 	allDestinationNodeNames = FXCollections.observableArrayList(allDestinationNodes);
+
 	//TODO Robin Methoden aufrufe hinzufügen
 
     }

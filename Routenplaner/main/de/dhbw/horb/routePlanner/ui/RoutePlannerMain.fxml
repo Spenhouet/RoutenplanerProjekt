@@ -93,6 +93,7 @@
                               <Label layoutX="25.0" layoutY="168.0" text="Land:" />
                               <Label layoutX="28.0" layoutY="50.0" text="Farbe der Wege:" />
                               <Label layoutX="28.0" layoutY="81.0" text="Farbe der Knoten:" />
+                              <Button fx:id="updateDataButton" layoutX="89.0" layoutY="251.0" mnemonicParsing="false" onAction="#updateDataButtonClicked" text="Daten aktualisieren" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="250.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -131,11 +132,6 @@
       </SplitPane>
       <HBox layoutX="870.0" layoutY="660.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
          <children>
-            <Button fx:id="updateDataButton" mnemonicParsing="false" onAction="#updateDataButtonClicked" text="Daten aktualisieren">
-               <HBox.margin>
-                  <Insets right="25.0" />
-               </HBox.margin>
-            </Button>
             <Button fx:id="infoButton" layoutX="149.0" layoutY="658.0" mnemonicParsing="false" onAction="#infoButtonClicked" text="Info" AnchorPane.bottomAnchor="15.0">
                <HBox.margin>
                   <Insets right="15.0" />
