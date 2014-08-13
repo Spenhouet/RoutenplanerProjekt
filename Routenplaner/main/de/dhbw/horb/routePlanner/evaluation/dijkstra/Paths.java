@@ -13,13 +13,11 @@ import java.util.LinkedList;
 public class Paths extends LinkedList<Way> {
 
     private static final long serialVersionUID = 1L;
-    private Junction startnode;
-    private Junction endnode;
+    private String endnode;
     private Way cheapestWay;
-    private int cheapestWayPrice;
+    private Long cheapestWayPrice;
 
-    public Paths(Junction startnode, Junction endnode) {
-	this.startnode = startnode;
+    public Paths(String endnode) {
 	this.endnode = endnode;
     }
 
@@ -27,20 +25,14 @@ public class Paths extends LinkedList<Way> {
 	cheapestWayPrice = getLast().getPrice();
 	cheapestWay = getLast();
 	for (Way way : this) {
-	    if (way.getPrice() < cheapestWayPrice
-		    && way.getLastNode() == endnode) {
-		setCheapestWayPrice(way.getPrice());
+	    if (way.getPrice() < cheapestWayPrice) {
 		setCheapestWay(way);
 	    }
 	}
     }
 
-    public void setCheapestWayPrice(int cheapestWayPrice) {
-	this.cheapestWayPrice = cheapestWayPrice;
-    }
-
-    public int getCheapestWayPrice() {
-	return cheapestWayPrice;
+    public void addWay(Way way) {
+	this.add(way);
     }
 
     public void setCheapestWay(Way cheapestWay) {

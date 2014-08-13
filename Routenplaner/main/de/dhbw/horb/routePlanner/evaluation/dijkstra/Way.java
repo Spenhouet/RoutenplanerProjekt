@@ -11,21 +11,14 @@ import java.util.List;
  */
 public class Way {
 
-    private Junction startnode;
-    private Junction endnode;
-    private int price;
-    private List<Junction> nodes = new ArrayList<Junction>();
+    private Long price = (long) 0;
+    private List<String> nodes = new ArrayList<String>();
 
-    public Way(Junction startnode, Junction endnode) {
-	setStartnode(startnode);
-	setEndnode(endnode);
+    public Way(String startnode, String endnode) {
 	nodes.add(startnode);
     }
 
-    public Way(Junction startnode, Junction endnode, List<Junction> nodes,
-	    int gonePrice, Junction newNode, int newPrice) {
-	setStartnode(startnode);
-	setEndnode(endnode);
+    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice) {
 	setPrice(gonePrice + newPrice);
 	addNodes(nodes);
 	this.nodes.add(newNode);
@@ -35,34 +28,26 @@ public class Way {
      * Zum aktuellen Weg werden alle übergebenen Knoten hinzugefügt
      * @param nodes
      */
-    private void addNodes(List<Junction> nodes) {
-	for (Junction node : nodes) {
+    private void addNodes(List<String> nodes) {
+	for (String node : nodes) {
 	    this.nodes.add(node);
 	}
     }
 
-    public Junction getLastNode() {
+    public String getLastNode() {
 	return nodes.get(nodes.size() - 1);
     }
 
-    public int getPrice() {
+    public Long getPrice() {
 	return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Long price) {
 	this.price = price;
     }
 
-    public List<Junction> getNodes() {
+    public List<String> getNodes() {
 	return nodes;
-    }
-
-    public void setStartnode(Junction startnode) {
-	this.startnode = startnode;
-    }
-
-    public void setEndnode(Junction endnode) {
-	this.endnode = endnode;
     }
 
 }
