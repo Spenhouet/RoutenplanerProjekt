@@ -156,17 +156,26 @@ public class RoutePlannerMainController {
 
 		} else {
 
-		    //tabPane.getTabs().remove(calculatedRouteTab);
+		    if (start == end) {
 
-		    calculationMethod = null;
-		    calculationMethod = getCalculationMethod();
+			Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
+				.showError();
 
-		    evaluationMethod = null;
-		    evaluationMethod = getEvaluationMethod();
+		    } else {
 
-		    UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
-			    routePlannerMainApp);
-		    //webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+			//tabPane.getTabs().remove(calculatedRouteTab);
+
+			calculationMethod = null;
+			calculationMethod = getCalculationMethod();
+
+			evaluationMethod = null;
+			evaluationMethod = getEvaluationMethod();
+
+			UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
+				routePlannerMainApp);
+			//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+
+		    }
 
 		}
 
