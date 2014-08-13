@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<osm version="0.6" generator="Overpass API">
+	<note>The data included in this document is from www.openstreetmap.org.
+		The data is made available under ODbL.
+	</note>
+	<meta osm_base="2014-08-11T19:45:01Z" areas="2014-08-10T21:49:02Z" />
+
+	<node id="122317" lat="53.5282681" lon="10.0232293">
+		<tag k="TMC:cid_58:tabcd_1:Class" v="Point" />
+		<tag k="TMC:cid_58:tabcd_1:Direction" v="positive" />
+		<tag k="TMC:cid_58:tabcd_1:LCLversion" v="8.00" />
+		<tag k="TMC:cid_58:tabcd_1:LocationCode" v="10696" />
+		<tag k="TMC:cid_58:tabcd_1:NextLocationCode" v="10697" />
+		<tag k="TMC:cid_58:tabcd_1:PrevLocationCode" v="10695" />
+	</node>
+
+	<way id="27135575">
+		<nd ref="297713791" />
+		<nd ref="297713789" />
+		<tag k="bridge" v="yes" />
+		<tag k="highway" v="motorway" />
+		<tag k="lanes" v="2" />
+		<tag k="layer" v="1" />
+		<tag k="lit" v="no" />
+		<tag k="maxspeed" v="none" />
+		<tag k="note:name"
+			v="Der reg_name, sowie ggf. der loc_name sind dem zugehörigen Wikipediaartikel entnommen." />
+		<tag k="oneway" v="yes" />
+		<tag k="ref" v="A 38" />
+		<tag k="reg_name" v="Südharzautobahn" />
+		<tag k="source:lit" v="http://www.autobahn-bilder.de" />
+		<tag k="source:maxspeed" v="DE:motorway" />
+		<tag k="surface" v="concrete" />
+		<tag k="zone:traffic" v="DE:rural" />
+	</way>
+
+	<node name="Halle/Peißen (17)" ids="194608345,194608334" />
+
+	<route departureNodeID="293243958" departureNodeName="Bad Gottleuba (8)"
+		destinationNodeID="212763377" destinationNodeName="Bahretal (7)" nr="A 17"
+		distance="8.074283915095327" duration="241874"
+		wayIDs="26735374,290345359,290345395,34324228,34324227,147678945,27119643,27119644,245413479,27039174,27039175" />
+
+</osm>

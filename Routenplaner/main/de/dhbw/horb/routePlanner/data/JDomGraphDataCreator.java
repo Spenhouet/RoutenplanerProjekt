@@ -30,15 +30,6 @@ public class JDomGraphDataCreator {
     private static Document xmlDoc;
     private static Element rootNewEl;
 
-    public static void main(String[] args) {
-	try {
-	    createRouteXML();
-	} catch (XMLStreamException | IOException e) {
-	    // TODO Automatisch generierter Erfassungsblock
-	    e.printStackTrace();
-	}
-    }
-
     public static void createNodeXML() throws XMLStreamException, IOException {
 	el = new Element(Constants.NEW_NODE_S);
 	xmlDoc = new Document(el);
@@ -122,7 +113,6 @@ public class JDomGraphDataCreator {
     }
 
     private static void buildUpCache() {
-	//IMPROVE Sebastian: Performance verbessern
 
 	nodeWaysLink = new HashMap<String, List<String>>();
 
@@ -151,7 +141,6 @@ public class JDomGraphDataCreator {
 
     private static void recursRoute(List<HashMap<String, String>> route, HashSet<String> idHistory)
 	    throws FileNotFoundException, IOException {
-	// INVESTIGATE Sebastian: Fehlende Strecken (Löcher?)
 	if (route == null || idHistory == null)
 	    return;
 
@@ -180,7 +169,6 @@ public class JDomGraphDataCreator {
 	List<String> waysContain = getWaysContainingID(nextNodeID);
 
 	if (waysContain == null || waysContain.isEmpty()) {
-	    //	    System.err.println("Kein Weg bekannt für: " + nextNodeID); INVESTIGATE Sebastian: Ist das überhaupt ein Fehler?
 	    return;
 	}
 	for (String wayID : waysContain) {
