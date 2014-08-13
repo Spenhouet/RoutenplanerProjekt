@@ -51,8 +51,8 @@ public class Dijkstra {
 	this.endnode = endnode;
 	this.nearestNode = startnode;
 	initializeNodePrice();
-	allPaths = new Paths(endnode);
-	rightPaths = new Paths(endnode);
+	allPaths = new Paths();
+	rightPaths = new Paths();
 	allPaths.add(new Way(startnode, endnode));
     }
 
@@ -86,14 +86,15 @@ public class Dijkstra {
 
 	for (String focusedNeighbour : keys) {
 
-	    if (valueOfNeighbour(focusedNeighbour) + nodeDuration.get(initialNode) < nodeDuration.get(focusedNeighbour)
-		    || nodeDuration.get(focusedNeighbour) == 0) {
+	    if (getValue(currentNeighbours.get(focusedNeighbour)) + nodeDuration.get(initialNode) < nodeDuration
+		    .get(focusedNeighbour) || nodeDuration.get(focusedNeighbour) == 0) {
 
 		if (nodeDuration.get(focusedNeighbour) != 0) {
 		    deleteWay(focusedNeighbour);
 		}
 
-		setNodeDuration(focusedNeighbour, valueOfNeighbour(focusedNeighbour) + nodeDuration.get(initialNode));
+		setNodeDuration(focusedNeighbour,
+			getValue(currentNeighbours.get(focusedNeighbour)) + nodeDuration.get(initialNode));
 
 		if (!prioQue.contains(focusedNeighbour) && !focusedNeighbour.equals(startnode))
 		    cheapNeighbours.add(focusedNeighbour);
@@ -107,20 +108,20 @@ public class Dijkstra {
     private void initializeRoute() {
 
 	int numberOfNewWays = 0;
-	Long duration = (long) 0;
+	Double price = (double) 0;
 	List<String> goneNodes = null;
 	List<Map<String, String>> edges = null;
 
 	for (int i = 0; i <= allPaths.size() - 1; i++) {
 	    if (allPaths.get(i).getLastNode().equals(nearestNode)) {
-		duration = allPaths.get(i).getPrice();
+		price = allPaths.get(i).getPrice();
 		goneNodes = allPaths.get(i).getNodes();
 		edges = allPaths.get(i).getEdges();
 		numberOfNewWays++;
 		allPaths.remove(allPaths.get(i));
 	    }
 	}
-	addNewWays(numberOfNewWays, goneNodes, duration, edges);
+	addNewWays(numberOfNewWays, goneNodes, price, edges);
 	this.goneNodes.add(nearestNode);
 
 	currentNeighbours.clear();
@@ -140,7 +141,8 @@ public class Dijkstra {
 		    String neighbour = map.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 
 		    if (!currentNeighbours.containsKey(neighbour)
-			    || valueOfNeighbour(neighbour) > Long.valueOf(map.get(Constants.NEW_ROUTE_DURATION)))
+			    || getValue(currentNeighbours.get(neighbour)) > Double.valueOf(map
+				    .get(Constants.NEW_ROUTE_DURATION)))
 			currentNeighbours.put(neighbour, map);
 		}
 	    }
@@ -172,7 +174,7 @@ public class Dijkstra {
 	}
     }
 
-    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Long duration, List<Map<String, String>> edges) {
+    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Double price, List<Map<String, String>> edges) {
 
 	Set<String> neighbours = currentNeighbours.keySet();
 
@@ -180,8 +182,8 @@ public class Dijkstra {
 
 	    for (int i = 0; i < numberOfNewWays; i++) {
 		if (!this.goneNodes.contains(focusedNeighbour)) {
-		    allPaths.add(new Way(goneNodes, duration, focusedNeighbour, valueOfNeighbour(focusedNeighbour),
-			    edges, currentNeighbours.get(focusedNeighbour)));
+		    allPaths.add(new Way(goneNodes, price, focusedNeighbour, getValue(currentNeighbours
+			    .get(focusedNeighbour)), edges, currentNeighbours.get(focusedNeighbour)));
 		}
 
 	    }
@@ -199,10 +201,22 @@ public class Dijkstra {
 	}
     }
 
-    private Long valueOfNeighbour(String initialNode) {
-	String valueString = currentNeighbours.get(initialNode).get(Constants.NEW_ROUTE_DURATION);
-	Long valueLong = Long.valueOf(valueString);
-	return valueLong;
+    private Double getValue(Map<String, String> map) {
+	String valueString;
+	switch (calcMethod) {
+	case Constants.NEW_ROUTE_DISTANCE:
+	    valueString = map.get(Constants.NEW_ROUTE_DURATION);
+	    Double valueLong = Double.valueOf(valueString);
+	    break;
+	case Constants.NEW_ROUTE_DURATION:
+	    valueString = map.get(Constants.NEW_ROUTE_DISTANCE);
+	    break;
+	default:
+	    valueString = map.get(Constants.NEW_ROUTE_DURATION);
+	}
+	if (!SupportMethods.isNumeric(valueString))
+	    return null;
+	return Double.valueOf(valueString);
     }
 
     public void printNodes() {

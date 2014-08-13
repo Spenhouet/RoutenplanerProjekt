@@ -13,13 +13,8 @@ import java.util.LinkedList;
 public class Paths extends LinkedList<Way> {
 
     private static final long serialVersionUID = 1L;
-    private String endnode;
     private Way cheapestWay;
-    private Long cheapestWayPrice;
-
-    public Paths(String endnode) {
-	this.endnode = endnode;
-    }
+    private Double cheapestWayPrice;
 
     public void initializeCheapestWay() {
 	cheapestWayPrice = getLast().getPrice();
