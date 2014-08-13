@@ -16,6 +16,7 @@ import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 public class UIEvaluationInterface {
 
     public static LinkedList<String> allWayIDs;
+    public static LinkedList<String> allNodeIDs;
     public static ArrayList<String> allDestinationNodes;
     public static ObservableList<String> allDestinationNodeNames;
 
@@ -82,6 +83,7 @@ public class UIEvaluationInterface {
 	Double distance = 0.0;
 	Double duration = 0.0;
 	allWayIDs = new LinkedList<String>();
+	allNodeIDs = new LinkedList<String>();
 	allDestinationNodes = new ArrayList<String>();
 	String departureNodeID = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODEID);
 	String destinationNodeID = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
@@ -97,12 +99,14 @@ public class UIEvaluationInterface {
 		continue;
 
 	    allWayIDs.addAll(wayIDs);
+	    allNodeIDs.add(way.get(Constants.NEW_ROUTE_DEPARTURENODEID));
 	    allDestinationNodes.add(way.get(Constants.NEW_ROUTE_DEPARTURENODENAME));
 	    distance += Double.valueOf(dist);
 	    duration += Double.valueOf(dur);
 	}
 
 	allDestinationNodes.add(route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODENAME));
+	allNodeIDs.add(route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODEID));
 	System.out.println("Von: " + route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODENAME) + " mit ID: "
 		+ departureNodeID);
 	System.out.println("Nach: " + route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODENAME)
@@ -116,6 +120,7 @@ public class UIEvaluationInterface {
 	System.out.printf("Dauer: %d Stunden %02d Minuten %02d Sekunden \n", hours, minutes, seconds);
 	System.out.println("Gesamte Liste: " + route);
 	System.out.println("Gesamte WayID Liste: " + allWayIDs);
+	System.out.println("Gesamte NodeID Liste: " + allNodeIDs);
 	System.out.println("Alle DestinationNodes: " + allDestinationNodes);
 	allDestinationNodeNames = FXCollections.observableArrayList(allDestinationNodes);
 	//TODO Robin Methoden aufrufe hinzufügen

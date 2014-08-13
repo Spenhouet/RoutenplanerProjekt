@@ -264,9 +264,9 @@ public class RoutePlannerMainController {
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
 
 		if (newState == Worker.State.SUCCEEDED) {
-		    LinkedList<String> nodes = new LinkedList<>();
-		    nodes.add("30898199");
-		    nodes.add("30899103");
+		    //		    LinkedList<String> nodes = new LinkedList<>();
+		    //		    nodes.add("30898199");
+		    //		    nodes.add("30899103");
 		    //generateLinkQueries(UIEvaluationInterface.allWayIDs, nodes);
 		    //DEBUG:
 		    //System.out.println("Ways: " + wayString);
@@ -275,8 +275,8 @@ public class RoutePlannerMainController {
 		    webEngine.executeScript("init()");
 		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
-		    generateLinkQuery(nodes, "node", "nodes", SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
-			    Constants.SETTINGS_COLOR_NODES_DEFAULT));
+		    generateLinkQuery(UIEvaluationInterface.allNodeIDs, "node", "nodes", SettingsManager.getValue(
+			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    //TODO Liste aufbauen
 		    calculatedRouteListView.setItems(UIEvaluationInterface.allDestinationNodeNames);
