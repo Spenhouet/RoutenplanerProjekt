@@ -12,7 +12,6 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
-import de.dhbw.horb.routePlanner.ui.UIEvaluationInterface;
 
 public class AStar {
 
@@ -66,10 +65,10 @@ public class AStar {
 	}
     }
 
-    public void calculateWay(String calculateMethod) {
+    public List<Map<String, String>> calculateWay(String calculateMethod) {
 	if (destinationIDs == null || departureIDs == null || destinationIDs.isEmpty() || departureIDs.isEmpty()) {
 	    System.err.println("No IDs for departure or destination.");
-	    return;
+	    return null;
 	}
 
 	this.calculateMethod = calculateMethod;
@@ -93,10 +92,10 @@ public class AStar {
 
 	if (destinationID == null) {
 	    System.err.println("AStar couldn't find a way to destination.");
-	    return;
+	    return null;
 	}
 
-	UIEvaluationInterface.printRoute(getWays(destinationID));
+	return getWays(destinationID);
     }
 
     private List<Map<String, String>> getWays(String destination) {
