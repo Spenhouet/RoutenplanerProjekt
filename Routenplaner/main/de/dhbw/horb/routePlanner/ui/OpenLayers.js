@@ -17453,7 +17453,7 @@ OpenLayers.Handler.MouseWheel = OpenLayers.Class(OpenLayers.Handler, {
         this.wheelListener = null;
     },
     onWheelEvent: function(e) {
-        if (!this.map || !this.checkModifiers(e)) {
+        if (true || !this.map || !this.checkModifiers(e)) {
             return;
         }
         var overScrollableDiv = false;
