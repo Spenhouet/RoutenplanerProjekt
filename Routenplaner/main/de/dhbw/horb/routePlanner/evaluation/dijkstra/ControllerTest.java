@@ -11,6 +11,7 @@ public class ControllerTest {
 	Dijkstra dijkstra = new Dijkstra(startnode, endnode);
 
 	dijkstra.calculateRoute(calcMethod);
+	dijkstra.printNodes();
 
     }
 }
