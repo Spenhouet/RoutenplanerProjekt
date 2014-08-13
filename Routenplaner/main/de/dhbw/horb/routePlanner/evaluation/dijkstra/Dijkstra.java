@@ -28,7 +28,7 @@ public class Dijkstra {
     private String nearestNode;
     private Map<String, List<Map<String, String>>> routes;
     private Map<String, List<String>> nodeMap;
-    private Map<String, Long> nodeDuration = new HashMap<String, Long>();
+    private Map<String, Double> nodeDuration = new HashMap<String, Double>();
 
     private LinkedList<String> prioQue = new LinkedList<String>();
     private List<String> goneNodes = new ArrayList<String>();
@@ -38,7 +38,6 @@ public class Dijkstra {
     private Paths rightPaths;
     private boolean targetReached;
     private String calcMethod;
-    private String test;
 
     public Dijkstra(String startnode, String endnode) {
 
@@ -51,7 +50,7 @@ public class Dijkstra {
 	this.startnode = startnode;
 	this.endnode = endnode;
 	this.nearestNode = startnode;
-	initializeNodeDuration();
+	initializeNodePrice();
 	allPaths = new Paths(endnode);
 	rightPaths = new Paths(endnode);
 	allPaths.add(new Way(startnode, endnode));
@@ -110,16 +109,18 @@ public class Dijkstra {
 	int numberOfNewWays = 0;
 	Long duration = (long) 0;
 	List<String> goneNodes = null;
+	List<Map<String, String>> edges = null;
 
 	for (int i = 0; i <= allPaths.size() - 1; i++) {
 	    if (allPaths.get(i).getLastNode().equals(nearestNode)) {
 		duration = allPaths.get(i).getPrice();
 		goneNodes = allPaths.get(i).getNodes();
+		edges = allPaths.get(i).getEdges();
 		numberOfNewWays++;
 		allPaths.remove(allPaths.get(i));
 	    }
 	}
-	addNewWays(numberOfNewWays, goneNodes, duration);
+	addNewWays(numberOfNewWays, goneNodes, duration, edges);
 	this.goneNodes.add(nearestNode);
 
 	currentNeighbours.clear();
@@ -171,7 +172,7 @@ public class Dijkstra {
 	}
     }
 
-    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Long duration) {
+    private void addNewWays(int numberOfNewWays, List<String> goneNodes, Long duration, List<Map<String, String>> edges) {
 
 	Set<String> neighbours = currentNeighbours.keySet();
 
@@ -180,21 +181,21 @@ public class Dijkstra {
 	    for (int i = 0; i < numberOfNewWays; i++) {
 		if (!this.goneNodes.contains(focusedNeighbour)) {
 		    allPaths.add(new Way(goneNodes, duration, focusedNeighbour, valueOfNeighbour(focusedNeighbour),
-			    currentNeighbours.get(focusedNeighbour)));
+			    edges, currentNeighbours.get(focusedNeighbour)));
 		}
 
 	    }
 	}
     }
 
-    private void initializeNodeDuration() {
+    private void initializeNodePrice() {
 
 	Set<String> keys = nodeMap.keySet();
 
 	for (String singleKey : keys) {
 
 	    if (!SupportMethods.isNumeric(singleKey))
-		nodeDuration.put(singleKey, (long) 0);
+		nodeDuration.put(singleKey, (double) 0);
 	}
     }
 
@@ -226,7 +227,7 @@ public class Dijkstra {
 	}
     }
 
-    public void setNodeDuration(String name, Long duration) {
+    public void setNodeDuration(String name, Double duration) {
 	nodeDuration.put(name, duration);
     }
 

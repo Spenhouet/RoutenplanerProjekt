@@ -20,11 +20,13 @@ public class Way {
 	nodes.add(startnode);
     }
 
-    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice, Map<String, String> edge) {
+    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice, List<Map<String, String>> edges,
+	    Map<String, String> newEdge) {
 	setPrice(gonePrice + newPrice);
 	addNodes(nodes);
 	this.nodes.add(newNode);
-	edges.add(edge);
+	addEdges(edges);
+	this.edges.add(newEdge);
     }
 
     /**
@@ -32,9 +34,13 @@ public class Way {
      * @param nodes
      */
     private void addNodes(List<String> nodes) {
-	for (String node : nodes) {
+	for (String node : nodes)
 	    this.nodes.add(node);
-	}
+    }
+
+    private void addEdges(List<Map<String, String>> edges) {
+	for (Map<String, String> edge : edges)
+	    this.edges.add(edge);
     }
 
     public String getLastNode() {
