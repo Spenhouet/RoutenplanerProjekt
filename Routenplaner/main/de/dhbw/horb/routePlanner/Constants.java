@@ -47,9 +47,9 @@ public interface Constants {
     public final static String SETTINGS_EVALUATION_METHOD = "Evaluation_Method";
     public final static String SETTINGS_CALCULATION_METHOD = "Calculation_Method";
     public final static String SETTINGS_COLOR_WAYS = "Color_Ways";
-    public final static String SETTINGS_COLOR_WAYS_DEFAULT = "blue";
+    public final static String SETTINGS_COLOR_WAYS_DEFAULT = "0x0000ffff";
     public final static String SETTINGS_COLOR_NODES = "Color_Nodes";
-    public final static String SETTINGS_COLOR_NODES_DEFAULT = "red";
+    public final static String SETTINGS_COLOR_NODES_DEFAULT = "0xff0000ff";
 
     public final static String NODE = "node";
     public final static String NODE_ID = "id";
