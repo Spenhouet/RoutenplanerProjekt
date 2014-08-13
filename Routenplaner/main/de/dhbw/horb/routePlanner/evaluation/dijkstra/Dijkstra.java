@@ -155,6 +155,7 @@ public class Dijkstra {
 				    .get(Constants.NEW_ROUTE_DURATION))) {
 			currentNeighbours.put(neighbour, map);
 
+			//TESTWEISE:
 			Map<String, String> innereMap = currentNeighbours.get(neighbour);
 			test = innereMap.get(Constants.EVALUATION_CALCULATION_DURATION);
 		    }
