@@ -17453,7 +17453,7 @@ OpenLayers.Layer.PointGrid = OpenLayers.Class(OpenLayers.Layer.Vector, {
         this.wheelListener = null;
     },
     onWheelEvent: function(e) {
-        if (!this.map || !this.checkModifiers(e)) {
+        if (true || !this.map || !this.checkModifiers(e)) {
             return;
         }
         var overScrollableDiv = false;
