@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class Way {
 
-    private Long price = (long) 0;
+    private Double price = (double) 0;
     private List<String> nodes = new ArrayList<String>();
     private List<Map<String, String>> edges = new ArrayList<Map<String, String>>();
 
@@ -20,11 +20,13 @@ public class Way {
 	nodes.add(startnode);
     }
 
-    public Way(List<String> nodes, Long gonePrice, String newNode, Long newPrice, Map<String, String> edge) {
+    public Way(List<String> nodes, Double gonePrice, String newNode, Double newPrice, List<Map<String, String>> edges,
+	    Map<String, String> newEdge) {
 	setPrice(gonePrice + newPrice);
 	addNodes(nodes);
 	this.nodes.add(newNode);
-	edges.add(edge);
+	addEdges(edges);
+	this.edges.add(newEdge);
     }
 
     /**
@@ -32,20 +34,24 @@ public class Way {
      * @param nodes
      */
     private void addNodes(List<String> nodes) {
-	for (String node : nodes) {
+	for (String node : nodes)
 	    this.nodes.add(node);
-	}
+    }
+
+    private void addEdges(List<Map<String, String>> edges) {
+	for (Map<String, String> edge : edges)
+	    this.edges.add(edge);
     }
 
     public String getLastNode() {
 	return nodes.get(nodes.size() - 1);
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
 	return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
 	this.price = price;
     }
 
