@@ -11,11 +11,13 @@ import de.dhbw.horb.routePlanner.data.GraphDataStreamReader;
 
 public class UTGraphDataStreamReader extends TestCase {
 
+    private GraphDataStreamReader routeSR;
+
     @Override
     protected void setUp() throws FileNotFoundException, XMLStreamException {
 	XMLInputFactory factory = XMLInputFactory.newInstance();
-	GraphDataStreamReader routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-		"test/testFiles/testGraphDataStreamReader.xml")));
+	this.routeSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
+		"test/de/dhbw/horb/routePlanner/test/testFiles/testGraphDataStreamReader.xml")));
     }
 
     @Override
