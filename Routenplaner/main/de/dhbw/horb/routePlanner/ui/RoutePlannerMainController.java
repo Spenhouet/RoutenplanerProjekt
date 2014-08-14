@@ -161,7 +161,7 @@ public class RoutePlannerMainController {
 			result = Constants.EVALUATION_CALCULATION_DURATION;
 		} else if (shortestRouteRadio.isSelected()) {
 			result = Constants.EVALUATION_CALCULATION_DISTANCE;
-		} 
+		}
 		return result;
 	}
 
@@ -177,7 +177,7 @@ public class RoutePlannerMainController {
 			result = Constants.EVALUATION_METHOD_ASTAR;
 		} else if (dijkstraRouteRadio.isSelected()) {
 			result = Constants.EVALUATION_METHOD_DIJKSTRA;
-		} 
+		}
 		return result;
 	}
 
@@ -246,7 +246,6 @@ public class RoutePlannerMainController {
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 			@Override
 			public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, State oldState, State newState) {
-				System.out.println("WebView State: " + newState.toString());
 				if (newState == Worker.State.SUCCEEDED) {
 
 					RoutePlannerMainController.this.webEngine.executeScript("init()");
@@ -271,7 +270,7 @@ public class RoutePlannerMainController {
 					int hours = (int) Math.floor(m / 60.0);
 					int minutes = (int) Math.floor(m % 60.0);
 					int seconds = (int) Math.floor(SupportMethods.minutesToSeconds(m % 1));
-					String routeDuration = String.format("%d Stunden %02d Minuten %02d Sekunden", hours, minutes,
+					String routeDuration = String.format("%d Stunden, %02d Minuten und %02d Sekunden", hours, minutes,
 					        seconds);
 					RoutePlannerMainController.this.durationLabel.setText(routeDuration);
 					RoutePlannerMainController.this.calculatedRouteTab.getStyleClass().removeAll("hidden");
@@ -310,12 +309,13 @@ public class RoutePlannerMainController {
 			public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
 				if (flag == false) {
 					flag = true;
-					Action response = Dialogs.create().title("Änderung des Landes erkannt")
-					        .masthead(
-					                "Damit Routen für " + t1
-					                        + " berechnet werden können, muss das Programm neu geladen werden")
-					        .message("Wollen Sie das Programm jetzt neu laden?").actions(Dialog.Actions.OK,
-					                Dialog.Actions.CANCEL).showConfirm();
+					Action response = Dialogs.create().title("Änderung des Landes erkannt").masthead(
+					        "Damit Routen für " + t1
+					                + " berechnet werden können, muss das Programm neu geladen werden. "
+					                + "Dabei müssen eventuell auch benötigte Daten heruntergeladen und "
+					                + "erstellt werden. Dies kann sehr lange dauern.").message(
+					        "Wollen Sie jetzt " + t1 + " auswählen?").actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
+					        .showConfirm();
 
 					if (response == Dialog.Actions.OK) {
 						SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
@@ -335,8 +335,7 @@ public class RoutePlannerMainController {
 				SettingsManager.saveSetting(Constants.SETTINGS_COLOR_WAYS,
 				        RoutePlannerMainController.this.waysColorPicker.getValue().toString());
 				Dialogs.create().title("Änderung der Farbe erkannt").masthead(null).message(
-				        "Sie müssen erneut eine Route berechnen lassen, damit diese Änderung wirksam wird.")
-				        .showInformation();
+				        Constants.ROUTEPLANNER_POPUP_COLOR_CHANGED).showInformation();
 			}
 		});
 		nodesColorPicker.setOnAction(new EventHandler<ActionEvent>() {
@@ -345,8 +344,7 @@ public class RoutePlannerMainController {
 				SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES,
 				        RoutePlannerMainController.this.nodesColorPicker.getValue().toString());
 				Dialogs.create().title("Änderung der Farbe erkannt").masthead(null).message(
-				        "Sie müssen erneut eine Route berechnen lassen, damit diese Änderung wirksam wird.")
-				        .showInformation();
+				        Constants.ROUTEPLANNER_POPUP_COLOR_CHANGED).showInformation();
 			}
 		});
 	}
@@ -394,7 +392,6 @@ public class RoutePlannerMainController {
 				if (x > 99) {
 					webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
 					        + rgbColorString + "')");
-					System.out.println("regulär: " + completeLink + linkEnd);
 					x = 0;
 					completeLink = Constants.LINK_COMPLETELINK;
 				}
@@ -403,7 +400,6 @@ public class RoutePlannerMainController {
 			if (completeLink != Constants.LINK_COMPLETELINK) {
 				webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
 				        + rgbColorString + "')");
-				System.out.println("nicht leer: " + completeLink + linkEnd);
 			}
 
 		}
@@ -434,10 +430,14 @@ public class RoutePlannerMainController {
 	 */
 	@FXML
 	void updateDataButtonClicked(ActionEvent event) {
+		Action response = Dialogs.create().title("Daten aktualisieren").masthead(null).message(
+		        Constants.ROUTEPLANNER_POPUP_DATA_UPDATE).actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
+		        .showConfirm();
 
-		routePlannerMainApp.allXMLsExist = false;
-		routePlannerMainApp.executeStartupTask();
-
+		if (response == Dialog.Actions.OK) {
+			routePlannerMainApp.allXMLsExist = false;
+			routePlannerMainApp.executeStartupTask();
+		}
 	}
 
 	/**

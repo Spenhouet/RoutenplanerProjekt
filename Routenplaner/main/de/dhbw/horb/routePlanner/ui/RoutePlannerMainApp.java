@@ -273,8 +273,8 @@ public class RoutePlannerMainApp extends Application {
 			this.primaryStage.setY(screenBounds.getMinY());
 			this.primaryStage.setWidth(screenBounds.getWidth());
 			this.primaryStage.setHeight(screenBounds.getHeight());
-			this.primaryStage.setMinWidth(1440);
-			this.primaryStage.setMinHeight(900);
+			this.primaryStage.setMinWidth(1280);
+			this.primaryStage.setMinHeight(720);
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(this.rootLayout);
