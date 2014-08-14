@@ -30,353 +30,358 @@ import de.dhbw.horb.routePlanner.data.XMLFileManager;
  */
 public class RoutePlannerMainApp extends Application {
 
-    public Stage primaryStage;
-    public XMLFileManager fileManager;
-    public boolean allXMLsExist;
-    public RoutePlannerMainController controller;
-    private BorderPane rootLayout;
-    private AnchorPane MainWindow;
-    private BorderPane splashLayout;
-    private AnchorPane splashAnchor;
-    private Task<Integer> task;
-    private StartupMainController startupController;
-    private String reason;
+	public Stage primaryStage;
+	public XMLFileManager fileManager;
+	public boolean allXMLsExist;
+	public RoutePlannerMainController controller;
+	private BorderPane rootLayout;
+	private AnchorPane MainWindow;
+	private BorderPane splashLayout;
+	private AnchorPane splashAnchor;
+	private Task<Integer> task;
+	private StartupMainController startupController;
+	private String reason;
 
-    public RoutePlannerMainApp() {
-	this.fileManager = new XMLFileManager();
-    }
+	public RoutePlannerMainApp() {
+		this.fileManager = new XMLFileManager();
+	}
 
-    @Override
-    public void start(Stage primaryStage) {
-	this.primaryStage = primaryStage;
+	@Override
+	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 
-	checkXMLs();
-	executeStartupTask();
+		checkXMLs();
+		executeStartupTask();
 
-    }
+	}
 
-    /**
-     * Definiert Ablauf beim Programmstart. Überprüft XML-Dateien, Zeigt Splash-Window an, startet Hauptanwendung
-     */
-    public void executeStartupTask() {
+	/**
+	 * Definiert Ablauf beim Programmstart. Überprüft XML-Dateien, Zeigt
+	 * Splash-Window an, startet Hauptanwendung
+	 */
+	public void executeStartupTask() {
 
-	this.primaryStage.close();
+		this.primaryStage.close();
 
-	initSplashLayout();
-	showSplash();
+		initSplashLayout();
+		showSplash();
 
-	final RoutePlannerMainApp owner = this;
-	this.task = new Task<Integer>() {
-	    @Override
-	    protected Integer call() throws Exception {
-		int iterations;
-		updateMessage(Constants.STARTUP_INITIALIZE);
-		for (iterations = 0; iterations < 5; iterations++) {
-		    if (isCancelled()) {
+		final RoutePlannerMainApp owner = this;
+		this.task = new Task<Integer>() {
+			@Override
+			protected Integer call() throws Exception {
+				int iterations;
+				updateMessage(Constants.STARTUP_INITIALIZE);
+				for (iterations = 0; iterations < 5; iterations++) {
+					if (isCancelled()) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						updateMessage(Constants.STARTUP_CANCEL);
+						break;
+					}
+					updateProgress(iterations, 4);
+					switch (iterations) {
+					case 0:
+						if (checkPrerequisites() == false) {
+							updateMessage(Constants.STARTUP_ERROR_PREREQUISITES);
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException ex) {
+								Thread.currentThread().interrupt();
+							}
+							if (RoutePlannerMainApp.this.reason == "folder")
+								updateMessage(Constants.STARTUP_ERROR_FOLDER);
+							else
+								updateMessage(Constants.STARTUP_ERROR_INTERNET);
+							try {
+								Thread.sleep(3000);
+							} catch (InterruptedException ex) {
+								Thread.currentThread().interrupt();
+							}
+							this.cancel();
+							break;
+						} else
+							updateMessage(Constants.STARTUP_CHECK_PREREQUISITES);
+						break;
+
+					case 1:
+						if (RoutePlannerMainApp.this.allXMLsExist == false)
+							try {
+								updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
+								String area = SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland");
+								OverpassDownloader odl = new OverpassDownloader();
+								odl.downloadGraphData(area);
+							} catch (Exception e) {
+								updateMessage(Constants.STARTUP_ERROR_XML_GRAPHDATA);
+								this.cancel();
+								break;
+							}
+						else {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException ex) {
+								Thread.currentThread().interrupt();
+							}
+							updateMessage(Constants.STARTUP_CHECK_XML_GRAPHDATA);
+						}
+						break;
+
+					case 2:
+						if (RoutePlannerMainApp.this.allXMLsExist == false)
+							try {
+								updateMessage(Constants.STARTUP_CREATE_XML_NODES);
+								JDomGraphDataCreator.createNodeXML();
+							} catch (Exception e) {
+								updateMessage(Constants.STARTUP_ERROR_XML_NODES);
+								this.cancel();
+								break;
+							}
+						else {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException ex) {
+								Thread.currentThread().interrupt();
+							}
+							updateMessage(Constants.STARTUP_CHECK_XML_NODES);
+						}
+						break;
+
+					case 3:
+						if (RoutePlannerMainApp.this.allXMLsExist == false)
+							try {
+								updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
+								JDomGraphDataCreator.createRouteXML();
+							} catch (Exception e) {
+								updateMessage(Constants.STARTUP_ERROR_XML_ROUTES);
+								this.cancel();
+								break;
+							}
+						else {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException ex) {
+								Thread.currentThread().interrupt();
+							}
+							updateMessage(Constants.STARTUP_CHECK_XML_ROUTES);
+						}
+						break;
+
+					default:
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						break;
+					}
+				}
+
+				return iterations;
+			}
+		};
+
+		this.task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				owner.primaryStage.close();
+				initRootLayout();
+				showMainWindow();
+			}
+		});
+
+		this.task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				owner.primaryStage.close();
+			}
+		});
+
+		this.startupController.getProgressBar().progressProperty().bind(this.task.progressProperty());
+		this.startupController.getLabel().textProperty().bind(this.task.messageProperty());
+
+		Thread th = new Thread(this.task);
+		th.setDaemon(true);
+		th.start();
+	}
+
+	/**
+	 * Splash-Layout initialisieren, laden und anzeigen. Alle XMLs releasen.
+	 */
+	public void initSplashLayout() {
+		try {
 			try {
-			    Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-			    Thread.currentThread().interrupt();
+				this.fileManager.releaseAllXML();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			updateMessage(Constants.STARTUP_CANCEL);
-			break;
-		    }
-		    updateProgress(iterations, 4);
-		    switch (iterations) {
-		    case 0:
-			if (checkPrerequisites() == false) {
-			    updateMessage(Constants.STARTUP_ERROR_PREREQUISITES);
-			    try {
-				Thread.sleep(2000);
-			    } catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			    }
-			    if (RoutePlannerMainApp.this.reason == "folder")
-				updateMessage(Constants.STARTUP_ERROR_FOLDER);
-			    else updateMessage(Constants.STARTUP_ERROR_INTERNET);
-			    try {
-				Thread.sleep(3000);
-			    } catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			    }
-			    this.cancel();
-			    break;
-			} else updateMessage(Constants.STARTUP_CHECK_PREREQUISITES);
-			break;
+			this.primaryStage = new Stage();
 
-		    case 1:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
-			    try {
-				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
-				String area = SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland");
-				OverpassDownloader odl = new OverpassDownloader();
-				odl.downloadGraphData(area);
-			    } catch (Exception e) {
-				updateMessage(Constants.STARTUP_ERROR_XML_GRAPHDATA);
-				this.cancel();
-				break;
-			    }
-			else {
-			    try {
-				Thread.sleep(1000);
-			    } catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			    }
-			    updateMessage(Constants.STARTUP_CHECK_XML_GRAPHDATA);
-			}
-			break;
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
+			this.splashLayout = (BorderPane) loader.load();
 
-		    case 2:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
-			    try {
-				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
-				JDomGraphDataCreator.createNodeXML();
-			    } catch (Exception e) {
-				updateMessage(Constants.STARTUP_ERROR_XML_NODES);
-				this.cancel();
-				break;
-			    }
-			else {
-			    try {
-				Thread.sleep(1000);
-			    } catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			    }
-			    updateMessage(Constants.STARTUP_CHECK_XML_NODES);
-			}
-			break;
+			// Show the scene containing the root layout.
+			Scene scene = new Scene(this.splashLayout);
+			this.primaryStage.setScene(scene);
+			this.primaryStage.initStyle(StageStyle.TRANSPARENT);
+			this.primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-		    case 3:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
-			    try {
-				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
-				JDomGraphDataCreator.createRouteXML();
-			    } catch (Exception e) {
-				updateMessage(Constants.STARTUP_ERROR_XML_ROUTES);
-				this.cancel();
-				break;
-			    }
-			else {
-			    try {
-				Thread.sleep(1000);
-			    } catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			    }
-			    updateMessage(Constants.STARTUP_CHECK_XML_ROUTES);
-			}
-			break;
+	/**
+	 * Eigentlichen Splash laden und anzeigen sowie Controller zuweisen.
+	 */
+	public void showSplash() {
+		try {
+			// Load person overview.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
+			this.splashAnchor = (AnchorPane) loader.load();
 
-		    default:
+			// Set person overview into the center of root layout.
+			this.splashLayout.setCenter(this.splashAnchor);
+
+			this.startupController = loader.getController();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Root-Layout initialisieren, laden und anzeigen.
+	 */
+	public void initRootLayout() {
+		try {
+
+			this.primaryStage = new Stage();
+			this.primaryStage.setTitle("DHBW-Routenplaner 2014");
+
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_ROOT));
+			this.rootLayout = (BorderPane) loader.load();
+
+			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+			this.primaryStage.setX(screenBounds.getMinX());
+			this.primaryStage.setY(screenBounds.getMinY());
+			this.primaryStage.setWidth(screenBounds.getWidth());
+			this.primaryStage.setHeight(screenBounds.getHeight());
+			this.primaryStage.setMinWidth(1440);
+			this.primaryStage.setMinHeight(900);
+
+			// Show the scene containing the root layout.
+			Scene scene = new Scene(this.rootLayout);
+			this.primaryStage.setTitle("Routenplaner");
+			this.primaryStage.setScene(scene);
+			this.primaryStage.initStyle(StageStyle.DECORATED);
+			// scene.setFill(Color.TRANSPARENT);
+			this.primaryStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Eigentliches Hauptfenster laden und anzeigen sowie Controller zuweisen.
+	 */
+	public void showMainWindow() {
+		try {
+			// Load person overview.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_MAIN));
+			this.MainWindow = (AnchorPane) loader.load();
+
+			// Set person overview into the center of root layout.
+			this.rootLayout.setCenter(this.MainWindow);
+
+			this.controller = loader.getController();
+			this.controller.setRoutePlannerMainApp(this);
+
 			try {
-			    Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-			    Thread.currentThread().interrupt();
+				this.fileManager.lockAllXML();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			break;
-		    }
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Überprüfen der Programmvorraussetzungen: Verbindung zur Overpass-Seite
+	 * sowie Vorhandensein des Programmverzeichnisses (gegebenfalls Erstellung
+	 * des Verzeichnisses).
+	 *
+	 * @return true, falls beide Vorraussetzungen erfüllt. Ansonsten false
+	 */
+	private boolean checkPrerequisites() {
+
+		boolean result = true;
+
+		try {
+			InetAddress.getByName("overpass-api.de").isReachable(10000);
+		} catch (Exception e) {
+			result = false;
+			this.reason = "internet";
 		}
 
-		return iterations;
-	    }
-	};
+		try {
+			File f = new File(Constants.PROGRAM_HOME);
+			if (f.exists() && f.isDirectory()) {
 
-	this.task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-	    @Override
-	    public void handle(WorkerStateEvent event) {
-		owner.primaryStage.close();
-		initRootLayout();
-		showMainWindow();
-	    }
-	});
+			} else {
+				File progDir = new File(Constants.PROGRAM_HOME);
+				result = progDir.mkdir();
+			}
+		} catch (Exception e) {
+			result = false;
+			this.reason = "folder";
+		}
 
-	this.task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
-	    @Override
-	    public void handle(WorkerStateEvent event) {
-		owner.primaryStage.close();
-	    }
-	});
+		return result;
 
-	this.startupController.getProgressBar().progressProperty().bind(this.task.progressProperty());
-	this.startupController.getLabel().textProperty().bind(this.task.messageProperty());
-
-	Thread th = new Thread(this.task);
-	th.setDaemon(true);
-	th.start();
-    }
-
-    /**
-     * Splash-Layout initialisieren, laden und anzeigen. Alle XMLs releasen.
-     */
-    public void initSplashLayout() {
-	try {
-	    try {
-		this.fileManager.releaseAllXML();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	    this.primaryStage = new Stage();
-
-	    // Load root layout from fxml file.
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
-	    this.splashLayout = (BorderPane) loader.load();
-
-	    // Show the scene containing the root layout.
-	    Scene scene = new Scene(this.splashLayout);
-	    this.primaryStage.setScene(scene);
-	    this.primaryStage.initStyle(StageStyle.TRANSPARENT);
-	    this.primaryStage.show();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    /**
-     * Eigentlichen Splash laden und anzeigen sowie Controller zuweisen.
-     */
-    public void showSplash() {
-	try {
-	    // Load person overview.
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
-	    this.splashAnchor = (AnchorPane) loader.load();
-
-	    // Set person overview into the center of root layout.
-	    this.splashLayout.setCenter(this.splashAnchor);
-
-	    this.startupController = loader.getController();
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    /**
-     * Root-Layout initialisieren, laden und anzeigen.
-     */
-    public void initRootLayout() {
-	try {
-
-	    this.primaryStage = new Stage();
-	    this.primaryStage.setTitle("DHBW-Routenplaner 2014");
-
-	    // Load root layout from fxml file.
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_ROOT));
-	    this.rootLayout = (BorderPane) loader.load();
-
-	    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-	    this.primaryStage.setX(screenBounds.getMinX());
-	    this.primaryStage.setY(screenBounds.getMinY());
-	    this.primaryStage.setWidth(screenBounds.getWidth());
-	    this.primaryStage.setHeight(screenBounds.getHeight());
-	    this.primaryStage.setMinWidth(1440);
-	    this.primaryStage.setMinHeight(900);
-
-	    // Show the scene containing the root layout.
-	    Scene scene = new Scene(this.rootLayout);
-	    this.primaryStage.setTitle("Routenplaner");
-	    this.primaryStage.setScene(scene);
-	    this.primaryStage.initStyle(StageStyle.DECORATED);
-	    //scene.setFill(Color.TRANSPARENT);
-	    this.primaryStage.show();
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    /**
-     * Eigentliches Hauptfenster laden und anzeigen sowie Controller zuweisen.
-     */
-    public void showMainWindow() {
-	try {
-	    // Load person overview.
-	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_MAIN));
-	    this.MainWindow = (AnchorPane) loader.load();
-
-	    // Set person overview into the center of root layout.
-	    this.rootLayout.setCenter(this.MainWindow);
-
-	    this.controller = loader.getController();
-	    this.controller.setRoutePlannerMainApp(this);
-
-	    try {
-		this.fileManager.lockAllXML();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    /**
-     * Überprüfen der Programmvorraussetzungen: Verbindung zur Overpass-Seite sowie Vorhandensein des
-     * Programmverzeichnisses (gegebenfalls Erstellung des Verzeichnisses).
-     *
-     * @return true, falls beide Vorraussetzungen erfüllt. Ansonsten false
-     */
-    private boolean checkPrerequisites() {
-
-	boolean result = true;
-
-	try {
-	    InetAddress.getByName("overpass-api.de").isReachable(10000);
-	} catch (Exception e) {
-	    result = false;
-	    this.reason = "internet";
 	}
 
-	try {
-	    File f = new File(Constants.PROGRAM_HOME);
-	    if (f.exists() && f.isDirectory()) {
-
-	    } else {
-		File progDir = new File(Constants.PROGRAM_HOME);
-		result = progDir.mkdir();
-	    }
-	} catch (Exception e) {
-	    result = false;
-	    this.reason = "folder";
+	/**
+	 * Methode, die überprüft, ob alle XML-Dateien vorhanden sind. Setzt
+	 * allXMLsExist entsprechend auf true (alle Dateien vorhanden) oder false
+	 * (nicht alles Dateien vorhanden).
+	 */
+	private void checkXMLs() {
+		this.allXMLsExist = true;
+		if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false)
+			this.allXMLsExist = false;
+		if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false)
+			this.allXMLsExist = false;
+		if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false)
+			this.allXMLsExist = false;
 	}
 
-	return result;
+	/**
+	 * Gibt die primaryStage zurück
+	 *
+	 * @return Stage primaryStage
+	 */
+	public Stage getPrimaryStage() {
+		return this.primaryStage;
+	}
 
-    }
-
-    /**
-     * Methode, die überprüft, ob alle XML-Dateien vorhanden sind. Setzt allXMLsExist entsprechend auf true (alle
-     * Dateien vorhanden) oder false (nicht alles Dateien vorhanden).
-     */
-    private void checkXMLs() {
-	this.allXMLsExist = true;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false)
-	    this.allXMLsExist = false;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false)
-	    this.allXMLsExist = false;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false)
-	    this.allXMLsExist = false;
-    }
-
-    /**
-     * Gibt die primaryStage zurück
-     *
-     * @return Stage primaryStage
-     */
-    public Stage getPrimaryStage() {
-	return this.primaryStage;
-    }
-
-    /**
-     * Main-Methode
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-	launch(args);
-    }
+	/**
+	 * Main-Methode
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 }
