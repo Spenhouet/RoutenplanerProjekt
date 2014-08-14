@@ -1,5 +1,9 @@
 package de.dhbw.horb.routePlanner;
 
+/**
+ * Auslagerung der verwendeten festen Werte um diese zentral und leicht änderbar zu halten und den Überblick zu
+ * bewahren.
+ */
 public interface Constants {
 
     public final static String FXML_ROOT = "RoutePlannerRoot.fxml";
