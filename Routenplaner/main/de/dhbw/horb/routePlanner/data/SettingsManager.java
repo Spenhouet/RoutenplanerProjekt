@@ -18,6 +18,9 @@ import org.jdom2.output.XMLOutputter;
 
 import de.dhbw.horb.routePlanner.Constants;
 
+/**
+ * Speichern von Einstellungen über eine XML Datei.
+ */
 public class SettingsManager {
 
     /**
