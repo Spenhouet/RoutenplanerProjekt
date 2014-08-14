@@ -34,11 +34,13 @@ public class Dijkstra {
     private List<String> cheapNeighbours = new ArrayList<String>();
     private Map<String, Map<String, String>> currentNeighbours = new HashMap<String, Map<String, String>>();
     private Map<String, Map<String, String>> openNeighbours = new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> goneEdges = new HashMap<String, Map<String, String>>();
     private Paths allPaths;
     private Paths rightPaths;
     private boolean targetReached;
     private String calcMethod;
     private boolean error;
+    private String nearestNodeId;
 
     public Dijkstra(String startnode, String endnode) {
 
@@ -60,8 +62,7 @@ public class Dijkstra {
     /**
      * Berechnet neue Nachbarpreise, initialisiert Wege und sortiert Abarbeitungsschlange der offenen Knoten
      * 
-     * @param calcMethod
-     *            String für Unterscheidung der Berechnung (nach Dauer oder Strecke)
+     * @param calcMethod String für Unterscheidung der Berechnung (nach Dauer oder Strecke)
      * @return Gibt eine Liste von Maps zurück, die die einzelnen Wege darstellen
      */
     public List<Map<String, String>> calculateRoute(String calcMethod) {
@@ -71,18 +72,17 @@ public class Dijkstra {
 	while (!this.targetReached) {
 	    calcNewNodePrices(this.nearestNode);
 
-	    if (this.error == true)
-		breaking();
+	    if (nearestNode.equals("Ragow (2)"))
+		breakMethod();
 
-	    //	    if (nearestNode.equals("Berlin-Hellersdorf (4)"))
-	    //		breakMethod();
-	    //	    System.out.println(this.nearestNode);
+	    System.out.println(this.nearestNode);
 
 	    initializeRoute();
 
 	    sortPrioQue();
 
-	    if (!this.prioQue.isEmpty() && this.prioQue.getFirst().equals(this.endnode) || this.error == true) {
+	    if (!this.prioQue.isEmpty() && nodeMap.get(this.prioQue.getFirst()).get(0).equals(this.endnode)
+		    || this.error == true) {
 		this.targetReached = true;
 		pickRightWays();
 		if (!this.rightPaths.isEmpty())
@@ -100,33 +100,31 @@ public class Dijkstra {
 	System.out.println("so");
     }
 
-    private void breaking() {
-	System.out.println("So");
-    }
-
     /**
      * Berechnet Preise (Dauer oder Strecke) zu einzelnen Nachbarn
      * 
-     * @param initialNode
-     *            Ausgangsknoten von dem Nachbarn in Betracht gezogen werden
+     * @param initialNode Ausgangsknoten von dem Nachbarn in Betracht gezogen werden
      */
     private void calcNewNodePrices(String initialNode) {
-
 	initializeCurrentNeighbours(initialNode);
 
 	Set<String> keys = this.currentNeighbours.keySet();
 
 	for (String focusedNeighbour : keys)
-	    if (getValue(this.currentNeighbours.get(focusedNeighbour)) + this.nodeDuration.get(initialNode) < this.nodeDuration
-		    .get(focusedNeighbour)
-		    || this.nodeDuration.get(focusedNeighbour) == 0) {
+	    if (getValue(this.currentNeighbours.get(focusedNeighbour)) + this.nodeDuration.get(nearestNodeId) < this.nodeDuration
+		    .get(this.currentNeighbours.get(focusedNeighbour).get(Constants.NEW_ROUTE_DESTINATIONNODEID))
+		    || this.nodeDuration.get(this.currentNeighbours.get(focusedNeighbour).get(
+		            Constants.NEW_ROUTE_DESTINATIONNODEID)) == 0) {
 
-		//		if (this.nodeDuration.get(focusedNeighbour) != 0) deleteWay(focusedNeighbour);
+		// if (this.nodeDuration.get(focusedNeighbour) != 0)
+		// deleteWay(focusedNeighbour);
 
-		setNodeDuration(focusedNeighbour, getValue(this.currentNeighbours.get(focusedNeighbour))
-		        + this.nodeDuration.get(initialNode));
+		setNodeDuration(currentNeighbours.get(focusedNeighbour).get(Constants.NEW_ROUTE_DESTINATIONNODENAME),
+		        getValue(this.currentNeighbours.get(focusedNeighbour)) + this.nodeDuration.get(nearestNodeId));
 
-		if (!this.prioQue.contains(focusedNeighbour) && !focusedNeighbour.equals(this.startnode))
+		if (!this.prioQue.contains(currentNeighbours.get(focusedNeighbour).get(
+		        Constants.NEW_ROUTE_DESTINATIONNODEID))
+		        && !focusedNeighbour.equals(this.startnode))
 		    this.cheapNeighbours.add(focusedNeighbour);
 	    }
 	if (!this.prioQue.isEmpty())
@@ -138,28 +136,31 @@ public class Dijkstra {
      */
     private void initializeRoute() {
 
+	int numberOfIterations = 0;
 	Double gonePrice = (double) 0;
 	List<String> goneNodes = null;
 	List<Map<String, String>> goneEdges = null;
 
-	if (!this.currentNeighbours.isEmpty())
-	    for (int i = 0; i <= this.allPaths.size() - 1; i++)
+	if (!this.currentNeighbours.isEmpty()) {
+	    numberOfIterations = this.allPaths.size() - 1;
+	    for (int i = 0; i <= numberOfIterations; i++) {
 		if (this.allPaths.get(i).getLastNode().equals(this.nearestNode)) {
 		    gonePrice = this.allPaths.get(i).getPrice();
 		    goneNodes = this.allPaths.get(i).getNodes();
 		    goneEdges = this.allPaths.get(i).getEdges();
 		    addNewWays(goneNodes, gonePrice, goneEdges);
 		    this.allPaths.remove(this.allPaths.get(i));
+		    numberOfIterations--;
 		}
-	this.goneNodes.add(this.nearestNode);
-	this.currentNeighbours.clear();
+	    }
+	}
+	this.goneNodes.add(this.nearestNodeId);
     }
 
     /**
      * Initialisert aktuelle Nachbarn
      * 
-     * @param initialNode
-     *            Ausgangsknoten von dem Nachbarn initialisiert werden
+     * @param initialNode Ausgangsknoten von dem Nachbarn initialisiert werden
      */
     private void initializeCurrentNeighbours(String initialNode) {
 	List<String> ids = new ArrayList<String>();
@@ -176,14 +177,15 @@ public class Dijkstra {
 	    if (maps != null)
 		for (Map<String, String> map : maps) {
 
-		    String neighbour = map.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
+		    Map<String, String> neighbour = map;
 
-		    if (!initialNode.equals(neighbour))
+		    if (!id.equals(neighbour.get(Constants.NEW_ROUTE_DESTINATIONNODEID)))
 			if (!this.currentNeighbours.containsKey(neighbour)
 			        || getValue(this.currentNeighbours.get(neighbour)) > Double.valueOf(map
 			                .get(Constants.NEW_ROUTE_DURATION))) {
-			    this.currentNeighbours.put(neighbour, map);
-			    this.openNeighbours.put(neighbour, map);
+			    this.currentNeighbours.put(getName(neighbour), map);
+			    this.openNeighbours.put(getName(neighbour), map);
+			    this.goneEdges.put(getName(neighbour), map);
 			}
 		}
 	}
@@ -195,47 +197,51 @@ public class Dijkstra {
     private void sortPrioQue() {
 
 	for (String cheapNeighbour : this.cheapNeighbours)
-	    this.prioQue.add(cheapNeighbour);
+	    this.prioQue.add(currentNeighbours.get(cheapNeighbour).get(Constants.NEW_ROUTE_DESTINATIONNODEID));
 	this.cheapNeighbours.clear();
-	prioQueInsertionSort();
 
-	if (!this.prioQue.isEmpty())
-	    this.nearestNode = this.prioQue.getFirst();
-	else if (this.prioQue.isEmpty() && this.nearestNode != this.startnode)
+	if (!this.prioQue.isEmpty()) {
+	    this.nearestNode = nodeMap.get(this.prioQue.getFirst()).get(0);
+	    this.nearestNodeId = goneEdges.get(nearestNode).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
+	} else if (this.prioQue.isEmpty() && this.nearestNode != this.startnode) {
 	    this.error = true;
+	}
+	this.currentNeighbours.clear();
+
     }
 
     /**
      * Sortieralgorithmus für Sortieren der Liste
      */
-    private void prioQueInsertionSort() {
-
-	for (int i = 0; i < this.prioQue.size(); i++) {
-	    String temp = this.prioQue.get(i);
-	    int j;
-	    for (j = i - 1; j >= 0 && this.nodeDuration.get(temp) < this.nodeDuration.get(this.prioQue.get(j)); j--)
-		this.prioQue.set(j + 1, this.prioQue.get(j));
-	    this.prioQue.set(j + 1, temp);
+    private String prioQuePickCheapest() {
+	Double finalPrice = null;
+	String finalId = null;
+	for (String id : prioQue) {
+	    if (finalId == null) {
+		finalId = nodeMap.get(id).get(0);
+		finalPrice = nodeDuration.get(nodeMap.get(id).get(0));
+	    } else if (finalPrice != null && nodeDuration.get(nodeMap.get(id).get(0)) < finalPrice) {
+		finalPrice = nodeDuration.get(nodeMap.get(id).get(0));
+		finalId = nodeMap.get(id).get(0);
+	    }
 	}
+	return finalId;
     }
 
     /**
      * 
-     * @param numberOfNewWays
-     *            Anzahl der neuen Wege
-     * @param goneNodes
-     *            Knoten, die bis dahin gegangen wurden
-     * @param price
-     *            Preis (Dauer oder Strecke) bis dahin
-     * @param edges
-     *            Strecken, die bis dahin gegangen wurden
+     * @param numberOfNewWays Anzahl der neuen Wege
+     * @param goneNodes Knoten, die bis dahin gegangen wurden
+     * @param price Preis (Dauer oder Strecke) bis dahin
+     * @param edges Strecken, die bis dahin gegangen wurden
      */
     private void addNewWays(List<String> goneNodes, Double gonePrice, List<Map<String, String>> edges) {
 
 	Set<String> neighbours = this.currentNeighbours.keySet();
 
 	for (String focusedNeighbour : neighbours)
-	    if (!this.goneNodes.contains(focusedNeighbour))
+	    if (!this.goneNodes.contains(currentNeighbours.get(focusedNeighbour).get(
+		    Constants.NEW_ROUTE_DESTINATIONNODEID)))
 		this.allPaths.add(new Way(goneNodes, gonePrice, focusedNeighbour, getValue(this.currentNeighbours
 		        .get(focusedNeighbour)), edges, this.currentNeighbours.get(focusedNeighbour)));
     }
@@ -244,19 +250,22 @@ public class Dijkstra {
      * Initialisiert Hilfsmap für Preise der Knoten
      */
     private void initializeNodePrice() {
-
+	List<String> ids = new ArrayList<String>();
 	Set<String> keys = this.nodeMap.keySet();
-
-	for (String singleKey : keys)
-	    if (!SupportMethods.isNumeric(singleKey))
-		this.nodeDuration.put(singleKey, (double) 0);
+	this.nearestNodeId = nodeMap.get(startnode).get(0);
+	for (String singleKey : keys) {
+	    ids = nodeMap.get(singleKey);
+	    for (String id : ids) {
+		if (!SupportMethods.isNumeric(singleKey))
+		    this.nodeDuration.put(id, (double) 0);
+	    }
+	}
     }
 
     /**
      * Gibt Preis in Abhängigkeit von der Berechnungsmethode Dauer oder Strecke zurück
      * 
-     * @param map
-     *            Kante, für die die Dauer oder die Strecke zurückgegeben wird
+     * @param map Kante, für die die Dauer oder die Strecke zurückgegeben wird
      * @return Preis
      */
     private Double getValue(Map<String, String> edge) {
@@ -276,6 +285,10 @@ public class Dijkstra {
 	return Double.valueOf(valueString);
     }
 
+    private String getName(Map<String, String> map) {
+	return map.get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
+    }
+
     public void printNodes() {
 	Way way = this.rightPaths.getCheapestWay();
 	for (String node : way.getNodes())
@@ -285,8 +298,7 @@ public class Dijkstra {
     /**
      * Löscht alle Wege, die als letzten Knoten den Parameter als Knoten besitzen
      * 
-     * @param initialNode
-     *            Knoten, nach dem gelöscht wird
+     * @param initialNode Knoten, nach dem gelöscht wird
      */
     private void deleteWay(String initialNode) {
 	for (int i = 0; i <= this.allPaths.size() - 1; i++)
@@ -306,10 +318,8 @@ public class Dijkstra {
     /**
      * Setzt den Preis für einen Knoten
      * 
-     * @param name
-     *            Key, für den Preis gesetzt werden soll
-     * @param price
-     *            Preis der gesetzt wird
+     * @param name Key, für den Preis gesetzt werden soll
+     * @param price Preis der gesetzt wird
      */
     public void setNodeDuration(String name, Double price) {
 	this.nodeDuration.put(name, price);
