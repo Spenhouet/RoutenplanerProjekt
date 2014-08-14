@@ -21,6 +21,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -345,6 +346,7 @@ public class RoutePlannerMainController {
 		        Constants.ROUTEPLANNER_POPUP_COLOR_CHANGED).showInformation();
 	    }
 	});
+	initializeTooltips();
     }
 
     /**
@@ -433,9 +435,28 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Method to load the overpass.html into the WebView
+     * Läd die Datei overpass.html in die WebEngine
      */
     public void loadOverpassHTML() {
 	webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
+    }
+
+    /**
+     * Initialisiert Tooltips für verschiedene JavaFX-Komponenten
+     */
+    public void initializeTooltips() {
+	closeButton.setTooltip(new Tooltip(Constants.TOOLTIP_CLOSE_BUTTON));
+	infoButton.setTooltip(new Tooltip(Constants.TOOLTIP_INFO_BUTTON));
+	calculateRouteButton.setTooltip(new Tooltip(Constants.TOOLTIP_CALCULATE_ROUTE_BUTTON));
+	updateDataButton.setTooltip(new Tooltip(Constants.TOOLTIP_UPDATE_DATA_BUTTON));
+	startComboBox.setTooltip(new Tooltip(Constants.TOOLTIP_START_COMBOBOX));
+	targetComboBox.setTooltip(new Tooltip(Constants.TOOLTIP_TARGET_COMBOBOX));
+	countryComboBox.setTooltip(new Tooltip(Constants.TOOLTIP_COUNTRY_COMBOBOX));
+	waysColorPicker.setTooltip(new Tooltip(Constants.TOOLTIP_WAYS_COLORPICKER));
+	nodesColorPicker.setTooltip(new Tooltip(Constants.TOOLTIP_NODES_COLORPICKER));
+	fastestRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_FASTEST_ROUTE_RADIO));
+	shortestRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_SHORTEST_ROUTE_RADIO));
+	dijkstraRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_DIJKSTRA_ROUTE_RADIO));
+	aStarRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_ASTAR_ROUTE_RADIO));
     }
 }

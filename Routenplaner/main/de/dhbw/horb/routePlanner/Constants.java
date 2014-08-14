@@ -95,6 +95,28 @@ public interface Constants {
     public final static String NEW_ROUTE_DEPARTURENODENAME = "departureNodeName";
     public final static String NEW_ROUTE_DESTINATIONNODENAME = "destinationNodeName";
 
+    public final static String TOOLTIP_CLOSE_BUTTON = "Dieser Button beendet das Programm";
+    public final static String TOOLTIP_INFO_BUTTON = "Dieser Button zeigt Informationen über das Programm";
+    public final static String TOOLTIP_CALCULATE_ROUTE_BUTTON = "Dieser Button löst die Berechnung der Route aus.";
+    public final static String TOOLTIP_UPDATE_DATA_BUTTON = "Dieser Button löst ein Update der dem Programm zugrunde "
+	    + "liegenden Daten aus. Dieser Vorgang kann sehr lange dauern!";
+    public final static String TOOLTIP_START_COMBOBOX = "Geben Sie hier bitte den Startknoten Ihrer Route ein.";
+    public final static String TOOLTIP_TARGET_COMBOBOX = "Geben Sie hier bitte den Zielknoten Ihrer Route ein.";
+    public final static String TOOLTIP_COUNTRY_COMBOBOX = "Hier können Sie das Land auswählen, in dem Sie eine Route "
+	    + "berechnen möchten. Um das Land zu wechseln muss das Programm neu geladen werden.";
+    public final static String TOOLTIP_WAYS_COLORPICKER = "Hiermit können Sie die Farbe ändern, in der Wege markiert "
+	    + "werden. Nach einer Änderung muss erneut eine Route berechnet werden, um den Effekt zu sehen.";
+    public final static String TOOLTIP_NODES_COLORPICKER = "Hiermit können Sie die Farbe ändern, in der Knoten "
+	    + "markiert werden. Nach einer Änderung muss erneut eine Route berechnet werden, um den Effekt zu sehen.";
+    public final static String TOOLTIP_FASTEST_ROUTE_RADIO = "Setzten Sie den Haken hier, wenn Sie die schnellste "
+	    + "Route berechnet haben möchten.";
+    public final static String TOOLTIP_SHORTEST_ROUTE_RADIO = "Setzten Sie den Haken hier, wenn Sie die kürzeste "
+	    + "Route berechnet haben möchten.";
+    public final static String TOOLTIP_DIJKSTRA_ROUTE_RADIO = "Wenn Sie eine Route mittels Dijkstra berechnen "
+	    + "möchten, setzten Sie den Haken hier.";
+    public final static String TOOLTIP_ASTAR_ROUTE_RADIO = "Wenn Sie eine Route mittels AStern berechnen möchten, "
+	    + "setzten Sie den Haken hier.";
+
     public final static String ROUTEPLANNER_INFO_STRING = "Dieses Java-Programm entstand im Rahmen der Vorlesung "
 	    + "\"Programmieren I + II\" an der DHBW Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, "
 	    + "Simon Stehle, Sebastian Penhouet und Robin Kinting";
