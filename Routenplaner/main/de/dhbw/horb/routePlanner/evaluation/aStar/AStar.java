@@ -13,8 +13,14 @@ import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
+/**
+ * Berechnung der Route mit dem AStar Algorithmus. Da auf Heuristik verzichtet wurde handelt es sich mehr um das
+ * aufbauen eines minimalen Spannbaums mit Kantenbewertung.
+ */
 public class AStar {
-
+    /**
+     * enum für die Unterscheidung zwischen offener und geschlossener Liste.
+     */
     private enum ListType {
 	open, closed
     }
@@ -32,6 +38,12 @@ public class AStar {
     private HashSet<String> destinationIDs;
     private String calculateMethod;
 
+    /**
+     * AStar Routenberechnung
+     * 
+     * @param departure Name des Anfangs
+     * @param destination Name des Ziels
+     */
     public AStar(String departure, String destination) {
 	openEdgesPredecessor = new HashMap<String, String>();
 	openEdgesRoute = new HashMap<String, Map<String, String>>();
@@ -65,6 +77,12 @@ public class AStar {
 	}
     }
 
+    /**
+     * Start der Routenberechnung
+     * 
+     * @param calculateMethod Berechnungsmethode (Zeit oder Strecke)
+     * @return Liste mit Wegen der richtigen Route
+     */
     public List<Map<String, String>> calculateWay(String calculateMethod) {
 	if (destinationIDs == null || departureIDs == null || destinationIDs.isEmpty() || departureIDs.isEmpty()) {
 	    System.err.println("No IDs for departure or destination.");
@@ -98,6 +116,12 @@ public class AStar {
 	return getWays(destinationID);
     }
 
+    /**
+     * Erzeugt eine Liste von Wegen (Von Blatt zu Wurzel).
+     * 
+     * @param destination Das Ziel
+     * @return Liste der Wege von Ziel zum Anfang
+     */
     private List<Map<String, String>> getWays(String destination) {
 	List<Map<String, String>> nodes = new LinkedList<Map<String, String>>();
 	Map<String, String> mp = closedEdgesRoute.get(destination);
@@ -122,6 +146,12 @@ public class AStar {
 	return null;
     }
 
+    /**
+     * Gibt das Gewicht zurück von einem Ziel bis zum Anfang (Von Blatt zu Wurzel).
+     * 
+     * @param destination Das Ziel
+     * @return Gewicht (Zeit oder Strecke)
+     */
     private Double getWeightBack(String destination) {
 	Double w = null;
 	String newDestination = closedEdgesPredecessor.get(destination);
@@ -137,6 +167,9 @@ public class AStar {
 	return w;
     }
 
+    /**
+     * Rekursives untersuchen der offenen Kanten bis das Ziel erreicht ist.
+     */
     private void findDestination() {
 	String smallest = getSmallest();
 	if (smallest != null) {
@@ -151,10 +184,14 @@ public class AStar {
 	}
     }
 
+    /**
+     * Hinzufügen der Nachbarn zu einer ID
+     * 
+     * @param id Knoten ID
+     */
     private void addNeighbourToOpenList(String id) {
 	List<Map<String, String>> r = routes.get(id);
 	if (r == null || r.isEmpty()) {
-	    //	    System.err.println("Keine route für " + id + " " + nodeMap.get(id).get(0));
 	    return;
 	}
 	for (Map<String, String> edge : r) {
@@ -174,7 +211,7 @@ public class AStar {
 
 		Double oldWeight = openEdgesWeight.get(edge.get(Constants.NEW_ROUTE_DESTINATIONNODEID));
 		Double oldWeightBack = getWeightBack(openEdgesPredecessor.get(edge
-			.get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
+		        .get(Constants.NEW_ROUTE_DESTINATIONNODEID)));
 
 		if (oldWeightBack == null || oldWeight == null)
 		    System.err.println("addNeighbourToOpenList() OldWeight Fehler");
@@ -188,6 +225,12 @@ public class AStar {
 	}
     }
 
+    /**
+     * Das Gewicht entsprechend der Berechnungsmethode zurückgeben.
+     * 
+     * @param edge Die Kante
+     * @return Das Gewicht (Zeit oder Strecke)
+     */
     private Double getWeight(Map<String, String> edge) {
 	String w;
 	switch (calculateMethod) {
@@ -205,6 +248,12 @@ public class AStar {
 	return Double.valueOf(w);
     }
 
+    /**
+     * Füge eine Kante zur geschlossenen oder offenen Liste hinzu
+     * 
+     * @param t Listen Art (offen oder geschlossen)
+     * @param edge Die Kante
+     */
     private void addEdge(ListType t, Map<String, String> edge) {
 	if (edge == null || edge.isEmpty())
 	    return;
@@ -233,6 +282,11 @@ public class AStar {
 	}
     }
 
+    /**
+     * gibt die mit gesamt Weg kleinste Kante zurück.
+     * 
+     * @return Die Kante
+     */
     private String getSmallest() {
 	String key = null;
 	Double value = null;
@@ -257,6 +311,13 @@ public class AStar {
 	return key;
     }
 
+    /**
+     * Lösche eine Kante aus einer Liste.
+     * 
+     * @param t Listen Art (offen oder geschlossen)
+     * @param edge Die Kante
+     * @return
+     */
     private Map<String, String> removeEdge(ListType t, Map<String, String> edge) {
 	if (edge == null || edge.isEmpty())
 	    return null;

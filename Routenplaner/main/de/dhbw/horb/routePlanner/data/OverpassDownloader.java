@@ -16,17 +16,34 @@ import org.xml.sax.SAXException;
 
 import de.dhbw.horb.routePlanner.Constants;
 
+/**
+ * Herunterladen und Overpass XML Daten mit einer definierten Abfrage.
+ */
 public class OverpassDownloader {
 
+    /**
+     * Autobahn XML Daten von einem bestimmten Gebiet abfragen.
+     * 
+     * @param area Das Gebiet z.B.: Deutschland
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public void downloadGraphData(String area) throws IOException, ParserConfigurationException, SAXException {
 
 	String query = "[timeout:3600]; area[name=\"" + area + "\"]->.a; (way(area.a)[highway=\"motorway\"];>;"
-		+ "way(area.a)[highway=\"motorway_link\"];>;); out;";
+	        + "way(area.a)[highway=\"motorway_link\"];>;); out;";
 
-	saveInputStreamToFile(getDataFromOverpass(query),
-		new File(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)));
+	saveInputStreamToFile(getDataFromOverpass(query), new File(XMLFileManager
+	        .getExtendedXMLFileName(Constants.XML_GRAPHDATA)));
     }
 
+    /**
+     * Input Stream von Overpass in XML Datei speichern.
+     * 
+     * @param in Daten Stream
+     * @param file Datei in die gespeichert werden soll.
+     */
     private void saveInputStreamToFile(InputStream in, File file) {
 	try {
 	    OutputStream out = new FileOutputStream(file);
@@ -43,15 +60,14 @@ public class OverpassDownloader {
     }
 
     /**
-    *
-    * @param query Overpass Anfrage
-    * @return Ergebnis der Anfrage als XML Daten.
-    * @throws IOException: Internet Abfrage fehlgeschlagen. Eventuell kein Internet.
-    * @throws ParserConfigurationException
-    * @throws SAXException
-    */
+     * @param Datenverbindung mit Overpass aufbauen und Abfrage starten.
+     * @return Ergebnis der Anfrage als XML Daten.
+     * @throws IOException: Internet Abfrage fehlgeschlagen. Eventuell kein Internet.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     private InputStream getDataFromOverpass(String query) throws IOException, ParserConfigurationException,
-	    SAXException {
+	                                                 SAXException {
 
 	URL overpass = new URL(Constants.OVERPASS_API);
 	HttpURLConnection connection = (HttpURLConnection) overpass.openConnection();
