@@ -1,9 +1,7 @@
 package de.dhbw.horb.routePlanner.ui;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,9 +26,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.DialogStyle;
 import org.controlsfx.dialog.Dialogs;
-import org.controlsfx.dialog.Dialogs.CommandLink;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
@@ -117,17 +115,17 @@ public class RoutePlannerMainController {
 	String start = this.startComboBox.getValue();
 	String end = this.targetComboBox.getValue();
 
-	if ((start != null) && (end != null) && !start.trim().isEmpty() && !end.trim().isEmpty()) {
+	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
 
 	    if (this.calculationMethodToggleGroup.getSelectedToggle() == null)
 		Dialogs.create().title("Keine Berechnung möglich!")
-		.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
+			.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
 	    else if (this.evaluationMethodToggleGroup.getSelectedToggle() == null)
 		Dialogs.create().title("Keine Berechnung möglich!")
-		.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+			.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
 	    else if (start.equals(end))
 		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
-		.showError();
+			.showError();
 	    else {
 
 		this.calculationMethod = null;
@@ -141,8 +139,9 @@ public class RoutePlannerMainController {
 
 	    }
 
-	} else Dialogs.create().title("Keine Berechnung möglich!")
-	.message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+	} else
+	    Dialogs.create().title("Keine Berechnung möglich!")
+		    .message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 
 	enableCalculateRouteButton();
 
@@ -191,7 +190,7 @@ public class RoutePlannerMainController {
     void infoButtonClicked(ActionEvent event) {
 
 	Dialogs.create().message(Constants.ROUTEPLANNER_INFO_STRING).style(DialogStyle.CROSS_PLATFORM_DARK)
-	.showInformation();
+		.showInformation();
 
     }
 
@@ -257,11 +256,11 @@ public class RoutePlannerMainController {
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    RoutePlannerMainController.this.calculatedRouteListView
-			    .setItems(UIEvaluationInterface.allDestinationNodeNames);
+		    .setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
 			    .getValue());
 		    RoutePlannerMainController.this.destinationLabel
-			    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
+		    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
 
 		    DecimalFormat f = new DecimalFormat("#0.00");
 		    RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
@@ -307,28 +306,16 @@ public class RoutePlannerMainController {
 	this.countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
 	    @Override
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
-		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
-			RoutePlannerMainController.this.countryComboBox.getValue());
+	    	SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,RoutePlannerMainController.this.countryComboBox.getValue());
+	    	Action response = Dialogs.create().title("Änderung des Landes erkannt").masthead("Damit Routen für " + t1
+					+ " berechnet werden können, muss das Programm neu geladen werden").message("Wollen Sie das Programm jetzt neu laden?").actions(Dialog.Actions.OK, Dialog.Actions.CANCEL).showConfirm();
 
-		List<CommandLink> links = new ArrayList<>();
-		links.add(new CommandLink("Go to the Zoo",
-			"Here you will see zebras, monkeys, lions, elephants, and maybe also an alligator."));
-		links.add(new CommandLink("Go to the Circus", "Watch acrobats fly around and clowns, of course."));
-		links.add(new CommandLink("Stay Home", "Watch TV or play some board games with your siblings."));
-
-		Action response = Dialogs
-			.create()
-			//.owner(stage)
-			.title("Land ändern")
-			.masthead(null)
-			.message(
-				"Damit Routen für "
-					+ t1
-					+ " berechnet werden können, muss das Programm neu geladen werden. Was möchten Sie tun?")
-			.showCommandLinks(links.get(2), links);
-
-		System.out.println(response);
-	    }
+			if (response == Dialog.Actions.OK) {
+			    System.out.println("Jep");
+			} else {
+			    System.out.println("Nööööö");
+			}
+	    }	
 	});
 	this.waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
 	    @Override
@@ -349,25 +336,21 @@ public class RoutePlannerMainController {
     /**
      * Methode, die aufgerufen wird, um Ways/Nodes auf der Karte zu markieren. Führt Javascript in overpass.html aus.
      *
-     * @param list
-     *            Liste mit IDs aller zu markierenden Ways/Nodes
-     * @param method
-     *            Angabe, ob Nodes oder Ways markiert werden sollen
-     * @param name
-     *            Name des in die Karte eingefügten Layers, der die Markierungen enthält
-     * @param colorString
-     *            Farbe, in der Ways/Nodes markiert werden sollen
+     * @param list Liste mit IDs aller zu markierenden Ways/Nodes
+     * @param method Angabe, ob Nodes oder Ways markiert werden sollen
+     * @param name Name des in die Karte eingefügten Layers, der die Markierungen enthält
+     * @param colorString Farbe, in der Ways/Nodes markiert werden sollen
      */
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
 
-	if ((list == null) || list.isEmpty()) {
+	if (list == null || list.isEmpty()) {
 
 	} else {
 
 	    long colorInt = Long.parseLong(colorString.substring(2, 8), 16);
 	    long r = (colorInt & 0xFF0000) >> 16;
 	    long g = (colorInt & 0xFF00) >> 8;
-	    long b = (colorInt & 0xFF);
+	    long b = colorInt & 0xFF;
 
 	    StringBuffer rgbColorString = new StringBuffer();
 	    rgbColorString.append("rgb(");
@@ -422,7 +405,7 @@ public class RoutePlannerMainController {
 
     /**
      * Startet das Programm neu und läd alle XML-Dateien neu
-     *
+     * 
      * @param event
      */
     @FXML
