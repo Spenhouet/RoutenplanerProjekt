@@ -98,5 +98,9 @@ public interface Constants {
     public final static String ROUTEPLANNER_INFO_STRING = "Dieses Java-Programm entstand im Rahmen der Vorlesung "
 	    + "\"Programmieren I + II\" an der DHBW Stuttgart Campus Horb. \n\n\u00a9 2014 Julius Mahlenbrey, "
 	    + "Simon Stehle, Sebastian Penhouet und Robin Kinting";
+    public final static String ROUTEPLANNER_POPUP_COLOR_CHANGED = "Sie müssen erneut eine Route berechnen lassen, "
+	    + "damit diese Änderung wirksam wird.";
+    public final static String ROUTEPLANNER_POPUP_DATA_UPDATE = "Das Aktualisieren der den Berechnungen zugrunde "
+	    + "liegenden Daten kann sehr lange dauern. Trotzdem aktualisieren?";
 
 }

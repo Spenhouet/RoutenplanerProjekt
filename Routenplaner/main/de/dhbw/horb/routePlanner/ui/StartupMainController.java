@@ -27,21 +27,19 @@ public class StartupMainController {
     /**
      * Setzt den Wert der ProgressBar
      * 
-     * @param progress
-     *            Wert der ProgressBar als double
+     * @param progress Wert der ProgressBar als double
      */
     public void setProgress(double progress) {
-	this.startupProgressBar.setProgress(progress);
+	startupProgressBar.setProgress(progress);
     }
 
     /**
      * Setzt den Label-Text
      * 
-     * @param msg
-     *            Label-Text als String
+     * @param msg Label-Text als String
      */
     public void setMessage(String msg) {
-	this.startupLabel.setText(msg);
+	startupLabel.setText(msg);
     }
 
     /**
@@ -50,7 +48,7 @@ public class StartupMainController {
      * @return Referenz auf ProgressBar
      */
     public ProgressBar getProgressBar() {
-	return this.startupProgressBar;
+	return startupProgressBar;
     }
 
     /**
@@ -59,6 +57,6 @@ public class StartupMainController {
      * @return Referenz auf Label
      */
     public Label getLabel() {
-	return this.startupLabel;
+	return startupLabel;
     }
 }

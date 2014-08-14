@@ -40,16 +40,11 @@ public class UIEvaluationInterface {
      * Methode, die die Berechnung der Route mit dem gewählten Algorithmus auslöst und nach Berechnung das Ergebnis für
      * die GUI aufbereitet.
      *
-     * @param departure
-     *            Startknoten der Route
-     * @param destination
-     *            Zielknoten der Route
-     * @param calculationMethod
-     *            Berechnungsalgorithmus
-     * @param evaluationMethod
-     *            Art der Auswertung (kürzeste/schnellste Route)
-     * @param mainApp
-     *            Referenz auf die Haupt-Application-Klasse
+     * @param departure Startknoten der Route
+     * @param destination Zielknoten der Route
+     * @param calculationMethod Berechnungsalgorithmus
+     * @param evaluationMethod Art der Auswertung (kürzeste/schnellste Route)
+     * @param mainApp Referenz auf die Haupt-Application-Klasse
      */
     public static void calculateRoute(final String departure, final String destination, final String calculationMethod,
 	    final String evaluationMethod, final RoutePlannerMainApp mainApp) {
@@ -59,13 +54,13 @@ public class UIEvaluationInterface {
 	    protected Integer call() throws Exception {
 		route = null;
 		if ((departure == null) || (destination == null) || (calculationMethod == null)
-			|| (evaluationMethod == null)) {
+		        || (evaluationMethod == null)) {
 		    this.cancel();
 		    return -1;
 		}
 
 		if ((calculationMethod != Constants.EVALUATION_CALCULATION_DISTANCE)
-			&& (calculationMethod != Constants.EVALUATION_CALCULATION_DURATION)) {
+		        && (calculationMethod != Constants.EVALUATION_CALCULATION_DURATION)) {
 		    System.err.println("Unknown calculation method.");
 		    this.cancel();
 		    return -2;
@@ -111,7 +106,9 @@ public class UIEvaluationInterface {
 		    List<String> wayIDs = SupportMethods.commaStrToStrList(way.get(Constants.NEW_ROUTE_WAYIDS));
 
 		    if ((wayIDs == null) || (dist == null) || (dur == null) || !SupportMethods.isNumeric(dist)
-			    || !SupportMethods.isNumeric(dur) || wayIDs.isEmpty()) continue;
+			    || !SupportMethods.isNumeric(dur) || wayIDs.isEmpty()) {
+			continue;
+		    }
 
 		    allWayIDs.addAll(wayIDs);
 		    allNodeIDs.add(way.get(Constants.NEW_ROUTE_DEPARTURENODEID));
@@ -138,11 +135,9 @@ public class UIEvaluationInterface {
 	task.setOnCancelled(new EventHandler<WorkerStateEvent>() {
 	    @Override
 	    public void handle(WorkerStateEvent event) {
-		Dialogs.create()
-			.title("Keine Berechnung möglich!")
-			.message(
-				"Bei der Berechnung der Route ist ein Fehler aufgetreten. Es wurde keine Route gefunden.")
-			.showError();
+		Dialogs.create().title("Keine Berechnung möglich!").message(
+		        "Bei der Berechnung der Route ist ein Fehler aufgetreten. Es wurde keine Route gefunden.")
+		        .showError();
 		mainApp.controller.enableCalculateRouteButton();
 	    }
 	});

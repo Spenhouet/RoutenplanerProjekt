@@ -93,7 +93,8 @@ public class RoutePlannerMainApp extends Application {
 			    }
 			    if (RoutePlannerMainApp.this.reason == "folder")
 				updateMessage(Constants.STARTUP_ERROR_FOLDER);
-			    else updateMessage(Constants.STARTUP_ERROR_INTERNET);
+			    else
+				updateMessage(Constants.STARTUP_ERROR_INTERNET);
 			    try {
 				Thread.sleep(3000);
 			    } catch (InterruptedException ex) {
@@ -101,7 +102,8 @@ public class RoutePlannerMainApp extends Application {
 			    }
 			    this.cancel();
 			    break;
-			} else updateMessage(Constants.STARTUP_CHECK_PREREQUISITES);
+			} else
+			    updateMessage(Constants.STARTUP_CHECK_PREREQUISITES);
 			break;
 
 		    case 1:
@@ -270,15 +272,15 @@ public class RoutePlannerMainApp extends Application {
 	    this.primaryStage.setY(screenBounds.getMinY());
 	    this.primaryStage.setWidth(screenBounds.getWidth());
 	    this.primaryStage.setHeight(screenBounds.getHeight());
-	    this.primaryStage.setMinWidth(1440);
-	    this.primaryStage.setMinHeight(900);
+	    this.primaryStage.setMinWidth(1280);
+	    this.primaryStage.setMinHeight(720);
 
 	    // Show the scene containing the root layout.
 	    Scene scene = new Scene(this.rootLayout);
 	    this.primaryStage.setTitle("Routenplaner");
 	    this.primaryStage.setScene(scene);
 	    this.primaryStage.initStyle(StageStyle.DECORATED);
-	    //scene.setFill(Color.TRANSPARENT);
+	    // scene.setFill(Color.TRANSPARENT);
 	    this.primaryStage.show();
 
 	} catch (IOException e) {
