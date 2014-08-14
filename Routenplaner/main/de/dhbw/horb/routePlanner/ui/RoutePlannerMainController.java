@@ -1,7 +1,9 @@
 package de.dhbw.horb.routePlanner.ui;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,8 +27,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.DialogStyle;
 import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.Dialogs.CommandLink;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
@@ -253,11 +257,11 @@ public class RoutePlannerMainController {
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 		    RoutePlannerMainController.this.calculatedRouteListView
-		    .setItems(UIEvaluationInterface.allDestinationNodeNames);
+			    .setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
 			    .getValue());
 		    RoutePlannerMainController.this.destinationLabel
-		    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
+			    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
 
 		    DecimalFormat f = new DecimalFormat("#0.00");
 		    RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
@@ -305,6 +309,25 @@ public class RoutePlannerMainController {
 	    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
 		SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
 			RoutePlannerMainController.this.countryComboBox.getValue());
+
+		List<CommandLink> links = new ArrayList<>();
+		links.add(new CommandLink("Go to the Zoo",
+			"Here you will see zebras, monkeys, lions, elephants, and maybe also an alligator."));
+		links.add(new CommandLink("Go to the Circus", "Watch acrobats fly around and clowns, of course."));
+		links.add(new CommandLink("Stay Home", "Watch TV or play some board games with your siblings."));
+
+		Action response = Dialogs
+			.create()
+			//.owner(stage)
+			.title("Land ändern")
+			.masthead(null)
+			.message(
+				"Damit Routen für "
+					+ t1
+					+ " berechnet werden können, muss das Programm neu geladen werden. Was möchten Sie tun?")
+			.showCommandLinks(links.get(2), links);
+
+		System.out.println(response);
 	    }
 	});
 	this.waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
