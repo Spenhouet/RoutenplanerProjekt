@@ -32,9 +32,14 @@ import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.SettingsManager;
 
+/**
+ * Controller-Klasse für die Hauptanwendung. Stellt Funktionen der einzelnen JavaFX-Komponenten zur Verfügung.
+ *
+ * @author robin
+ *
+ */
 public class RoutePlannerMainController {
 
-    // Reference to the main application.
     public RoutePlannerMainApp routePlannerMainApp;
     public WebEngine webEngine;
     public String linkEnd = Constants.LINK_LINKEND;
@@ -45,84 +50,61 @@ public class RoutePlannerMainController {
 
     @FXML
     private WebView testWebView;
-
     @FXML
     private Button closeButton;
-
     @FXML
     private Button infoButton;
-
     @FXML
     private ComboBox<String> startComboBox;
-
     @FXML
     private ComboBox<String> targetComboBox;
-
     @FXML
     private ComboBox<String> countryComboBox;
-
     @FXML
     private Button calculateRouteButton;
-
     @FXML
     private TabPane tabPane;
-
     @FXML
     private Tab calculatedRouteTab;
-
     @FXML
     private RadioButton fastestRouteRadio;
-
     @FXML
     private RadioButton shortestRouteRadio;
-
     @FXML
     private ToggleGroup calculationMethodToggleGroup;
-
     @FXML
     private RadioButton dijkstraRouteRadio;
-
     @FXML
     private RadioButton aStarRouteRadio;
-
     @FXML
     private ToggleGroup evaluationMethodToggleGroup;
-
     @FXML
     private Label startLabel;
-
     @FXML
     private Label destinationLabel;
-
     @FXML
     private Label distanceLabel;
-
     @FXML
     private Label durationLabel;
-
     @FXML
     private ListView<String> calculatedRouteListView;
-
-    //    @FXML
-    //    private CheckBox showWaysCheckBox;
-    //
-    //    @FXML
-    //    private CheckBox showNodesCheckBox;
-
     @FXML
     private Button updateDataButton;
-
     @FXML
     private ColorPicker waysColorPicker;
-
     @FXML
     private ColorPicker nodesColorPicker;
 
-    /**
-     * The constructor. The constructor is called before the initialize() method.
-     */
-    public RoutePlannerMainController() {}
+    public RoutePlannerMainController() {
 
+    }
+
+    /**
+     * Löst die Berechnung der Route sowie die Anzeige des Ergebnisses aus. Verursacht Fehler wenn Berechnung aufgrund
+     * der Eingabe nicht möglich ist.
+     *
+     * @param event
+     */
     @FXML
     void calculateRouteButtonClicked(ActionEvent event) {
 
@@ -144,8 +126,6 @@ public class RoutePlannerMainController {
 		.showError();
 	    else {
 
-		//tabPane.getTabs().remove(calculatedRouteTab);
-
 		this.calculationMethod = null;
 		this.calculationMethod = getCalculationMethod();
 
@@ -154,7 +134,6 @@ public class RoutePlannerMainController {
 
 		UIEvaluationInterface.calculateRoute(start, end, this.calculationMethod, this.evaluationMethod,
 			this.routePlannerMainApp);
-		//webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
 
 	    }
 
@@ -166,9 +145,9 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Method to detect the selected CalculationMethod
+     * Bestimmt den aktuell ausgewählten Berechnungsalgorithmus
      *
-     * @return currently selected CalculationMethod as String
+     * @return CalculationMethod als String
      */
     private String getCalculationMethod() {
 	String result = null;
@@ -183,9 +162,9 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Method to detect the selected EvaluationMethod
+     * Bestimmt die aktuell ausgewählte Art der Auswertung (kürzeste/schnellste Route)
      *
-     * @return currently selected EvaluationMethod as String
+     * @return EvaluationMethod als String
      */
     private String getEvaluationMethod() {
 	String result = null;
@@ -199,6 +178,11 @@ public class RoutePlannerMainController {
 	return result;
     }
 
+    /**
+     * Zeigt ein Informations-Fenster über das Programm
+     *
+     * @param event
+     */
     @FXML
     void infoButtonClicked(ActionEvent event) {
 
@@ -207,22 +191,26 @@ public class RoutePlannerMainController {
 
     }
 
+    /**
+     * Schließt die Stage, beendet das Programm
+     *
+     * @param event
+     */
     @FXML
     void closeButtonClicked(ActionEvent event) {
 	this.routePlannerMainApp.primaryStage.close();
     }
 
     /**
-     * Is called by the main application to give a reference back to itself.
+     * Initialisierung aller wichtigen JavaFX-Komponenten
      *
-     * @param mainApp
+     * @param routePlannerMainApp
      */
     public void setRoutePlannerMainApp(RoutePlannerMainApp routePlannerMainApp) {
 	this.routePlannerMainApp = routePlannerMainApp;
 	new AutoCompleteComboBoxListener<>(this.startComboBox);
 	new AutoCompleteComboBoxListener<>(this.targetComboBox);
 
-	//Settings eintragen
 	this.countryComboBox.setValue(SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland"));
 	switch (SettingsManager.getValue(Constants.SETTINGS_EVALUATION_METHOD, "Dijkstra")) {
 	case Constants.EVALUATION_METHOD_DIJKSTRA:
@@ -258,14 +246,12 @@ public class RoutePlannerMainController {
 		System.out.println("WebView State: " + newState.toString());
 		if (newState == Worker.State.SUCCEEDED) {
 
-		    //Script in Website ausführen
 		    RoutePlannerMainController.this.webEngine.executeScript("init()");
 		    generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
 		    generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
-		    //Liste aufbauen
 		    RoutePlannerMainController.this.calculatedRouteListView
 		    .setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
@@ -335,9 +321,20 @@ public class RoutePlannerMainController {
 			RoutePlannerMainController.this.nodesColorPicker.getValue().toString());
 	    }
 	});
-	//webEngine.load(this.getClass().getResource("test.html").toExternalForm());
     }
 
+    /**
+     * Methode, die aufgerufen wird, um Ways/Nodes auf der Karte zu markieren. Führt Javascript in overpass.html aus.
+     *
+     * @param list
+     *            Liste mit IDs aller zu markierenden Ways/Nodes
+     * @param method
+     *            Angabe, ob Nodes oder Ways markiert werden sollen
+     * @param name
+     *            Name des in die Karte eingefügten Layers, der die Markierungen enthält
+     * @param colorString
+     *            Farbe, in der Ways/Nodes markiert werden sollen
+     */
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
 
 	if ((list == null) || list.isEmpty()) {
@@ -383,7 +380,7 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Method to disable the "CalculateRoute"-Button
+     * Deaktiviert den "Route berechnen"-Button
      */
     public void disableCalculateRouteButton() {
 
@@ -392,7 +389,7 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Method to enable the "CalculateRoute"-Button
+     * Aktiviert den "Route berechnen"-Button
      */
     public void enableCalculateRouteButton() {
 
@@ -400,6 +397,11 @@ public class RoutePlannerMainController {
 
     }
 
+    /**
+     * Startet das Programm neu und läd alle XML-Dateien neu
+     *
+     * @param event
+     */
     @FXML
     void updateDataButtonClicked(ActionEvent event) {
 
@@ -408,6 +410,9 @@ public class RoutePlannerMainController {
 
     }
 
+    /**
+     * Method to load the overpass.html into the WebView
+     */
     public void loadOverpassHTML() {
 	this.webEngine.load(this.getClass().getResource("overpass.html").toExternalForm());
     }

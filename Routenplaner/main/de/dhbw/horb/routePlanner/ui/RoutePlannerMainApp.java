@@ -22,24 +22,28 @@ import de.dhbw.horb.routePlanner.data.OverpassDownloader;
 import de.dhbw.horb.routePlanner.data.SettingsManager;
 import de.dhbw.horb.routePlanner.data.XMLFileManager;
 
+/**
+ * Main Application-Klasse des Programms
+ * 
+ * @author robin
+ *
+ */
 public class RoutePlannerMainApp extends Application {
 
     public Stage primaryStage;
+    public XMLFileManager fileManager;
+    public boolean allXMLsExist;
+    public RoutePlannerMainController controller;
     private BorderPane rootLayout;
     private AnchorPane MainWindow;
     private BorderPane splashLayout;
     private AnchorPane splashAnchor;
     private Task<Integer> task;
     private StartupMainController startupController;
-    public XMLFileManager fileManager;
-    public boolean allXMLsExist;
-    public RoutePlannerMainController controller;
-    private String cause;
+    private String reason;
 
     public RoutePlannerMainApp() {
-
 	this.fileManager = new XMLFileManager();
-
     }
 
     @Override
@@ -51,6 +55,9 @@ public class RoutePlannerMainApp extends Application {
 
     }
 
+    /**
+     * Definiert Ablauf beim Programmstart. Überprüft XML-Dateien, Zeigt Splash-Window an, startet Hauptanwendung
+     */
     public void executeStartupTask() {
 
 	this.primaryStage.close();
@@ -84,7 +91,7 @@ public class RoutePlannerMainApp extends Application {
 			    } catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			    }
-			    if (RoutePlannerMainApp.this.cause == "folder")
+			    if (RoutePlannerMainApp.this.reason == "folder")
 				updateMessage(Constants.STARTUP_ERROR_FOLDER);
 			    else updateMessage(Constants.STARTUP_ERROR_INTERNET);
 			    try {
@@ -198,7 +205,7 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Splash-Layout initialisieren, laden und anzeigen Alle XMLs releasen
+     * Splash-Layout initialisieren, laden und anzeigen. Alle XMLs releasen.
      */
     public void initSplashLayout() {
 	try {
@@ -225,7 +232,7 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Eigentliches Splash anzeigen Controller zuweisen
+     * Eigentlichen Splash laden und anzeigen sowie Controller zuweisen.
      */
     public void showSplash() {
 	try {
@@ -245,7 +252,7 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Initializes the root layout.
+     * Root-Layout initialisieren, laden und anzeigen.
      */
     public void initRootLayout() {
 	try {
@@ -280,7 +287,7 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Eigentliches Hauptfenster laden und anzeigen sowie Controller zuweisen.
      */
     public void showMainWindow() {
 	try {
@@ -307,10 +314,10 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Check the programs prerequisites Check connection to the overpass-website Check, if the program-folder exists,
-     * and creates it if not
+     * Überprüfen der Programmvorraussetzungen: Verbindung zur Overpass-Seite sowie Vorhandensein des
+     * Programmverzeichnisses (gegebenfalls Erstellung des Verzeichnisses).
      *
-     * @return true if program has access to the required website and if the program folder exists
+     * @return true, falls beide Vorraussetzungen erfüllt. Ansonsten false
      */
     private boolean checkPrerequisites() {
 
@@ -320,7 +327,7 @@ public class RoutePlannerMainApp extends Application {
 	    InetAddress.getByName("overpass-api.de").isReachable(10000);
 	} catch (Exception e) {
 	    result = false;
-	    this.cause = "internet";
+	    this.reason = "internet";
 	}
 
 	try {
@@ -333,13 +340,17 @@ public class RoutePlannerMainApp extends Application {
 	    }
 	} catch (Exception e) {
 	    result = false;
-	    this.cause = "folder";
+	    this.reason = "folder";
 	}
 
 	return result;
 
     }
 
+    /**
+     * Methode, die überprüft, ob alle XML-Dateien vorhanden sind. Setzt allXMLsExist entsprechend auf true (alle
+     * Dateien vorhanden) oder false (nicht alles Dateien vorhanden).
+     */
     private void checkXMLs() {
 	this.allXMLsExist = true;
 	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false)
@@ -351,14 +362,19 @@ public class RoutePlannerMainApp extends Application {
     }
 
     /**
-     * Returns the main stage.
+     * Gibt die primaryStage zurück
      *
-     * @return
+     * @return Stage primaryStage
      */
     public Stage getPrimaryStage() {
 	return this.primaryStage;
     }
 
+    /**
+     * Main-Methode
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 	launch(args);
     }

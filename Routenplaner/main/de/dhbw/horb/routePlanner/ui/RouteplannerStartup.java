@@ -14,61 +14,65 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Klasse für das Splash-Window beim Programmstart
+ *
+ * @author robin
+ *
+ */
 public class RouteplannerStartup extends Application {
-
-    @FXML
-    private ProgressIndicator startupProgressIndicator;
-
-    @FXML
-    private ProgressBar startupProgressBar;
 
     private Stage primaryStage;
     private BorderPane splashLayout;
     private AnchorPane splashAnchor;
 
+    @FXML
+    private ProgressIndicator startupProgressIndicator;
+    @FXML
+    private ProgressBar startupProgressBar;
+
     @Override
     public void start(Stage primaryStage) {
 	this.primaryStage = primaryStage;
-	//this.primaryStage.setTitle("Routeplanner - StartupSplash");
 
 	initSplashLayout();
-
 	showSplash();
+
     }
 
     /**
-     * Initializes the root layout.
+     * Initialisiert das Root-Layout des Splashs
      */
     public void initSplashLayout() {
 	try {
 	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
-	    splashLayout = (BorderPane) loader.load();
+	    this.splashLayout = (BorderPane) loader.load();
 
 	    // Show the scene containing the root layout.
-	    Scene scene = new Scene(splashLayout);
-	    primaryStage.setScene(scene);
-	    primaryStage.initStyle(StageStyle.TRANSPARENT);
+	    Scene scene = new Scene(this.splashLayout);
+	    this.primaryStage.setScene(scene);
+	    this.primaryStage.initStyle(StageStyle.TRANSPARENT);
 	    scene.setFill(Color.TRANSPARENT);
-	    primaryStage.show();
+	    this.primaryStage.show();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Läd das Splash in dessen Root-Layout und zeigt es an
      */
     public void showSplash() {
 	try {
 	    // Load person overview.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
-	    splashAnchor = (AnchorPane) loader.load();
+	    this.splashAnchor = (AnchorPane) loader.load();
 
 	    // Set person overview into the center of root layout.
-	    splashLayout.setCenter(splashAnchor);
+	    this.splashLayout.setCenter(this.splashAnchor);
 
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -76,11 +80,12 @@ public class RouteplannerStartup extends Application {
     }
 
     /**
-     * Returns the main stage.
-     * @return
+     * Gibt die primaryStage zurück
+     *
+     * @return Stage primaryStage
      */
     public Stage getPrimaryStage() {
-	return primaryStage;
+	return this.primaryStage;
     }
 
 }

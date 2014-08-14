@@ -18,9 +18,16 @@ import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
 import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 
+/**
+ * Schnittstelle zwischen der GUI und den einzelnen Klassen zur Berechnung einer Route.
+ *
+ * @author robin
+ *
+ */
 public class UIEvaluationInterface {
 
     private static Task<Integer> task;
+    static List<Map<String, String>> route;
     public static LinkedList<String> allWayIDs;
     public static LinkedList<String> allNodeIDs;
     public static LinkedList<String> DepDestIDs;
@@ -28,8 +35,22 @@ public class UIEvaluationInterface {
     public static ObservableList<String> allDestinationNodeNames;
     public static Double distance;
     public static Double duration;
-    static List<Map<String, String>> route;
 
+    /**
+     * Methode, die die Berechnung der Route mit dem gewählten Algorithmus auslöst und nach Berechnung das Ergebnis für
+     * die GUI aufbereitet.
+     *
+     * @param departure
+     *            Startknoten der Route
+     * @param destination
+     *            Zielknoten der Route
+     * @param calculationMethod
+     *            Berechnungsalgorithmus
+     * @param evaluationMethod
+     *            Art der Auswertung (kürzeste/schnellste Route)
+     * @param mainApp
+     *            Referenz auf die Haupt-Application-Klasse
+     */
     public static void calculateRoute(final String departure, final String destination, final String calculationMethod,
 	    final String evaluationMethod, final RoutePlannerMainApp mainApp) {
 
@@ -79,9 +100,7 @@ public class UIEvaluationInterface {
 		DepDestIDs = new LinkedList<String>();
 		allDestinationNodes = new ArrayList<String>();
 		String departureNodeID = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODEID);
-		//String departureNodeName = route.get(0).get(Constants.NEW_ROUTE_DEPARTURENODENAME);
 		String destinationNodeID = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
-		//String destinationNodeName = route.get(route.size() - 1).get(Constants.NEW_ROUTE_DESTINATIONNODENAME);
 		DepDestIDs.add(departureNodeID);
 		DepDestIDs.add(destinationNodeID);
 
