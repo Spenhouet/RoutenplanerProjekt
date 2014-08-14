@@ -54,10 +54,6 @@ public class SettingsManager {
 	if (key == null || value == null)
 	    return false;
 
-	Element setEl = new Element(Constants.SETTINGS);
-	Document settingsDoc = new Document(setEl);
-	Element root = settingsDoc.getRootElement();
-
 	Map<String, String> settingsMap = new HashMap<String, String>();
 	try {
 	    settingsMap = getAllSettings();
@@ -68,23 +64,7 @@ public class SettingsManager {
 	}
 
 	settingsMap.put(key, value);
-
-	for (Map.Entry<String, String> entry : settingsMap.entrySet()) {
-	    Element el = new Element(Constants.SETTINGS_KVSET);
-	    el.setAttribute(new Attribute(entry.getKey(), entry.getValue()));
-	    root.addContent(el);
-	}
-
-	XMLOutputter outp = new XMLOutputter();
-	outp.setFormat(Format.getPrettyFormat());
-
-	try {
-	    outp.output(settingsDoc, new FileOutputStream(Constants.SETTINGS_XML));
-	    return true;
-	} catch (IOException e) {
-	    e.printStackTrace();
-	    return false;
-	}
+	return saveSettings(settingsMap);
     }
 
     /**
@@ -97,7 +77,7 @@ public class SettingsManager {
 
 	XMLInputFactory factory = XMLInputFactory.newInstance();
 	GraphDataStreamReader settingsSR = new GraphDataStreamReader(factory.createXMLStreamReader(new FileInputStream(
-		Constants.SETTINGS_XML)));
+	        Constants.SETTINGS_XML)));
 
 	Map<String, String> settingsMap = new HashMap<String, String>();
 
@@ -116,6 +96,62 @@ public class SettingsManager {
 	}
 	settingsSR.close();
 	return settingsMap;
+    }
+
+    /**
+     * Löscht einen Einstellungswert aus der Einstellungsdatei.
+     * 
+     * @param key Der Schlüssel für den Einstellungswert
+     * @return Wahr wenn das löschen Erfolgreich war. Ansonsten falsch.
+     */
+    public static Boolean deleteSetting(String key) {
+	Map<String, String> settingsMap = new HashMap<String, String>();
+	try {
+	    settingsMap = getAllSettings();
+	} catch (FileNotFoundException e1) {
+	} catch (XMLStreamException e1) {
+	    e1.printStackTrace();
+	    return false;
+	}
+
+	if (settingsMap == null || settingsMap.isEmpty() || !settingsMap.containsKey(key))
+	    return false;
+
+	settingsMap.remove(key);
+
+	return saveSettings(settingsMap);
+    }
+
+    /**
+     * Speichert die Settings als XML Datei.
+     * 
+     * @param settings Die zu speichernden Settings.
+     * @return Wahr wenn das Speichern erfolgreich war. Ansonsten falsch.
+     */
+    private static Boolean saveSettings(Map<String, String> settings) {
+	if (settings == null || settings.isEmpty())
+	    return false;
+
+	Element setEl = new Element(Constants.SETTINGS);
+	Document settingsDoc = new Document(setEl);
+	Element root = settingsDoc.getRootElement();
+
+	for (Map.Entry<String, String> entry : settings.entrySet()) {
+	    Element el = new Element(Constants.SETTINGS_KVSET);
+	    el.setAttribute(new Attribute(entry.getKey(), entry.getValue()));
+	    root.addContent(el);
+	}
+
+	XMLOutputter outp = new XMLOutputter();
+	outp.setFormat(Format.getPrettyFormat());
+
+	try {
+	    outp.output(settingsDoc, new FileOutputStream(Constants.SETTINGS_XML));
+	    return true;
+	} catch (IOException e) {
+	    e.printStackTrace();
+	    return false;
+	}
     }
 
 }

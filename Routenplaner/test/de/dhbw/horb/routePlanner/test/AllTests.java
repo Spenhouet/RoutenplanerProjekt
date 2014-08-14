@@ -3,6 +3,7 @@ package de.dhbw.horb.routePlanner.test;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import de.dhbw.horb.routePlanner.test.data.UTGraphDataStreamReader;
+import de.dhbw.horb.routePlanner.test.data.UTSettingsManager;
 import de.dhbw.horb.routePlanner.test.general.UTSupportMethods;
 
 public class AllTests {
@@ -11,6 +12,7 @@ public class AllTests {
 	TestSuite suite = new TestSuite();
 	suite.addTestSuite(UTSupportMethods.class);
 	suite.addTestSuite(UTGraphDataStreamReader.class);
+	suite.addTestSuite(UTSettingsManager.class);
 	return suite;
     }
 }
