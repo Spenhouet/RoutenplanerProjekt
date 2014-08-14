@@ -6,40 +6,37 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 import de.dhbw.horb.routePlanner.SupportMethods;
 
 public class UTSupportMethods extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 
+    @Override
     protected void tearDown() {
     }
 
-    @Test
     public void testFromDistanceAndSpeedToMilliseconds() {
 
 	double delta = 0;
 	Assert.assertEquals(36000.0, SupportMethods.fromDistanceAndSpeedToMilliseconds(1.0, 100), delta);
     }
 
-    @Test
     public void testFromLatLonToDistanceInKM() {
 
 	double delta = 0;
-	Assert.assertEquals(680.6580311269971,
-		SupportMethods.fromLatLonToDistanceInKM(49.4782247, 6.3640853, 54.0737704, 12.9119103), delta);
+	Assert.assertEquals(680.6580311269971, SupportMethods.fromLatLonToDistanceInKM(49.4782247, 6.3640853,
+	        54.0737704, 12.9119103), delta);
     }
 
-    @Test
     public void testDegreesToRadians() {
 	double delta = 0;
 	Assert.assertEquals(0.017453292519943295, SupportMethods.degreesToRadians(1.0), delta);
     }
 
-    @Test
     public void testSortListCompairedToEquality() {
 
 	String compStr = "NAME";
@@ -61,7 +58,6 @@ public class UTSupportMethods extends TestCase {
 	Assert.assertEquals(str1, strList.get(2));
     }
 
-    @Test
     public void testIsNumeric() {
 
 	Assert.assertTrue(SupportMethods.isNumeric("1"));
@@ -72,7 +68,6 @@ public class UTSupportMethods extends TestCase {
 	Assert.assertFalse(SupportMethods.isNumeric("134643a"));
     }
 
-    @Test
     public void testCommaStrToStrList() {
 
 	String commaStr = "1, test, t e s t ,,";
@@ -84,7 +79,6 @@ public class UTSupportMethods extends TestCase {
 	Assert.assertEquals(strList, SupportMethods.commaStrToStrList(commaStr));
     }
 
-    @Test
     public void testStrListToCommaStr() {
 
 	String commaStr = "1,test,t e s t";
@@ -98,49 +92,41 @@ public class UTSupportMethods extends TestCase {
 	Assert.assertEquals(commaStr, SupportMethods.strListToCommaStr(strList));
     }
 
-    @Test
     public void testDaysToHours() {
 	double delta = 0;
 	Assert.assertEquals(48.7776, SupportMethods.daysToHours(2.0324), delta);
     }
 
-    @Test
     public void testHoursToMinutes() {
 	double delta = 0;
 	Assert.assertEquals(3320.736, SupportMethods.hoursToMinutes(55.3456), delta);
     }
 
-    @Test
     public void testMinutesToSeconds() {
 	double delta = 0;
 	Assert.assertEquals(612.8661, SupportMethods.minutesToSeconds(10.214435), delta);
     }
 
-    @Test
     public void testSecondsToMilliseconds() {
 	double delta = 0;
 	Assert.assertEquals(32453.23345, SupportMethods.secondsToMilliseconds(32.45323345), delta);
     }
 
-    @Test
     public void testSecondsToMinutes() {
 	double delta = 0;
 	Assert.assertEquals(72.79088666666667, SupportMethods.secondsToMinutes(4367.4532), delta);
     }
 
-    @Test
     public void testMinutesToHours() {
 	double delta = 0;
 	Assert.assertEquals(9.4520576, SupportMethods.minutesToHours(567.123456), delta);
     }
 
-    @Test
     public void testHoursToDays() {
 	double delta = 0;
 	Assert.assertEquals(2.2968104166666667, SupportMethods.hoursToDays(55.12345), delta);
     }
 
-    @Test
     public void testMillisecondsToSeconds() {
 	double delta = 0;
 	Assert.assertEquals(1.00123456789, SupportMethods.millisecondsToSeconds(1001.23456789), delta);
