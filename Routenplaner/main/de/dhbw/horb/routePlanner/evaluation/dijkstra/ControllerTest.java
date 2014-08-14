@@ -4,8 +4,11 @@ public class ControllerTest {
 
     public static void main(String[] args) {
 
-	String startnode = "Horb am Neckar (30)";
-	String endnode = "Villingen-Schwenningen (35)";
+	String startnode = "Berlin-Marzahn (3)";
+	String endnode = "Brandenburg (78)";
+
+	//	String startnode = "Kreuz Stuttgart (51)";
+	//	String endnode = "Berlin-Spandau (26)";
 
 	Dijkstra dijkstra = new Dijkstra(startnode, endnode);
 	dijkstra.calculateRoute("Dauer");
