@@ -71,25 +71,33 @@ public class Dijkstra {
 	while (!this.targetReached) {
 	    calcNewNodePrices(this.nearestNode);
 
-	    if (this.error == true) breaking();
+	    if (this.error == true)
+		breaking();
 
-	    System.out.println(this.nearestNode);
+	    //	    if (nearestNode.equals("Berlin-Hellersdorf (4)"))
+	    //		breakMethod();
+	    //	    System.out.println(this.nearestNode);
 
 	    initializeRoute();
 
 	    sortPrioQue();
 
-	    if (((!this.prioQue.isEmpty() && this.prioQue.getFirst().equals(this.endnode)) || (this.error == true))) {
+	    if (!this.prioQue.isEmpty() && this.prioQue.getFirst().equals(this.endnode) || this.error == true) {
 		this.targetReached = true;
 		pickRightWays();
 		if (!this.rightPaths.isEmpty())
 		    this.rightPaths.initializeCheapestWay();
-		else if (this.rightPaths.isEmpty()) return null;
+		else if (this.rightPaths.isEmpty())
+		    return null;
 
 		return this.rightPaths.getCheapestWay().getEdges();
 	    }
 	}
 	return null;
+    }
+
+    private void breakMethod() {
+	System.out.println("so");
     }
 
     private void breaking() {
@@ -109,18 +117,20 @@ public class Dijkstra {
 	Set<String> keys = this.currentNeighbours.keySet();
 
 	for (String focusedNeighbour : keys)
-	    if (((getValue(this.currentNeighbours.get(focusedNeighbour)) + this.nodeDuration.get(initialNode)) < this.nodeDuration
-		    .get(focusedNeighbour)) || (this.nodeDuration.get(focusedNeighbour) == 0)) {
+	    if (getValue(this.currentNeighbours.get(focusedNeighbour)) + this.nodeDuration.get(initialNode) < this.nodeDuration
+		    .get(focusedNeighbour)
+		    || this.nodeDuration.get(focusedNeighbour) == 0) {
 
 		//		if (this.nodeDuration.get(focusedNeighbour) != 0) deleteWay(focusedNeighbour);
 
 		setNodeDuration(focusedNeighbour, getValue(this.currentNeighbours.get(focusedNeighbour))
-			+ this.nodeDuration.get(initialNode));
+		        + this.nodeDuration.get(initialNode));
 
 		if (!this.prioQue.contains(focusedNeighbour) && !focusedNeighbour.equals(this.startnode))
 		    this.cheapNeighbours.add(focusedNeighbour);
 	    }
-	if (!this.prioQue.isEmpty()) this.prioQue.removeFirst();
+	if (!this.prioQue.isEmpty())
+	    this.prioQue.removeFirst();
     }
 
     /**
@@ -132,14 +142,15 @@ public class Dijkstra {
 	List<String> goneNodes = null;
 	List<Map<String, String>> goneEdges = null;
 
-	if (!this.currentNeighbours.isEmpty()) for (int i = 0; i <= (this.allPaths.size() - 1); i++)
-	    if (this.allPaths.get(i).getLastNode().equals(this.nearestNode)) {
-		gonePrice = this.allPaths.get(i).getPrice();
-		goneNodes = this.allPaths.get(i).getNodes();
-		goneEdges = this.allPaths.get(i).getEdges();
-		addNewWays(goneNodes, gonePrice, goneEdges);
-		this.allPaths.remove(this.allPaths.get(i));
-	    }
+	if (!this.currentNeighbours.isEmpty())
+	    for (int i = 0; i <= this.allPaths.size() - 1; i++)
+		if (this.allPaths.get(i).getLastNode().equals(this.nearestNode)) {
+		    gonePrice = this.allPaths.get(i).getPrice();
+		    goneNodes = this.allPaths.get(i).getNodes();
+		    goneEdges = this.allPaths.get(i).getEdges();
+		    addNewWays(goneNodes, gonePrice, goneEdges);
+		    this.allPaths.remove(this.allPaths.get(i));
+		}
 	this.goneNodes.add(this.nearestNode);
 	this.currentNeighbours.clear();
     }
@@ -155,7 +166,8 @@ public class Dijkstra {
 
 	if (this.nearestNode.equals(this.startnode))
 	    ids = this.nodeMap.get(initialNode);
-	else ids.add(this.openNeighbours.get(initialNode).get(Constants.NEW_ROUTE_DESTINATIONNODEID));
+	else
+	    ids.add(this.openNeighbours.get(initialNode).get(Constants.NEW_ROUTE_DESTINATIONNODEID));
 
 	for (String id : ids) {
 
@@ -168,8 +180,8 @@ public class Dijkstra {
 
 		    if (!initialNode.equals(neighbour))
 			if (!this.currentNeighbours.containsKey(neighbour)
-				|| (getValue(this.currentNeighbours.get(neighbour)) > Double.valueOf(map
-					.get(Constants.NEW_ROUTE_DURATION)))) {
+			        || getValue(this.currentNeighbours.get(neighbour)) > Double.valueOf(map
+			                .get(Constants.NEW_ROUTE_DURATION))) {
 			    this.currentNeighbours.put(neighbour, map);
 			    this.openNeighbours.put(neighbour, map);
 			}
@@ -189,7 +201,8 @@ public class Dijkstra {
 
 	if (!this.prioQue.isEmpty())
 	    this.nearestNode = this.prioQue.getFirst();
-	else if (this.prioQue.isEmpty() && (this.nearestNode != this.startnode)) this.error = true;
+	else if (this.prioQue.isEmpty() && this.nearestNode != this.startnode)
+	    this.error = true;
     }
 
     /**
@@ -200,7 +213,7 @@ public class Dijkstra {
 	for (int i = 0; i < this.prioQue.size(); i++) {
 	    String temp = this.prioQue.get(i);
 	    int j;
-	    for (j = i - 1; (j >= 0) && (this.nodeDuration.get(temp) < this.nodeDuration.get(this.prioQue.get(j))); j--)
+	    for (j = i - 1; j >= 0 && this.nodeDuration.get(temp) < this.nodeDuration.get(this.prioQue.get(j)); j--)
 		this.prioQue.set(j + 1, this.prioQue.get(j));
 	    this.prioQue.set(j + 1, temp);
 	}
@@ -224,7 +237,7 @@ public class Dijkstra {
 	for (String focusedNeighbour : neighbours)
 	    if (!this.goneNodes.contains(focusedNeighbour))
 		this.allPaths.add(new Way(goneNodes, gonePrice, focusedNeighbour, getValue(this.currentNeighbours
-			.get(focusedNeighbour)), edges, this.currentNeighbours.get(focusedNeighbour)));
+		        .get(focusedNeighbour)), edges, this.currentNeighbours.get(focusedNeighbour)));
     }
 
     /**
@@ -235,7 +248,8 @@ public class Dijkstra {
 	Set<String> keys = this.nodeMap.keySet();
 
 	for (String singleKey : keys)
-	    if (!SupportMethods.isNumeric(singleKey)) this.nodeDuration.put(singleKey, (double) 0);
+	    if (!SupportMethods.isNumeric(singleKey))
+		this.nodeDuration.put(singleKey, (double) 0);
     }
 
     /**
@@ -257,7 +271,8 @@ public class Dijkstra {
 	default:
 	    valueString = edge.get(Constants.NEW_ROUTE_DURATION);
 	}
-	if (!SupportMethods.isNumeric(valueString)) return null;
+	if (!SupportMethods.isNumeric(valueString))
+	    return null;
 	return Double.valueOf(valueString);
     }
 
@@ -274,16 +289,18 @@ public class Dijkstra {
      *            Knoten, nach dem gelöscht wird
      */
     private void deleteWay(String initialNode) {
-	for (int i = 0; i <= (this.allPaths.size() - 1); i++)
-	    if (this.allPaths.get(i).getLastNode().equals(initialNode)) this.allPaths.remove(this.allPaths.get(i));
+	for (int i = 0; i <= this.allPaths.size() - 1; i++)
+	    if (this.allPaths.get(i).getLastNode().equals(initialNode))
+		this.allPaths.remove(this.allPaths.get(i));
     }
 
     /**
      * Speichert alle Wege, die am richtigen Zielknoten angekommen sind
      */
     private void pickRightWays() {
-	for (int i = 0; i <= (this.allPaths.size() - 1); i++)
-	    if (this.allPaths.get(i).getLastNode().equals(this.endnode)) this.rightPaths.add(this.allPaths.get(i));
+	for (int i = 0; i <= this.allPaths.size() - 1; i++)
+	    if (this.allPaths.get(i).getLastNode().equals(this.endnode))
+		this.rightPaths.add(this.allPaths.get(i));
     }
 
     /**
