@@ -50,6 +50,7 @@ public class RoutePlannerMainController {
 	public String nodeString = null;
 	public String calculationMethod;
 	public String evaluationMethod;
+	public boolean flag = false;
 
 	@FXML
 	private WebView testWebView;
@@ -119,14 +120,14 @@ public class RoutePlannerMainController {
 		if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
 
 			if (this.calculationMethodToggleGroup.getSelectedToggle() == null)
-				Dialogs.create().title("Keine Berechnung möglich!")
-						.message("Bitte geben Sie eine Berechnungsmethode an.").showError();
+				Dialogs.create().title("Keine Berechnung möglich!").message(
+				        "Bitte geben Sie eine Berechnungsmethode an.").showError();
 			else if (this.evaluationMethodToggleGroup.getSelectedToggle() == null)
-				Dialogs.create().title("Keine Berechnung möglich!")
-						.message("Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+				Dialogs.create().title("Keine Berechnung möglich!").message(
+				        "Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
 			else if (start.equals(end))
 				Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
-						.showError();
+				        .showError();
 			else {
 
 				this.calculationMethod = null;
@@ -136,13 +137,13 @@ public class RoutePlannerMainController {
 				this.evaluationMethod = getEvaluationMethod();
 
 				UIEvaluationInterface.calculateRoute(start, end, this.calculationMethod, this.evaluationMethod,
-						this.routePlannerMainApp);
+				        this.routePlannerMainApp);
 
 			}
 
 		} else
-			Dialogs.create().title("Keine Berechnung möglich!")
-					.message("Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+			Dialogs.create().title("Keine Berechnung möglich!").message(
+			        "Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 
 		enableCalculateRouteButton();
 
@@ -192,7 +193,7 @@ public class RoutePlannerMainController {
 	void infoButtonClicked(ActionEvent event) {
 
 		Dialogs.create().message(Constants.ROUTEPLANNER_INFO_STRING).style(DialogStyle.CROSS_PLATFORM_DARK)
-				.showInformation();
+		        .showInformation();
 
 	}
 
@@ -211,7 +212,7 @@ public class RoutePlannerMainController {
 	 *
 	 * @param routePlannerMainApp
 	 */
-	public void setRoutePlannerMainApp(RoutePlannerMainApp routePlannerMainApp) {
+	public void setRoutePlannerMainApp(final RoutePlannerMainApp routePlannerMainApp) {
 		this.routePlannerMainApp = routePlannerMainApp;
 		new AutoCompleteComboBoxListener<>(this.startComboBox);
 		new AutoCompleteComboBoxListener<>(this.targetComboBox);
@@ -238,10 +239,10 @@ public class RoutePlannerMainController {
 			break;
 		}
 		Color farbe_ways = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_WAYS,
-				Constants.SETTINGS_COLOR_WAYS_DEFAULT));
+		        Constants.SETTINGS_COLOR_WAYS_DEFAULT));
 		this.waysColorPicker.setValue(farbe_ways);
 		Color farbe_nodes = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
-				Constants.SETTINGS_COLOR_NODES_DEFAULT));
+		        Constants.SETTINGS_COLOR_NODES_DEFAULT));
 		this.nodesColorPicker.setValue(farbe_nodes);
 
 		this.webEngine = this.testWebView.getEngine();
@@ -253,20 +254,20 @@ public class RoutePlannerMainController {
 
 					RoutePlannerMainController.this.webEngine.executeScript("init()");
 					generateLinkQuery(UIEvaluationInterface.allWayIDs, "way", "ways", SettingsManager.getValue(
-							Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
+					        Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
 					generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
-							Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
+					        Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
 
 					RoutePlannerMainController.this.calculatedRouteListView
-							.setItems(UIEvaluationInterface.allDestinationNodeNames);
+					        .setItems(UIEvaluationInterface.allDestinationNodeNames);
 					RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
-							.getValue());
+					        .getValue());
 					RoutePlannerMainController.this.destinationLabel
-							.setText(RoutePlannerMainController.this.targetComboBox.getValue());
+					        .setText(RoutePlannerMainController.this.targetComboBox.getValue());
 
 					DecimalFormat f = new DecimalFormat("#0.00");
 					RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
-							+ " km");
+					        + " km");
 
 					Long ms = SupportMethods.millisecondsToSeconds(UIEvaluationInterface.duration).longValue();
 					Double m = SupportMethods.secondsToMinutes(ms.doubleValue());
@@ -274,11 +275,11 @@ public class RoutePlannerMainController {
 					int minutes = (int) Math.floor(m % 60.0);
 					int seconds = (int) Math.floor(SupportMethods.minutesToSeconds(m % 1));
 					String routeDuration = String.format("%d Stunden %02d Minuten %02d Sekunden", hours, minutes,
-							seconds);
+					        seconds);
 					RoutePlannerMainController.this.durationLabel.setText(routeDuration);
 					RoutePlannerMainController.this.calculatedRouteTab.getStyleClass().removeAll("hidden");
 					SingleSelectionModel<Tab> selectionModel = RoutePlannerMainController.this.tabPane
-							.getSelectionModel();
+					        .getSelectionModel();
 					selectionModel.select(RoutePlannerMainController.this.calculatedRouteTab);
 
 					RoutePlannerMainController.this.wayString = null;
@@ -308,36 +309,45 @@ public class RoutePlannerMainController {
 		this.countryComboBox.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String t, String t1) {
-				SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
-						RoutePlannerMainController.this.countryComboBox.getValue());
-				Action response = Dialogs
-						.create()
-						.title("Änderung des Landes erkannt")
-						.masthead(
-								"Damit Routen für " + t1
-										+ " berechnet werden können, muss das Programm neu geladen werden")
-						.message("Wollen Sie das Programm jetzt neu laden?")
-						.actions(Dialog.Actions.OK, Dialog.Actions.CANCEL).showConfirm();
+				if (flag == false) {
+					flag = true;
+					Action response = Dialogs.create().title("Änderung des Landes erkannt")
+					        .masthead(
+					                "Damit Routen für " + t1
+					                        + " berechnet werden können, muss das Programm neu geladen werden")
+					        .message("Wollen Sie das Programm jetzt neu laden?").actions(Dialog.Actions.OK,
+					                Dialog.Actions.CANCEL).showConfirm();
 
-				if (response == Dialog.Actions.OK) {
-					System.out.println("Jep");
-				} else {
-					System.out.println("Nööööö");
+					if (response == Dialog.Actions.OK) {
+						SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
+						        RoutePlannerMainController.this.countryComboBox.getValue());
+						routePlannerMainApp.allXMLsExist = false;
+						routePlannerMainApp.executeStartupTask();
+					} else {
+						countryComboBox.setValue(t);
+					}
 				}
+				flag = false;
 			}
 		});
 		this.waysColorPicker.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				SettingsManager.saveSetting(Constants.SETTINGS_COLOR_WAYS,
-						RoutePlannerMainController.this.waysColorPicker.getValue().toString());
+				        RoutePlannerMainController.this.waysColorPicker.getValue().toString());
+				Dialogs.create().title("Änderung der Farbe erkannt").masthead(null).message(
+				        "Sie müssen erneut eine Route berechnen lassen, damit diese Änderung wirksam wird.")
+				        .showInformation();
 			}
 		});
 		this.nodesColorPicker.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				SettingsManager.saveSetting(Constants.SETTINGS_COLOR_NODES,
-						RoutePlannerMainController.this.nodesColorPicker.getValue().toString());
+				        RoutePlannerMainController.this.nodesColorPicker.getValue().toString());
+				Dialogs.create().title("Änderung der Farbe erkannt").masthead(null).message(
+				        "Sie müssen erneut eine Route berechnen lassen, damit diese Änderung wirksam wird.")
+				        .showInformation();
 			}
 		});
 	}
@@ -345,7 +355,7 @@ public class RoutePlannerMainController {
 	/**
 	 * Methode, die aufgerufen wird, um Ways/Nodes auf der Karte zu markieren.
 	 * Führt Javascript in overpass.html aus.
-	 *
+	 * 
 	 * @param list
 	 *            Liste mit IDs aller zu markierenden Ways/Nodes
 	 * @param method
@@ -384,7 +394,7 @@ public class RoutePlannerMainController {
 				x++;
 				if (x > 99) {
 					this.webEngine.executeScript("add_layer('" + name + "', '" + completeLink + this.linkEnd + "', '"
-							+ rgbColorString + "')");
+					        + rgbColorString + "')");
 					System.out.println("regulär: " + completeLink + this.linkEnd);
 					x = 0;
 					completeLink = Constants.LINK_COMPLETELINK;
@@ -393,7 +403,7 @@ public class RoutePlannerMainController {
 
 			if (completeLink != Constants.LINK_COMPLETELINK) {
 				this.webEngine.executeScript("add_layer('" + name + "', '" + completeLink + this.linkEnd + "', '"
-						+ rgbColorString + "')");
+				        + rgbColorString + "')");
 				System.out.println("nicht leer: " + completeLink + this.linkEnd);
 			}
 
