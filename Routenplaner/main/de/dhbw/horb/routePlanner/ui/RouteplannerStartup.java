@@ -22,70 +22,70 @@ import javafx.stage.StageStyle;
  */
 public class RouteplannerStartup extends Application {
 
-	private Stage primaryStage;
-	private BorderPane splashLayout;
-	private AnchorPane splashAnchor;
+    private Stage primaryStage;
+    private BorderPane splashLayout;
+    private AnchorPane splashAnchor;
 
-	@FXML
-	private ProgressIndicator startupProgressIndicator;
-	@FXML
-	private ProgressBar startupProgressBar;
+    @FXML
+    private ProgressIndicator startupProgressIndicator;
+    @FXML
+    private ProgressBar startupProgressBar;
 
-	@Override
-	public void start(Stage primaryStage) {
-		this.primaryStage = primaryStage;
+    @Override
+    public void start(Stage primaryStage) {
+	this.primaryStage = primaryStage;
 
-		initSplashLayout();
-		showSplash();
+	initSplashLayout();
+	showSplash();
 
+    }
+
+    /**
+     * Initialisiert das Root-Layout des Splashs
+     */
+    public void initSplashLayout() {
+	try {
+	    // Load root layout from fxml file.
+	    FXMLLoader loader = new FXMLLoader();
+	    loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
+	    this.splashLayout = (BorderPane) loader.load();
+
+	    // Show the scene containing the root layout.
+	    Scene scene = new Scene(this.splashLayout);
+	    this.primaryStage.setScene(scene);
+	    this.primaryStage.initStyle(StageStyle.TRANSPARENT);
+	    scene.setFill(Color.TRANSPARENT);
+	    this.primaryStage.show();
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	/**
-	 * Initialisiert das Root-Layout des Splashs
-	 */
-	public void initSplashLayout() {
-		try {
-			// Load root layout from fxml file.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
-			this.splashLayout = (BorderPane) loader.load();
+    /**
+     * Läd das Splash in dessen Root-Layout und zeigt es an
+     */
+    public void showSplash() {
+	try {
+	    // Load person overview.
+	    FXMLLoader loader = new FXMLLoader();
+	    loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
+	    this.splashAnchor = (AnchorPane) loader.load();
 
-			// Show the scene containing the root layout.
-			Scene scene = new Scene(this.splashLayout);
-			this.primaryStage.setScene(scene);
-			this.primaryStage.initStyle(StageStyle.TRANSPARENT);
-			scene.setFill(Color.TRANSPARENT);
-			this.primaryStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    // Set person overview into the center of root layout.
+	    this.splashLayout.setCenter(this.splashAnchor);
+
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+    }
 
-	/**
-	 * Läd das Splash in dessen Root-Layout und zeigt es an
-	 */
-	public void showSplash() {
-		try {
-			// Load person overview.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
-			this.splashAnchor = (AnchorPane) loader.load();
-
-			// Set person overview into the center of root layout.
-			this.splashLayout.setCenter(this.splashAnchor);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Gibt die primaryStage zurück
-	 *
-	 * @return Stage primaryStage
-	 */
-	public Stage getPrimaryStage() {
-		return this.primaryStage;
-	}
+    /**
+     * Gibt die primaryStage zurück
+     *
+     * @return Stage primaryStage
+     */
+    public Stage getPrimaryStage() {
+	return this.primaryStage;
+    }
 
 }
