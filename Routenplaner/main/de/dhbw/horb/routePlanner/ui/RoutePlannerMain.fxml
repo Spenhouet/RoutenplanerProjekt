@@ -11,17 +11,17 @@
 
 <AnchorPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.horb.routePlanner.ui.RoutePlannerMainController">
    <children>
-      <SplitPane dividerPositions="0.7" layoutX="408.0" layoutY="181.0" prefHeight="700.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.65" layoutX="408.0" layoutY="181.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane>
                <children>
-                  <WebView fx:id="testWebView" layoutX="235.0" layoutY="227.0" prefHeight="698.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <WebView fx:id="testWebView" layoutX="235.0" layoutY="227.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Routeneingabe">
                      <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <AnchorPane>
                            <children>
                               <VBox layoutX="38.0" layoutY="52.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
                                  <children>
@@ -29,7 +29,8 @@
                                     <ComboBox fx:id="startComboBox" editable="true" layoutX="73.0" layoutY="137.0" promptText="Start" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0">
                                        <VBox.margin>
                                           <Insets top="5.0" />
-                                       </VBox.margin></ComboBox>
+                                       </VBox.margin>
+                                    </ComboBox>
                                     <ComboBox fx:id="targetComboBox" editable="true" layoutX="73.0" layoutY="181.0" promptText="Ziel">
                                        <VBox.margin>
                                           <Insets top="15.0" />
@@ -84,7 +85,7 @@
                 </Tab>
                 <Tab text="Kartenoptionen">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                        <AnchorPane>
                            <children>
                               <VBox layoutX="25.0" layoutY="46.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
                                  <children>
@@ -153,7 +154,7 @@
                 </Tab>
                   <Tab fx:id="calculatedRouteTab" closable="false" styleClass="hidden" text="Berechnete Route">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane>
                            <children>
                               <VBox layoutX="15.0" layoutY="15.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
                                  <children>
@@ -233,7 +234,8 @@
                                     </VBox>
                                  </children>
                               </VBox>
-                           </children></AnchorPane>
+                           </children>
+                        </AnchorPane>
                     </content>
                   </Tab>
               </tabs>
