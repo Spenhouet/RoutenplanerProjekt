@@ -23,7 +23,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
      */
     public boolean isNode() {
 	if (getLocalName().trim().equals(Constants.NODE) || getLocalName().trim().equals(Constants.WAY_NODE)
-		|| getLocalName().trim().equals(Constants.NEW_NODE)) return true;
+	        || getLocalName().trim().equals(Constants.NEW_NODE))
+	    return true;
 	return false;
     }
 
@@ -33,7 +34,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
      * @return Wahr wenn dies zutrifft und falsch wenn es nicht zutrifft.
      */
     public boolean isWay() {
-	if (getLocalName().trim().equals(Constants.WAY)) return true;
+	if (getLocalName().trim().equals(Constants.WAY))
+	    return true;
 	return false;
     }
 
@@ -43,7 +45,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
      * @return Wahr wenn dies zutrifft und falsch wenn es nicht zutrifft.
      */
     public boolean isRoute() {
-	if (getLocalName().trim().equals(Constants.NEW_ROUTE)) return true;
+	if (getLocalName().trim().equals(Constants.NEW_ROUTE))
+	    return true;
 	return false;
     }
 
@@ -55,7 +58,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
      */
     public boolean nextStartElement() throws XMLStreamException {
 	while (hasNext())
-	    if (next() == START_ELEMENT) return true;
+	    if (next() == START_ELEMENT)
+		return true;
 	return false;
     }
 
@@ -68,7 +72,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
      */
     public String getAttributeValue(String AttributeLocalName) {
 	for (int x = 0; x < getAttributeCount(); x++)
-	    if (getAttributeLocalName(x).trim().equals(AttributeLocalName)) return getAttributeValue(x);
+	    if (getAttributeLocalName(x).trim().equals(AttributeLocalName))
+		return getAttributeValue(x);
 
 	return null;
     }
@@ -85,7 +90,8 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
 	if (getLocalName().equals(Constants.NODE_TAG)) {
 	    String k = getAttributeValue("k");
 	    String v = getAttributeValue("v");
-	    if (k.equals(inK)) return v;
+	    if (k.equals(inK))
+		return v;
 	}
 	return null;
     }
