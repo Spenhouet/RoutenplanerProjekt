@@ -360,7 +360,7 @@ public class RoutePlannerMainApp extends Application {
     /**
      * Main-Methode
      * 
-     * @param args
+     * @param args Startparameter
      */
     public static void main(String[] args) {
 	launch(args);

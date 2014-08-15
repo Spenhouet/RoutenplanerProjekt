@@ -106,7 +106,7 @@ public class RoutePlannerMainController {
     /**
      * Initialisierung aller wichtigen JavaFX-Komponenten.
      * 
-     * @param routePlannerMainApp
+     * @param routePlannerMainApp Referenz auf die MainApp
      */
     public void setRoutePlannerMainApp(final RoutePlannerMainApp routePlannerMainApp) {
 	this.routePlannerMainApp = routePlannerMainApp;
