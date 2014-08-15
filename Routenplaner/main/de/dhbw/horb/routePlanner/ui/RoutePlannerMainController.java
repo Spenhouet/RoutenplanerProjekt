@@ -146,8 +146,6 @@ public class RoutePlannerMainController {
 		    "Bitte geben Sie sowohl Start als auch Ziel an.").showError();
 	}
 
-	enableCalculateRouteButton();
-
     }
 
     /**

@@ -8,18 +8,18 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript">
 	  
-	  var lat = 53.86;
-      var lon = 8.44;
-      var zoom = 18;
+	  var lat = 48.4452167;
+      var lon = 8.696227000000022;
+      var zoom = 12;
 	  var map;
 	  var way_array = new Array();
 
       DetectBoundsOSMFormat = OpenLayers.Class(OpenLayers.Format.OSM, {
 
-          min_lat: 180.0,
-          max_lat: -180.0,
-          min_lon: 90.0,
-          max_lon: -90.0,
+          min_lat: 180,
+          max_lat: -180,
+          min_lon: 90,
+          max_lon: -90,
           zoom: 0,
 
           getNodes: function(doc)
@@ -75,22 +75,24 @@
                   (Number(osm_format.min_lat) + Number(osm_format.max_lat))/2.0)
                   .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 
+			  var lat_border = ((Number(osm_format.max_lat) - Number(osm_format.min_lat)) * 0.1);
+			  var lon_border = ((Number(osm_format.max_lon) - Number(osm_format.min_lon)) * 0.1);
+				  
               var southwest = new OpenLayers.LonLat(
-                  Number(osm_format.min_lon), Number(osm_format.min_lat))
+                  Number(osm_format.min_lon) - lon_border, Number(osm_format.min_lat) - lat_border)
                   .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 
               var northeast = new OpenLayers.LonLat(
-                  Number(osm_format.max_lon), Number(osm_format.max_lat))
+                  Number(osm_format.max_lon) + lon_border, Number(osm_format.max_lat) + lat_border)
                   .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 
             map.setCenter(lonLat);
 
-            var extent = map.getExtent();
+            var extent = new OpenLayers.Bounds();
             extent.extend(southwest);
             extent.extend(northeast);
             map.zoomToExtent(extent);
 
-            setStatusText("Found " + layer.features.length + " features.");
           };
       }
 
@@ -151,7 +153,6 @@
 		  
           map.addLayer(layer);
 		  		 
-				 
       }
 	  
   </script>

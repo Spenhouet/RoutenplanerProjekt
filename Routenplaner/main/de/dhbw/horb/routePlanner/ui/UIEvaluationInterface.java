@@ -129,6 +129,8 @@ public class UIEvaluationInterface {
 	    @Override
 	    public void handle(WorkerStateEvent event) {
 		mainApp.controller.loadOverpassHTML();
+		mainApp.controller.enableCalculateRouteButton();
+
 	    }
 	});
 
