@@ -1,7 +1,6 @@
 package de.dhbw.horb.routePlanner.data;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
@@ -86,48 +85,6 @@ public class XMLFileManager {
 	this.graphDataXMLRandomAccessFile = new RandomAccessFile(new File(XMLFileManager
 	        .getExtendedXMLFileName(Constants.XML_GRAPHDATA)), "rw");
 	this.graphDataXMLLock = this.graphDataXMLRandomAccessFile.getChannel().lock(0, Long.MAX_VALUE, true);
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public FileDescriptor getRoutesFD() {
-	FileDescriptor Result = null;
-	try {
-	    Result = this.routesXMLRandomAccessFile.getFD();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return Result;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public FileDescriptor getNodesFD() {
-	FileDescriptor Result = null;
-	try {
-	    Result = this.nodesXMLRandomAccessFile.getFD();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return Result;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public FileDescriptor getGraphDataFD() {
-	FileDescriptor Result = null;
-	try {
-	    Result = this.graphDataXMLRandomAccessFile.getFD();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return Result;
     }
 
     /**
