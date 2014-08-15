@@ -3,9 +3,8 @@ package de.dhbw.horb.routePlanner.evaluation.dijkstra;
 import java.util.LinkedList;
 
 /**
- * Klasse Route
- * Erweitert LinkedList mit erweiterten Operationen in Bezug auf die Klasse Weg 
- * Enthält in der LinkedList Datenobjekte vom Typ Weg
+ * Klasse Route Erweitert LinkedList mit erweiterten Operationen in Bezug auf die Klasse Weg Enthält in der LinkedList
+ * Datenobjekte vom Typ Weg
  * 
  * @author Simon
  * 
@@ -16,6 +15,9 @@ public class Paths extends LinkedList<Way> {
     private Way cheapestWay;
     private Double cheapestWayPrice;
 
+    /**
+     * Initialisiert billigsten Weg
+     */
     public void initializeCheapestWay() {
 	cheapestWayPrice = getLast().getPrice();
 	cheapestWay = getLast();
@@ -26,14 +28,27 @@ public class Paths extends LinkedList<Way> {
 	}
     }
 
+    /**
+     * Fügt weg zu Paths hinzu
+     * 
+     * @param way Weg der hinzugefügt wird
+     */
     public void addWay(Way way) {
 	this.add(way);
     }
 
+    /**
+     * Setzt billigsten Weg
+     * 
+     * @param cheapestWay Weg der als Billigster gesetzt wird
+     */
     public void setCheapestWay(Way cheapestWay) {
 	this.cheapestWay = cheapestWay;
     }
 
+    /**
+     * @return cheapestWay Gibt billigsten Weg zurück
+     */
     public Way getCheapestWay() {
 	return cheapestWay;
     }

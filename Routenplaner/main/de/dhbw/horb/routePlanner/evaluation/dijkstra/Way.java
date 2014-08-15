@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Klasse Way
- * Repräsentiert einen Weg von Start zu beliebigem Endknoten
+ * Klasse Way Repräsentiert einen Weg von Start zu beliebigem Endknoten
+ * 
  * @author Simon
- *
+ * 
  */
 public class Way {
 
@@ -31,34 +31,57 @@ public class Way {
 
     /**
      * Zum aktuellen Weg werden alle übergebenen Knoten hinzugefügt
-     * @param nodes
+     * 
+     * @param nodes Knoten die hinzugefügt werden
      */
     private void addNodes(List<String> nodes) {
 	for (String node : nodes)
 	    this.nodes.add(node);
     }
 
+    /**
+     * Zum aktuellen Weg werden alle übergebenen Streckenabschnitte hinzugefügt
+     * 
+     * @param edges Streckenabschnitte, die hinzugefügt werden
+     */
     private void addEdges(List<Map<String, String>> edges) {
 	for (Map<String, String> edge : edges)
 	    this.edges.add(edge);
     }
 
+    /**
+     * @return Gib letzten Knoten des Wegs zurück
+     */
     public String getLastNode() {
 	return nodes.get(nodes.size() - 1);
     }
 
+    /**
+     * @return Gibt Preis von Weg zurück
+     */
     public Double getPrice() {
 	return price;
     }
 
+    /**
+     * Setzt Preis
+     * 
+     * @param price Preis, der gesetzt wird
+     */
     public void setPrice(Double price) {
 	this.price = price;
     }
 
+    /**
+     * @return Gibt von Knoten von Weg zurück
+     */
     public List<String> getNodes() {
 	return nodes;
     }
 
+    /**
+     * @return Gibt Streckenabschnitte von Weg zurück
+     */
     public List<Map<String, String>> getEdges() {
 	return edges;
     }
