@@ -37,15 +37,15 @@ public interface Constants {
     public final static String STARTUP_ERROR_XML_NODES = "NodeXML/RouteXML konnte nicht erzeugt werden";
     public final static String STARTUP_ERROR_XML_ROUTES = "RouteXML/NodeXML konnte nicht erzeugt werden";
     public final static String STARTUP_CREATE_XML_GRAPHDATA = "GraphDataXML wird heruntergeladen...";
-    public final static String STARTUP_CREATE_XML_NODES = "NodeXML/RouteXML wird und erzeugt...";
-    public final static String STARTUP_CREATE_XML_ROUTES = "RouteXML/NodeXML wird und erzeugt...";
+    public final static String STARTUP_CREATE_XML_NODES = "NodeXML/RouteXML wird erzeugt...";
+    public final static String STARTUP_CREATE_XML_ROUTES = "RouteXML/NodeXML wird erzeugt...";
 
     public final static String EVALUATION_METHOD_ASTAR = "AStern";
     public final static String EVALUATION_METHOD_DIJKSTRA = "Dijkstra";
     public final static String EVALUATION_CALCULATION_DURATION = "Dauer";
     public final static String EVALUATION_CALCULATION_DISTANCE = "Strecke";
 
-    public final static String COUNTRY_VERIFIED = "Deutschland, Österreich";
+    public final static String COUNTRY_VERIFIED = "Deutschland, Österreich, Nederland";
 
     public final static String SETTINGS = "settings";
     public final static String SETTINGS_KVSET = "kvSet";
