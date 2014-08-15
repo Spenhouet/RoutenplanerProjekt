@@ -353,7 +353,7 @@ public class RoutePlannerMainApp extends Application {
      * Methode, die überprüft, ob alle XML-Dateien vorhanden sind. Setzt allXMLsExist entsprechend auf true (alle
      * Dateien vorhanden) oder false (nicht alles Dateien vorhanden).
      */
-    private void checkXMLs() {
+    public void checkXMLs() {
 	this.allXMLsExist = true;
 	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false)
 	    this.allXMLsExist = false;

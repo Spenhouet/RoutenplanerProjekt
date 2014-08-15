@@ -107,106 +107,6 @@ public class RoutePlannerMainController {
     }
 
     /**
-     * Löst die Berechnung der Route sowie die Anzeige des Ergebnisses aus. Verursacht Fehler wenn Berechnung aufgrund
-     * der Eingabe nicht möglich ist.
-     *
-     * @param event
-     */
-    @FXML
-    void calculateRouteButtonClicked(ActionEvent event) {
-
-	disableCalculateRouteButton();
-
-	String start = startComboBox.getValue();
-	String end = targetComboBox.getValue();
-
-	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
-
-	    if (calculationMethodToggleGroup.getSelectedToggle() == null) {
-		Dialogs.create().title("Keine Berechnung möglich!").message(
-		        "Bitte geben Sie eine Berechnungsmethode an.").showError();
-	    } else if (evaluationMethodToggleGroup.getSelectedToggle() == null) {
-		Dialogs.create().title("Keine Berechnung möglich!").message(
-		        "Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
-	    } else if (start.equals(end)) {
-		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
-		        .showError();
-	    } else {
-
-		calculateRouteProgressIndicator.setOpacity(1.0);
-
-		calculationMethod = null;
-		calculationMethod = getCalculationMethod();
-
-		evaluationMethod = null;
-		evaluationMethod = getEvaluationMethod();
-
-		UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
-		        routePlannerMainApp);
-
-	    }
-
-	} else {
-	    Dialogs.create().title("Keine Berechnung möglich!").message(
-		    "Bitte geben Sie sowohl Start als auch Ziel an.").showError();
-	}
-
-    }
-
-    /**
-     * Bestimmt den aktuell ausgewählten Berechnungsalgorithmus
-     *
-     * @return CalculationMethod als String
-     */
-    private String getCalculationMethod() {
-	String result = null;
-	if (fastestRouteRadio.isSelected()) {
-	    result = Constants.EVALUATION_CALCULATION_DURATION;
-	} else if (shortestRouteRadio.isSelected()) {
-	    result = Constants.EVALUATION_CALCULATION_DISTANCE;
-	}
-	return result;
-    }
-
-    /**
-     * Bestimmt die aktuell ausgewählte Art der Auswertung (kürzeste/schnellste Route).
-     *
-     * @return EvaluationMethod als String
-     */
-    private String getEvaluationMethod() {
-	String result = null;
-	if (aStarRouteRadio.isSelected()) {
-	    result = Constants.EVALUATION_METHOD_ASTAR;
-	} else if (dijkstraRouteRadio.isSelected()) {
-	    result = Constants.EVALUATION_METHOD_DIJKSTRA;
-	}
-	return result;
-    }
-
-    /**
-     * Zeigt ein Informations-Fenster über das Programm.
-     *
-     * @param event
-     */
-    @FXML
-    void infoButtonClicked(ActionEvent event) {
-
-	Dialogs.create().message(Constants.ROUTEPLANNER_INFO_STRING).style(DialogStyle.CROSS_PLATFORM_DARK)
-	        .showInformation();
-
-    }
-
-    /**
-     * Schließt die Stage, beendet das Programm.
-     *
-     * @param event
-     */
-    @FXML
-    void closeButtonClicked(ActionEvent event) {
-	routePlannerMainApp.primaryStage.close();
-    }
-
-    /**
      * Initialisierung aller wichtigen JavaFX-Komponenten.
      *
      * @param routePlannerMainApp
@@ -215,7 +115,6 @@ public class RoutePlannerMainController {
 	this.routePlannerMainApp = routePlannerMainApp;
 	new AutoCompleteComboBoxListener<>(startComboBox);
 	new AutoCompleteComboBoxListener<>(targetComboBox);
-
 	countryComboBox.setValue(SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland"));
 	switch (SettingsManager.getValue(Constants.SETTINGS_EVALUATION_METHOD, "Dijkstra")) {
 	case Constants.EVALUATION_METHOD_DIJKSTRA:
@@ -243,7 +142,6 @@ public class RoutePlannerMainController {
 	Color farbe_nodes = Color.web(SettingsManager.getValue(Constants.SETTINGS_COLOR_NODES,
 	        Constants.SETTINGS_COLOR_NODES_DEFAULT));
 	nodesColorPicker.setValue(farbe_nodes);
-
 	webEngine = testWebView.getEngine();
 	webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
 	    @Override
@@ -255,18 +153,15 @@ public class RoutePlannerMainController {
 			    Constants.SETTINGS_COLOR_WAYS, Constants.SETTINGS_COLOR_WAYS_DEFAULT));
 		    generateLinkQuery(UIEvaluationInterface.DepDestIDs, "node", "nodes", SettingsManager.getValue(
 			    Constants.SETTINGS_COLOR_NODES, Constants.SETTINGS_COLOR_NODES_DEFAULT));
-
 		    RoutePlannerMainController.this.calculatedRouteListView
 			    .setItems(UIEvaluationInterface.allDestinationNodeNames);
 		    RoutePlannerMainController.this.startLabel.setText(RoutePlannerMainController.this.startComboBox
 			    .getValue());
 		    RoutePlannerMainController.this.destinationLabel
 			    .setText(RoutePlannerMainController.this.targetComboBox.getValue());
-
 		    DecimalFormat f = new DecimalFormat("#0.00");
 		    RoutePlannerMainController.this.distanceLabel.setText(f.format(UIEvaluationInterface.distance)
 			    + " km");
-
 		    Long ms = SupportMethods.millisecondsToSeconds(UIEvaluationInterface.duration).longValue();
 		    Double m = SupportMethods.secondsToMinutes(ms.doubleValue());
 		    int hours = (int) Math.floor(m / 60.0);
@@ -279,11 +174,9 @@ public class RoutePlannerMainController {
 		    SingleSelectionModel<Tab> selectionModel = RoutePlannerMainController.this.tabPane
 			    .getSelectionModel();
 		    selectionModel.select(RoutePlannerMainController.this.calculatedRouteTab);
-
 		    RoutePlannerMainController.this.wayString = null;
 		    RoutePlannerMainController.this.nodeString = null;
 		    UIEvaluationInterface.allWayIDs = null;
-
 		    enableCalculateRouteButton();
 		}
 
@@ -318,11 +211,10 @@ public class RoutePlannerMainController {
 			            + "erstellt werden. Dies kann sehr lange dauern.").message(
 			    "Wollen Sie jetzt " + t1 + " auswählen?").actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
 			    .showConfirm();
-
 		    if (response == Dialog.Actions.OK) {
 			SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY,
 			        RoutePlannerMainController.this.countryComboBox.getValue());
-			routePlannerMainApp.allXMLsExist = false;
+			routePlannerMainApp.checkXMLs();
 			routePlannerMainApp.executeStartupTask();
 		    } else {
 			countryComboBox.setValue(t);
@@ -353,6 +245,36 @@ public class RoutePlannerMainController {
     }
 
     /**
+     * Bestimmt den aktuell ausgewählten Berechnungsalgorithmus
+     *
+     * @return CalculationMethod als String
+     */
+    private String getCalculationMethod() {
+	String result = null;
+	if (fastestRouteRadio.isSelected()) {
+	    result = Constants.EVALUATION_CALCULATION_DURATION;
+	} else if (shortestRouteRadio.isSelected()) {
+	    result = Constants.EVALUATION_CALCULATION_DISTANCE;
+	}
+	return result;
+    }
+
+    /**
+     * Bestimmt die aktuell ausgewählte Art der Auswertung (kürzeste/schnellste Route).
+     *
+     * @return EvaluationMethod als String
+     */
+    private String getEvaluationMethod() {
+	String result = null;
+	if (aStarRouteRadio.isSelected()) {
+	    result = Constants.EVALUATION_METHOD_ASTAR;
+	} else if (dijkstraRouteRadio.isSelected()) {
+	    result = Constants.EVALUATION_METHOD_DIJKSTRA;
+	}
+	return result;
+    }
+
+    /**
      * Methode, die aufgerufen wird, um Ways/Nodes auf der Karte zu markieren. Führt Javascript in overpass.html aus.
      * 
      * @param list Liste mit IDs aller zu markierenden Ways/Nodes
@@ -361,16 +283,13 @@ public class RoutePlannerMainController {
      * @param colorString Farbe, in der Ways/Nodes markiert werden sollen
      */
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
-
 	if (list == null || list.isEmpty()) {
 
 	} else {
-
 	    long colorInt = Long.parseLong(colorString.substring(2, 8), 16);
 	    long r = (colorInt & 0xFF0000) >> 16;
 	    long g = (colorInt & 0xFF00) >> 8;
 	    long b = colorInt & 0xFF;
-
 	    StringBuffer rgbColorString = new StringBuffer();
 	    rgbColorString.append("rgb(");
 	    rgbColorString.append(r);
@@ -379,7 +298,6 @@ public class RoutePlannerMainController {
 	    rgbColorString.append(",");
 	    rgbColorString.append(b);
 	    rgbColorString.append(")");
-
 	    String completeLink = Constants.LINK_COMPLETELINK;
 
 	    int x = 0;
@@ -393,47 +311,10 @@ public class RoutePlannerMainController {
 		    completeLink = Constants.LINK_COMPLETELINK;
 		}
 	    }
-
 	    if (completeLink != Constants.LINK_COMPLETELINK) {
 		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
 		        + rgbColorString + "')");
 	    }
-
-	}
-    }
-
-    /**
-     * Deaktiviert den "Route berechnen"-Button
-     */
-    public void disableCalculateRouteButton() {
-
-	calculateRouteButton.setDisable(true);
-
-    }
-
-    /**
-     * Aktiviert den "Route berechnen"-Button
-     */
-    public void enableCalculateRouteButton() {
-
-	calculateRouteButton.setDisable(false);
-
-    }
-
-    /**
-     * Startet das Programm neu und läd alle XML-Dateien neu
-     * 
-     * @param event
-     */
-    @FXML
-    void updateDataButtonClicked(ActionEvent event) {
-	Action response = Dialogs.create().title("Daten aktualisieren").masthead(null).message(
-	        Constants.ROUTEPLANNER_POPUP_DATA_UPDATE).actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-	        .showConfirm();
-
-	if (response == Dialog.Actions.OK) {
-	    routePlannerMainApp.allXMLsExist = false;
-	    routePlannerMainApp.executeStartupTask();
 	}
     }
 
@@ -461,5 +342,92 @@ public class RoutePlannerMainController {
 	shortestRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_SHORTEST_ROUTE_RADIO));
 	dijkstraRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_DIJKSTRA_ROUTE_RADIO));
 	aStarRouteRadio.setTooltip(new Tooltip(Constants.TOOLTIP_ASTAR_ROUTE_RADIO));
+    }
+
+    /**
+     * Löst die Berechnung der Route sowie die Anzeige des Ergebnisses aus. Verursacht Fehler wenn Berechnung aufgrund
+     * der Eingabe nicht möglich ist.
+     *
+     * @param event
+     */
+    @FXML
+    void calculateRouteButtonClicked(ActionEvent event) {
+	disableCalculateRouteButton();
+	String start = startComboBox.getValue();
+	String end = targetComboBox.getValue();
+	if (start != null && end != null && !start.trim().isEmpty() && !end.trim().isEmpty()) {
+	    if (calculationMethodToggleGroup.getSelectedToggle() == null) {
+		Dialogs.create().title("Keine Berechnung möglich!").message(
+		        "Bitte geben Sie eine Berechnungsmethode an.").showError();
+	    } else if (evaluationMethodToggleGroup.getSelectedToggle() == null) {
+		Dialogs.create().title("Keine Berechnung möglich!").message(
+		        "Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+	    } else if (start.equals(end)) {
+		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
+		        .showError();
+	    } else {
+		calculateRouteProgressIndicator.setOpacity(1.0);
+		calculationMethod = null;
+		calculationMethod = getCalculationMethod();
+		evaluationMethod = null;
+		evaluationMethod = getEvaluationMethod();
+		UIEvaluationInterface.calculateRoute(start, end, calculationMethod, evaluationMethod,
+		        routePlannerMainApp);
+	    }
+	} else {
+	    Dialogs.create().title("Keine Berechnung möglich!").message(
+		    "Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+	}
+    }
+
+    /**
+     * Zeigt ein Informations-Fenster über das Programm.
+     *
+     * @param event
+     */
+    @FXML
+    void infoButtonClicked(ActionEvent event) {
+	Dialogs.create().message(Constants.ROUTEPLANNER_INFO_STRING).style(DialogStyle.CROSS_PLATFORM_DARK)
+	        .showInformation();
+    }
+
+    /**
+     * Schließt die Stage, beendet das Programm.
+     *
+     * @param event
+     */
+    @FXML
+    void closeButtonClicked(ActionEvent event) {
+	routePlannerMainApp.primaryStage.close();
+    }
+
+    /**
+     * Deaktiviert den "Route berechnen"-Button
+     */
+    public void disableCalculateRouteButton() {
+	calculateRouteButton.setDisable(true);
+    }
+
+    /**
+     * Aktiviert den "Route berechnen"-Button
+     */
+    public void enableCalculateRouteButton() {
+	calculateRouteButton.setDisable(false);
+    }
+
+    /**
+     * Startet das Programm neu und läd alle XML-Dateien neu
+     * 
+     * @param event
+     */
+    @FXML
+    void updateDataButtonClicked(ActionEvent event) {
+	Action response = Dialogs.create().title("Daten aktualisieren").masthead(null).message(
+	        Constants.ROUTEPLANNER_POPUP_DATA_UPDATE).actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
+	        .showConfirm();
+	if (response == Dialog.Actions.OK) {
+	    routePlannerMainApp.allXMLsExist = false;
+	    routePlannerMainApp.executeStartupTask();
+	}
     }
 }
