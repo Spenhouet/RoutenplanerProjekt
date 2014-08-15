@@ -13,11 +13,11 @@
    <children>
       <SplitPane dividerPositions="0.6" layoutX="408.0" layoutY="181.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane>
+          <AnchorPane minWidth="768.0">
                <children>
                   <WebView fx:id="testWebView" layoutX="235.0" layoutY="227.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
-            <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" minWidth="512.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Routeneingabe">
                      <content>
