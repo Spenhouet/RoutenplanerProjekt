@@ -8,12 +8,14 @@ public interface Constants {
 
     public final static String FXML_ROOT = "RoutePlannerRoot.fxml";
     public final static String FXML_MAIN = "RoutePlannerMain.fxml";
+    public final static String FXML_ROOT_STARTUP = "StartupRoot.fxml";
+    public final static String FXML_MAIN_STARTUP = "StartupMain.fxml";
 
     public final static String LINK_COMPLETELINK = "((";
     public final static String LINK_LINKEND = ");>;);out body;";
-    public final static String LINK_LINKTARGET = "&target=ol_fixed";
 
     public final static String OVERPASS_API = "http://www.overpass-api.de/api/interpreter";
+    public final static String OVERPASS_DE = "overpass-api.de";
 
     public final static String USER_HOME = System.getProperty("user.home");
     public final static String PROGRAM_HOME = USER_HOME + System.getProperty("file.separator")

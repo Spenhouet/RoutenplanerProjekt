@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import de.dhbw.horb.routePlanner.Constants;
 
 /**
  * Klasse für das Splash-Window beim Programmstart
@@ -47,7 +48,7 @@ public class RouteplannerStartup extends Application {
 	try {
 	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RouteplannerStartup.class.getResource("StartupRoot.fxml"));
+	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_ROOT_STARTUP));
 	    this.splashLayout = (BorderPane) loader.load();
 
 	    // Show the scene containing the root layout.
@@ -68,7 +69,7 @@ public class RouteplannerStartup extends Application {
 	try {
 	    // Load person overview.
 	    FXMLLoader loader = new FXMLLoader();
-	    loader.setLocation(RouteplannerStartup.class.getResource("StartupMain.fxml"));
+	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_MAIN_STARTUP));
 	    this.splashAnchor = (AnchorPane) loader.load();
 
 	    // Set person overview into the center of root layout.
