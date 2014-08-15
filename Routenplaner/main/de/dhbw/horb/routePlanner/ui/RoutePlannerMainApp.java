@@ -25,8 +25,6 @@ import de.dhbw.horb.routePlanner.data.XMLFileManager;
 /**
  * Main Application-Klasse des Programms
  * 
- * @author robin
- * 
  */
 public class RoutePlannerMainApp extends Application {
 

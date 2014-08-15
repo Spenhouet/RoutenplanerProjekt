@@ -21,8 +21,6 @@ import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 /**
  * Schnittstelle zwischen der GUI und den einzelnen Klassen zur Berechnung einer Route.
  * 
- * @author robin
- * 
  */
 public class UIEvaluationInterface {
 

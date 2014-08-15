@@ -18,8 +18,6 @@ import de.dhbw.horb.routePlanner.Constants;
 /**
  * Klasse für das Splash-Window beim Programmstart
  * 
- * @author robin
- * 
  */
 public class RouteplannerStartup extends Application {
 

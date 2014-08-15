@@ -6,8 +6,6 @@ import java.util.LinkedList;
  * Klasse Route Erweitert LinkedList mit erweiterten Operationen in Bezug auf die Klasse Weg Enthält in der LinkedList
  * Datenobjekte vom Typ Weg
  * 
- * @author Simon
- * 
  */
 public class Paths extends LinkedList<Way> {
 

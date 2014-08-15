@@ -7,8 +7,6 @@ import java.util.Map;
 /**
  * Klasse Way Repräsentiert einen Weg von Start zu beliebigem Endknoten
  * 
- * @author Simon
- * 
  */
 public class Way {
 

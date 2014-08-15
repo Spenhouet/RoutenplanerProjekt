@@ -20,8 +20,6 @@ import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 /**
  * Klasse stellt Autocomplete-Funktionalität zur Verfügung
  * 
- * @author robin
- *
  * @param <T> AutoComplete vom Typ String
  */
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {

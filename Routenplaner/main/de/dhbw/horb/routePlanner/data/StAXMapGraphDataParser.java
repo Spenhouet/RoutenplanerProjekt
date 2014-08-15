@@ -14,6 +14,10 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
 
+/**
+ * Erzeugen von Maps als Cache aus den drei XML Dateien.
+ * 
+ */
 public class StAXMapGraphDataParser {
 
     /**

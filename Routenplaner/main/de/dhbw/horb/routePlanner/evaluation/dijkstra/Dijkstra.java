@@ -17,8 +17,6 @@ import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 /**
  * Klasse Dijkstra Berechnet kürzeste bzw schnellste Route von Start zu Zielknoten
  * 
- * @author Simon
- * 
  */
 public class Dijkstra {
 

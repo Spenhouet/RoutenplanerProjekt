@@ -39,8 +39,6 @@ import de.dhbw.horb.routePlanner.data.SettingsManager;
 /**
  * Controller-Klasse für die Hauptanwendung. Stellt Funktionen der einzelnen JavaFX-Komponenten zur Verfügung.
  * 
- * @author robin
- * 
  */
 public class RoutePlannerMainController {
 
