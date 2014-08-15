@@ -431,6 +431,7 @@ public class RoutePlannerMainController {
 	        .showConfirm();
 	if (response == Dialog.Actions.OK) {
 	    routePlannerMainApp.allXMLsExist = false;
+	    routePlannerMainApp.graphDataExists = false;
 	    routePlannerMainApp.executeStartupTask();
 	}
     }

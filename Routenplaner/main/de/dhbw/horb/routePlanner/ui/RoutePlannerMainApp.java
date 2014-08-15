@@ -33,6 +33,7 @@ public class RoutePlannerMainApp extends Application {
     public Stage primaryStage;
     public XMLFileManager fileManager;
     public boolean allXMLsExist;
+    public boolean graphDataExists;
     public RoutePlannerMainController controller;
     private BorderPane rootLayout;
     private AnchorPane MainWindow;
@@ -107,7 +108,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 1:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
+			if ((allXMLsExist == false) && (graphDataExists == false))
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_GRAPHDATA);
 				String area = SettingsManager.getValue(Constants.SETTINGS_COUNTRY, "Deutschland");
@@ -129,7 +130,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 2:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
+			if (allXMLsExist == false)
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_NODES);
 				JDomGraphDataCreator.createNodeXML();
@@ -149,7 +150,7 @@ public class RoutePlannerMainApp extends Application {
 			break;
 
 		    case 3:
-			if (RoutePlannerMainApp.this.allXMLsExist == false)
+			if (allXMLsExist == false)
 			    try {
 				updateMessage(Constants.STARTUP_CREATE_XML_ROUTES);
 				JDomGraphDataCreator.createRouteXML();
@@ -354,13 +355,18 @@ public class RoutePlannerMainApp extends Application {
      * Dateien vorhanden) oder false (nicht alles Dateien vorhanden).
      */
     public void checkXMLs() {
-	this.allXMLsExist = true;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false)
-	    this.allXMLsExist = false;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false)
-	    this.allXMLsExist = false;
-	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false)
-	    this.allXMLsExist = false;
+	allXMLsExist = true;
+	graphDataExists = true;
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_GRAPHDATA)) == false) {
+	    allXMLsExist = false;
+	    graphDataExists = false;
+	}
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_NODES)) == false) {
+	    allXMLsExist = false;
+	}
+	if (XMLFileManager.fileExists(XMLFileManager.getExtendedXMLFileName(Constants.XML_ROUTES)) == false) {
+	    allXMLsExist = false;
+	}
     }
 
     /**
