@@ -201,7 +201,7 @@ public class Dijkstra {
 	this.cheapNeighbours.clear();
 
 	if (!this.prioQue.isEmpty()) {
-	    this.nearestNode = nodeMap.get(this.prioQue.getFirst()).get(0);
+	    this.nearestNode = nodeMap.get(prioQuePickCheapest()).get(0);
 	    this.nearestNodeId = goneEdges.get(nearestNode).get(Constants.NEW_ROUTE_DESTINATIONNODEID);
 	} else if (this.prioQue.isEmpty() && this.nearestNode != this.startnode) {
 	    this.error = true;
@@ -218,11 +218,11 @@ public class Dijkstra {
 	String finalId = null;
 	for (String id : prioQue) {
 	    if (finalId == null) {
-		finalId = nodeMap.get(id).get(0);
-		finalPrice = nodeDuration.get(nodeMap.get(id).get(0));
+		finalId = id;
+		finalPrice = nodeDuration.get(id);
 	    } else if (finalPrice != null && nodeDuration.get(nodeMap.get(id).get(0)) < finalPrice) {
-		finalPrice = nodeDuration.get(nodeMap.get(id).get(0));
-		finalId = nodeMap.get(id).get(0);
+		finalPrice = nodeDuration.get(id);
+		finalId = id;
 	    }
 	}
 	return finalId;
