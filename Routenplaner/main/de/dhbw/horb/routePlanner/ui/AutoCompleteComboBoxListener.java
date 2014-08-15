@@ -17,6 +17,13 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
+/**
+ * Klasse stellt Autocomplete-Funktionalität zur Verfügung
+ * 
+ * @author robin
+ *
+ * @param <T> AutoComplete vom Typ String
+ */
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     private ComboBox<String> comboBox;
