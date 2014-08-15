@@ -17,9 +17,9 @@ import de.dhbw.horb.routePlanner.Constants;
 
 /**
  * Klasse für das Splash-Window beim Programmstart
- *
+ * 
  * @author robin
- *
+ * 
  */
 public class RouteplannerStartup extends Application {
 
@@ -38,7 +38,6 @@ public class RouteplannerStartup extends Application {
 
 	initSplashLayout();
 	showSplash();
-
     }
 
     /**
@@ -46,12 +45,10 @@ public class RouteplannerStartup extends Application {
      */
     public void initSplashLayout() {
 	try {
-	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_ROOT_STARTUP));
 	    this.splashLayout = (BorderPane) loader.load();
 
-	    // Show the scene containing the root layout.
 	    Scene scene = new Scene(this.splashLayout);
 	    this.primaryStage.setScene(scene);
 	    this.primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -67,14 +64,10 @@ public class RouteplannerStartup extends Application {
      */
     public void showSplash() {
 	try {
-	    // Load person overview.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_MAIN_STARTUP));
 	    this.splashAnchor = (AnchorPane) loader.load();
-
-	    // Set person overview into the center of root layout.
 	    this.splashLayout.setCenter(this.splashAnchor);
-
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -82,11 +75,10 @@ public class RouteplannerStartup extends Application {
 
     /**
      * Gibt die primaryStage zurück
-     *
+     * 
      * @return Stage primaryStage
      */
     public Stage getPrimaryStage() {
 	return this.primaryStage;
     }
-
 }

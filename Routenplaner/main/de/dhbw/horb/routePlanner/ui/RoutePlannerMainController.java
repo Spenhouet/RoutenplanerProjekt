@@ -38,9 +38,9 @@ import de.dhbw.horb.routePlanner.data.SettingsManager;
 
 /**
  * Controller-Klasse für die Hauptanwendung. Stellt Funktionen der einzelnen JavaFX-Komponenten zur Verfügung.
- *
+ * 
  * @author robin
- *
+ * 
  */
 public class RoutePlannerMainController {
 
@@ -103,12 +103,11 @@ public class RoutePlannerMainController {
     public ProgressIndicator calculateRouteProgressIndicator;
 
     public RoutePlannerMainController() {
-
     }
 
     /**
      * Initialisierung aller wichtigen JavaFX-Komponenten.
-     *
+     * 
      * @param routePlannerMainApp
      */
     public void setRoutePlannerMainApp(final RoutePlannerMainApp routePlannerMainApp) {
@@ -179,7 +178,6 @@ public class RoutePlannerMainController {
 		    UIEvaluationInterface.allWayIDs = null;
 		    enableCalculateRouteButton();
 		}
-
 	    }
 	});
 	evaluationMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -246,7 +244,7 @@ public class RoutePlannerMainController {
 
     /**
      * Bestimmt den aktuell ausgewählten Berechnungsalgorithmus
-     *
+     * 
      * @return CalculationMethod als String
      */
     private String getCalculationMethod() {
@@ -261,7 +259,7 @@ public class RoutePlannerMainController {
 
     /**
      * Bestimmt die aktuell ausgewählte Art der Auswertung (kürzeste/schnellste Route).
-     *
+     * 
      * @return EvaluationMethod als String
      */
     private String getEvaluationMethod() {
@@ -283,38 +281,37 @@ public class RoutePlannerMainController {
      * @param colorString Farbe, in der Ways/Nodes markiert werden sollen
      */
     private void generateLinkQuery(LinkedList<String> list, String method, String name, String colorString) {
-	if (list == null || list.isEmpty()) {
+	if (list == null || list.isEmpty())
+	    return;
 
-	} else {
-	    long colorInt = Long.parseLong(colorString.substring(2, 8), 16);
-	    long r = (colorInt & 0xFF0000) >> 16;
-	    long g = (colorInt & 0xFF00) >> 8;
-	    long b = colorInt & 0xFF;
-	    StringBuffer rgbColorString = new StringBuffer();
-	    rgbColorString.append("rgb(");
-	    rgbColorString.append(r);
-	    rgbColorString.append(",");
-	    rgbColorString.append(g);
-	    rgbColorString.append(",");
-	    rgbColorString.append(b);
-	    rgbColorString.append(")");
-	    String completeLink = Constants.LINK_COMPLETELINK;
+	long colorInt = Long.parseLong(colorString.substring(2, 8), 16);
+	long r = (colorInt & 0xFF0000) >> 16;
+	long g = (colorInt & 0xFF00) >> 8;
+	long b = colorInt & 0xFF;
+	StringBuffer rgbColorString = new StringBuffer();
+	rgbColorString.append("rgb(");
+	rgbColorString.append(r);
+	rgbColorString.append(",");
+	rgbColorString.append(g);
+	rgbColorString.append(",");
+	rgbColorString.append(b);
+	rgbColorString.append(")");
+	String completeLink = Constants.LINK_COMPLETELINK;
 
-	    int x = 0;
-	    for (String string : list) {
-		completeLink += method + "(" + string + ");";
-		x++;
-		if (x > 99) {
-		    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
-			    + rgbColorString + "')");
-		    x = 0;
-		    completeLink = Constants.LINK_COMPLETELINK;
-		}
-	    }
-	    if (completeLink != Constants.LINK_COMPLETELINK) {
+	int x = 0;
+	for (String string : list) {
+	    completeLink += method + "(" + string + ");";
+	    x++;
+	    if (x > 99) {
 		webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '"
 		        + rgbColorString + "')");
+		x = 0;
+		completeLink = Constants.LINK_COMPLETELINK;
 	    }
+	}
+	if (completeLink != Constants.LINK_COMPLETELINK) {
+	    webEngine.executeScript("add_layer('" + name + "', '" + completeLink + linkEnd + "', '" + rgbColorString
+		    + "')");
 	}
     }
 
@@ -347,7 +344,7 @@ public class RoutePlannerMainController {
     /**
      * Löst die Berechnung der Route sowie die Anzeige des Ergebnisses aus. Verursacht Fehler wenn Berechnung aufgrund
      * der Eingabe nicht möglich ist.
-     *
+     * 
      * @param event
      */
     @FXML
@@ -386,7 +383,7 @@ public class RoutePlannerMainController {
 
     /**
      * Zeigt ein Informations-Fenster über das Programm.
-     *
+     * 
      * @param event
      */
     @FXML
@@ -397,7 +394,7 @@ public class RoutePlannerMainController {
 
     /**
      * Schließt die Stage, beendet das Programm.
-     *
+     * 
      * @param event
      */
     @FXML

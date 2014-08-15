@@ -20,9 +20,9 @@ import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 
 /**
  * Schnittstelle zwischen der GUI und den einzelnen Klassen zur Berechnung einer Route.
- *
+ * 
  * @author robin
- *
+ * 
  */
 public class UIEvaluationInterface {
 
@@ -39,7 +39,7 @@ public class UIEvaluationInterface {
     /**
      * Methode, die die Berechnung der Route mit dem gewählten Algorithmus auslöst und nach Berechnung das Ergebnis für
      * die GUI aufbereitet.
-     *
+     * 
      * @param departure Startknoten der Route
      * @param destination Zielknoten der Route
      * @param calculationMethod Berechnungsalgorithmus
@@ -149,7 +149,5 @@ public class UIEvaluationInterface {
 	Thread th = new Thread(task);
 	th.setDaemon(true);
 	th.start();
-
     }
-
 }

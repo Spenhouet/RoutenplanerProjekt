@@ -26,7 +26,7 @@ import de.dhbw.horb.routePlanner.data.XMLFileManager;
  * Main Application-Klasse des Programms
  * 
  * @author robin
- *
+ * 
  */
 public class RoutePlannerMainApp extends Application {
 
@@ -178,7 +178,6 @@ public class RoutePlannerMainApp extends Application {
 			break;
 		    }
 		}
-
 		return iterations;
 	    }
 	};
@@ -219,12 +218,10 @@ public class RoutePlannerMainApp extends Application {
 	    }
 	    this.primaryStage = new Stage();
 
-	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_ROOT_STARTUP));
 	    this.splashLayout = (BorderPane) loader.load();
 
-	    // Show the scene containing the root layout.
 	    Scene scene = new Scene(this.splashLayout);
 	    this.primaryStage.setScene(scene);
 	    this.primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -239,16 +236,11 @@ public class RoutePlannerMainApp extends Application {
      */
     public void showSplash() {
 	try {
-	    // Load person overview.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RouteplannerStartup.class.getResource(Constants.FXML_MAIN_STARTUP));
 	    this.splashAnchor = (AnchorPane) loader.load();
-
-	    // Set person overview into the center of root layout.
 	    this.splashLayout.setCenter(this.splashAnchor);
-
 	    this.startupController = loader.getController();
-
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -263,7 +255,6 @@ public class RoutePlannerMainApp extends Application {
 	    this.primaryStage = new Stage();
 	    this.primaryStage.setTitle("DHBW-Routenplaner 2014");
 
-	    // Load root layout from fxml file.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_ROOT));
 	    this.rootLayout = (BorderPane) loader.load();
@@ -276,12 +267,10 @@ public class RoutePlannerMainApp extends Application {
 	    this.primaryStage.setMinWidth(1280);
 	    this.primaryStage.setMinHeight(720);
 
-	    // Show the scene containing the root layout.
 	    Scene scene = new Scene(this.rootLayout);
 	    this.primaryStage.setTitle("Routenplaner");
 	    this.primaryStage.setScene(scene);
 	    this.primaryStage.initStyle(StageStyle.DECORATED);
-	    // scene.setFill(Color.TRANSPARENT);
 	    this.primaryStage.show();
 
 	} catch (IOException e) {
@@ -294,22 +283,14 @@ public class RoutePlannerMainApp extends Application {
      */
     public void showMainWindow() {
 	try {
-	    // Load person overview.
 	    FXMLLoader loader = new FXMLLoader();
 	    loader.setLocation(RoutePlannerMainApp.class.getResource(Constants.FXML_MAIN));
 	    this.MainWindow = (AnchorPane) loader.load();
 
-	    // Set person overview into the center of root layout.
 	    this.rootLayout.setCenter(this.MainWindow);
-
 	    this.controller = loader.getController();
 	    this.controller.setRoutePlannerMainApp(this);
-
-	    try {
-		this.fileManager.lockAllXML();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    this.fileManager.lockAllXML();
 
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -319,7 +300,7 @@ public class RoutePlannerMainApp extends Application {
     /**
      * Überprüfen der Programmvorraussetzungen: Verbindung zur Overpass-Seite sowie Vorhandensein des
      * Programmverzeichnisses (gegebenfalls Erstellung des Verzeichnisses).
-     *
+     * 
      * @return true, falls beide Vorraussetzungen erfüllt. Ansonsten false
      */
     private boolean checkPrerequisites() {
@@ -371,7 +352,7 @@ public class RoutePlannerMainApp extends Application {
 
     /**
      * Gibt die primaryStage zurück
-     *
+     * 
      * @return Stage primaryStage
      */
     public Stage getPrimaryStage() {
@@ -380,11 +361,10 @@ public class RoutePlannerMainApp extends Application {
 
     /**
      * Main-Methode
-     *
+     * 
      * @param args
      */
     public static void main(String[] args) {
 	launch(args);
     }
-
 }

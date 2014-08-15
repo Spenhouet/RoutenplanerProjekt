@@ -7,14 +7,13 @@ import javafx.scene.control.ProgressIndicator;
 
 /**
  * Controller-Klasse für das Splash-Window. Stellt Funktionen für das Splash zur Verfügung
- *
+ * 
  * @author robin
- *
+ * 
  */
 public class StartupMainController {
 
     public StartupMainController() {
-
     }
 
     @FXML

@@ -195,7 +195,6 @@ public class Dijkstra {
 	    error = true;
 	}
 	currentNeighbours.clear();
-
     }
 
     /**
