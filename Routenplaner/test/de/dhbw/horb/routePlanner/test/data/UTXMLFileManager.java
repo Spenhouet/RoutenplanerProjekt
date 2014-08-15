@@ -40,12 +40,4 @@ public class UTXMLFileManager extends TestCase {
 	    return;
 	SettingsManager.saveSetting(Constants.SETTINGS_COUNTRY, save_country);
     }
-
-    //    public void testLockXML() throws IOException {
-    //
-    //    }
-    //
-    //    public void testReleaseXML() {
-    //
-    //    }
 }
