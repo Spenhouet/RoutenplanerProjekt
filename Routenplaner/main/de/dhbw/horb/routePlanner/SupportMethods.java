@@ -11,10 +11,9 @@ import java.util.StringTokenizer;
  */
 public class SupportMethods {
 
-    //public static XMLFileManager fileManager;
-
     /**
      * Berechnung der Dauer von einer Fahrt über eine bestimmte Strecke mit einer bestimmten Geschwindigkeit.
+     * 
      * @param distance Die Länge der Strecke.
      * @param speed Die Geschwindigkeit.
      * @return Die Dauer in Millisekunden.
@@ -25,6 +24,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Tagen zu Stunden.
+     * 
      * @param days Die Anzahl der Tage.
      * @return Die Anzahl der Stunden.
      */
@@ -34,6 +34,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Stunden zu Minuten.
+     * 
      * @param hours Die Anzahl der Stunden.
      * @return Die Anzahl der Minuten.
      */
@@ -43,6 +44,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Minuten in Sekunden.
+     * 
      * @param minutes Die Anzahl der Minuten.
      * @return Die Anzahl der Sekunden.
      */
@@ -52,6 +54,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Sekunden in Millisekunden.
+     * 
      * @param seconds Die Anzahl der Sekunden.
      * @return Die Anzahl der Millisekunden.
      */
@@ -61,6 +64,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Sekunden in Minuten.
+     * 
      * @param seconds Die Anzahl der Sekunden.
      * @return Die Anzahl der Minuten.
      */
@@ -70,6 +74,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Minuten in Stunden.
+     * 
      * @param minutes Die Anzahl der Minuten.
      * @return Die Anzahl der Stunden.
      */
@@ -79,6 +84,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Stunden zu Tagen.
+     * 
      * @param hours Die Anzahl der Stunden.
      * @return Die Anzahl der Tage.
      */
@@ -88,6 +94,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Millisekunden in Sekunden.
+     * 
      * @param milliseconds Die Anzahl der Millisekunden.
      * @return Die Anzahl der Sekunden.
      */
@@ -97,6 +104,7 @@ public class SupportMethods {
 
     /**
      * Berechnung der Entfernung zweier Koordinaten.
+     * 
      * @param lat1 Breitengrad des ersten Punktes.
      * @param lon1 Längengrad des ersten Punktes.
      * @param lat2 Breitengrad des zweiten Punktes.
@@ -115,7 +123,7 @@ public class SupportMethods {
 	double deltaLambda = degreesToRadians(lon2 - lon1);
 
 	double a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) + Math.cos(phi1) * Math.cos(phi2)
-		* Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+	        * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
 	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 	return R * c;
@@ -123,6 +131,7 @@ public class SupportMethods {
 
     /**
      * Umrechnung von Grad zu Radiant.
+     * 
      * @param deg Der Grad Wert.
      * @return Den Radiant Wert.
      */
@@ -131,8 +140,8 @@ public class SupportMethods {
     }
 
     /**
-     * Konvertiert eine String Liste in einen Komma separierten String.
-     * Leere Listeneinträge werden ignoriert.
+     * Konvertiert eine String Liste in einen Komma separierten String. Leere Listeneinträge werden ignoriert.
+     * 
      * @param strL Die String Liste. Bsp.: ["test1","test2","test3","test4"]
      * @return Der Komma separierte String. Bsp.: "test1, test2, test3, test4"
      */
@@ -151,8 +160,9 @@ public class SupportMethods {
     }
 
     /**
-     * Konvertiert einen Komma separierten String in eine String Liste. Die Kommas trennen die Strings.
-     * Leerzeichen zwischen Komma und String werden entfernt sowie ignoriert.
+     * Konvertiert einen Komma separierten String in eine String Liste. Die Kommas trennen die Strings. Leerzeichen
+     * zwischen Komma und String werden entfernt sowie ignoriert.
+     * 
      * @param commaStr Der Komma separierte String. Bsp.: "test1, test2, test3, test4"
      * @return Die String Liste mit den Elementen aus dem Komma String. Bsp.: ["test1","test2","test3","test4"]
      */
@@ -173,10 +183,10 @@ public class SupportMethods {
     }
 
     /**
-     * Sortiert eine String Liste nach der Ähnlichkeit zu einem String.
-     * Nach ganz oben wird ein genau gleiches Element sortiert.
-     * Ansonsten gilt: Um so weiter vorn der Vergleichs String im Listen Element zu finden ist, desto höher wird dieses 
-     * eingeordnet. 
+     * Sortiert eine String Liste nach der Ähnlichkeit zu einem String. Nach ganz oben wird ein genau gleiches Element
+     * sortiert. Ansonsten gilt: Um so weiter vorn der Vergleichs String im Listen Element zu finden ist, desto höher
+     * wird dieses eingeordnet.
+     * 
      * @param list Die zu sortierende String Liste.
      * @param str Der genannte Vergleichs String.
      * @return Die neu sortierte String Liste.
@@ -212,6 +222,7 @@ public class SupportMethods {
 
     /**
      * Prüft ob ein String nur aus Zahlen besteht bzw. eine Zahl ist.
+     * 
      * @param str Der zu überprüfende String.
      * @return True: Ist eine Zahl. False: Ist keine Zahl.
      */

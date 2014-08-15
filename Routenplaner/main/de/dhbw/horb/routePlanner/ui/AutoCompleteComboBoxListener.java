@@ -17,13 +17,16 @@ import javax.xml.stream.XMLStreamException;
 import de.dhbw.horb.routePlanner.SupportMethods;
 import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 
+/**
+ * Klasse stellt Autocomplete-Funktionalität zur Verfügung
+ * 
+ * @author robin
+ *
+ * @param <T> AutoComplete vom Typ String
+ */
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     private ComboBox<String> comboBox;
-    @SuppressWarnings("unused")
-    private StringBuilder sb;
-    @SuppressWarnings("unused")
-    private ObservableList<String> data;
     private boolean moveCaretToPos = false;
     private int caretPos;
     private Map<String, List<String>> nodes = null;
@@ -38,9 +41,6 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 	} catch (FileNotFoundException | XMLStreamException e) {
 	    e.printStackTrace();
 	}
-
-	sb = new StringBuilder();
-	data = comboBox.getItems();
 
 	comboBox.setEditable(true);
 	comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {

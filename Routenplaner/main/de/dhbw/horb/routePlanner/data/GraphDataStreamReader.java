@@ -66,8 +66,7 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
     /**
      * Gibt den Attribut Wert für einen bestimmten Attribut Lokal Namen zurück wenn es diesen gibt.
      * 
-     * @param AttributeLocalName
-     *            Der Attribut Lokal Name für den der Attribut Wert abgefragt werden soll.
+     * @param AttributeLocalName Der Attribut Lokal Name für den der Attribut Wert abgefragt werden soll.
      * @return Der Attribut Wert als String.
      */
     public String getAttributeValue(String AttributeLocalName) {
@@ -81,8 +80,7 @@ public class GraphDataStreamReader extends StreamReaderDelegate {
     /**
      * Gibt für folgende Struktur: tag k="" v=""s den Wert für v für entsprechenden Schlüssel k zurück.
      * 
-     * @param inK
-     *            Schlüssel k
+     * @param inK Schlüssel k
      * @return Wert v
      * @throws XMLStreamException
      */
