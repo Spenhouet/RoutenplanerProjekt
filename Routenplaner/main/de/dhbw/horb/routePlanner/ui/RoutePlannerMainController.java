@@ -15,6 +15,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -98,6 +99,8 @@ public class RoutePlannerMainController {
     private ColorPicker waysColorPicker;
     @FXML
     private ColorPicker nodesColorPicker;
+    @FXML
+    public ProgressIndicator calculateRouteProgressIndicator;
 
     public RoutePlannerMainController() {
 
@@ -129,6 +132,8 @@ public class RoutePlannerMainController {
 		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
 		        .showError();
 	    } else {
+
+		calculateRouteProgressIndicator.setOpacity(1.0);
 
 		calculationMethod = null;
 		calculationMethod = getCalculationMethod();

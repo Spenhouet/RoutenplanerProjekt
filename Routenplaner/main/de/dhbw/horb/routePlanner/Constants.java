@@ -43,7 +43,7 @@ public interface Constants {
     public final static String EVALUATION_CALCULATION_DURATION = "Dauer";
     public final static String EVALUATION_CALCULATION_DISTANCE = "Strecke";
 
-    public final static String COUNTRY_VERIFIED = "Deutschland, France";
+    public final static String COUNTRY_VERIFIED = "Deutschland, France, Österreich";
 
     public final static String SETTINGS = "settings";
     public final static String SETTINGS_KVSET = "kvSet";

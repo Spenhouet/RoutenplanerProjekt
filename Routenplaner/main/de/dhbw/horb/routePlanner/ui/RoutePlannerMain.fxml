@@ -77,6 +77,11 @@
                                           <Insets top="25.0" />
                                        </VBox.margin>
                                     </Button>
+                                    <ProgressIndicator fx:id="calculateRouteProgressIndicator" opacity="0.0">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                    </ProgressIndicator>
                                  </children>
                               </VBox>
                            </children>

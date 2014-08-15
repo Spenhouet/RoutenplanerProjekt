@@ -129,6 +129,7 @@ public class UIEvaluationInterface {
 	    @Override
 	    public void handle(WorkerStateEvent event) {
 		mainApp.controller.loadOverpassHTML();
+		mainApp.controller.calculateRouteProgressIndicator.setOpacity(0.0);
 		mainApp.controller.enableCalculateRouteButton();
 
 	    }
@@ -140,6 +141,7 @@ public class UIEvaluationInterface {
 		Dialogs.create().title("Keine Berechnung möglich!").message(
 		        "Bei der Berechnung der Route ist ein Fehler aufgetreten. Es wurde keine Route gefunden.")
 		        .showError();
+		mainApp.controller.calculateRouteProgressIndicator.setOpacity(0.0);
 		mainApp.controller.enableCalculateRouteButton();
 	    }
 	});
