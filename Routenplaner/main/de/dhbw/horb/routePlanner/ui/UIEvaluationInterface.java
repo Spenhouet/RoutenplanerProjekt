@@ -15,6 +15,7 @@ import org.controlsfx.dialog.Dialogs;
 
 import de.dhbw.horb.routePlanner.Constants;
 import de.dhbw.horb.routePlanner.SupportMethods;
+import de.dhbw.horb.routePlanner.data.StAXMapGraphDataParser;
 import de.dhbw.horb.routePlanner.evaluation.aStar.AStar;
 import de.dhbw.horb.routePlanner.evaluation.dijkstra.Dijkstra;
 
@@ -50,9 +51,10 @@ public class UIEvaluationInterface {
 	task = new Task<Integer>() {
 	    @Override
 	    protected Integer call() throws Exception {
+		Map<String, List<String>> nodesMap = StAXMapGraphDataParser.getNodeXMLMap();
 		route = null;
-		if ((departure == null) || (destination == null) || (calculationMethod == null)
-		        || (evaluationMethod == null)) {
+		if (departure == null || destination == null || calculationMethod == null || evaluationMethod == null
+		        || !nodesMap.containsKey(departure) || !nodesMap.containsKey(destination)) {
 		    this.cancel();
 		    return -1;
 		}
