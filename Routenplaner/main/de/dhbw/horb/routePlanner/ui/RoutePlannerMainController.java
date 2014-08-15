@@ -359,12 +359,15 @@ public class RoutePlannerMainController {
 	    if (calculationMethodToggleGroup.getSelectedToggle() == null) {
 		Dialogs.create().title("Keine Berechnung möglich!").message(
 		        "Bitte geben Sie eine Berechnungsmethode an.").showError();
+		enableCalculateRouteButton();
 	    } else if (evaluationMethodToggleGroup.getSelectedToggle() == null) {
 		Dialogs.create().title("Keine Berechnung möglich!").message(
 		        "Bitte geben Sie einen Berechnungsalgorithmus an.").showError();
+		enableCalculateRouteButton();
 	    } else if (start.equals(end)) {
 		Dialogs.create().title("Keine Berechnung möglich!").message("Start und Ziel sind identisch.")
 		        .showError();
+		enableCalculateRouteButton();
 	    } else {
 		calculateRouteProgressIndicator.setOpacity(1.0);
 		calculationMethod = null;
@@ -377,6 +380,7 @@ public class RoutePlannerMainController {
 	} else {
 	    Dialogs.create().title("Keine Berechnung möglich!").message(
 		    "Bitte geben Sie sowohl Start als auch Ziel an.").showError();
+	    enableCalculateRouteButton();
 	}
     }
 
