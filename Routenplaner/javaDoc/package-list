@@ -1,0 +1,8 @@
+de.dhbw.horb.routePlanner
+de.dhbw.horb.routePlanner.data
+de.dhbw.horb.routePlanner.evaluation.aStar
+de.dhbw.horb.routePlanner.evaluation.dijkstra
+de.dhbw.horb.routePlanner.test
+de.dhbw.horb.routePlanner.test.data
+de.dhbw.horb.routePlanner.test.general
+de.dhbw.horb.routePlanner.ui
