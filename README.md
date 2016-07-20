@@ -3,7 +3,6 @@ RoutenplanerProjekt
 
 DHBW Stuttgart Campus Horb Vorlesung „Programmieren I + II“ 2014
 Programmieraufgabe: Routenplaner
-Von: Julius Mahlenbrey, Simon Stehle, Sebastian Penhouet und Robin Kinting
 
 Vorwort
 Die Aufgabe dieses Projekts war es, mittels des Algorithmus von Dijkstra auf den Daten des deutschen Autobahnnetzes einen Routenplaner zu implementieren.
